@@ -1,0 +1,6 @@
+{
+  "name": "CHAJ Office",
+  "description": "Architectural practice portfolio and project detail showcase featuring spatial exploration, material breakdown, and interactive blueprints.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
