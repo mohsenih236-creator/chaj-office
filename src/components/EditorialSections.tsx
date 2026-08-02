@@ -1,23 +1,34 @@
 import React, { useState } from 'react';
 import { Project, Language, MaterialDetail } from '../types';
 import { Maximize2, Layers, Info } from 'lucide-react';
+import { LightboxImage } from './LightboxModal';
 
 interface EditorialSectionsProps {
   project: Project;
   language: Language;
   onOpenImage: (url: string, caption: string) => void;
+  onOpenGallery: (images: LightboxImage[], startIndex?: number) => void;
 }
 
 export const EditorialSections: React.FC<EditorialSectionsProps> = ({
   project,
   language,
-  onOpenImage
+  onOpenImage,
+  onOpenGallery
 }) => {
   const isFa = language === 'FA';
   const [activeMaterialTab, setActiveMaterialTab] = useState<string | null>(null);
 
   const detail1 = project.details[0];
   const detail2 = project.details[1];
+
+  // Builds the full list of images for a detail item: its main imageUrl first,
+  // followed by any extra galleryImages defined for it.
+  const buildGalleryFor = (detail: MaterialDetail): LightboxImage[] => {
+    const caption = isFa ? detail.titleFa : detail.title;
+    const urls = [detail.imageUrl, ...(detail.galleryImages || [])];
+    return urls.map((url) => ({ url, caption }));
+  };
 
   return (
     <div className="bg-[#F4F1EE]">
@@ -96,9 +107,7 @@ export const EditorialSections: React.FC<EditorialSectionsProps> = ({
                   <div
                     className="w-full aspect-square bg-[#E8E4E0] bg-cover bg-center overflow-hidden cursor-pointer group relative border border-black/5 shadow-xs hover:shadow-md transition-shadow duration-300"
                     style={{ backgroundImage: `url('${detail1.imageUrl}')` }}
-                    onClick={() =>
-                      onOpenImage(detail1.imageUrl, isFa ? detail1.titleFa : detail1.title)
-                    }
+                    onClick={() => onOpenGallery(buildGalleryFor(detail1))}
                   >
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/25 transition-colors flex items-center justify-center">
                       <span className="opacity-0 group-hover:opacity-100 transition-opacity bg-[#1C1C1C] text-[#F4F1EE] px-3 py-1.5 font-sans text-[10px] uppercase tracking-[0.2em]">
@@ -123,9 +132,7 @@ export const EditorialSections: React.FC<EditorialSectionsProps> = ({
                   <div
                     className="w-full aspect-[16/9] bg-[#E8E4E0] bg-cover bg-center overflow-hidden cursor-pointer group relative border border-black/5 shadow-xs hover:shadow-md transition-shadow duration-300"
                     style={{ backgroundImage: `url('${detail2.imageUrl}')` }}
-                    onClick={() =>
-                      onOpenImage(detail2.imageUrl, isFa ? detail2.titleFa : detail2.title)
-                    }
+                    onClick={() => onOpenGallery(buildGalleryFor(detail2))}
                   >
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/25 transition-colors flex items-center justify-center">
                       <span className="opacity-0 group-hover:opacity-100 transition-opacity bg-[#1C1C1C] text-[#F4F1EE] px-3 py-1.5 font-sans text-[10px] uppercase tracking-[0.2em]">
@@ -150,3 +157,4 @@ export const EditorialSections: React.FC<EditorialSectionsProps> = ({
     </div>
   );
 };
+
