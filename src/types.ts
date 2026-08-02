@@ -10,6 +10,16 @@ export interface MaterialDetail {
   imageUrl: string;
   aspectRatio: 'square' | 'video' | 'portrait';
 }
+export interface ExecutionMedia {
+  id: string;
+  title: string;
+  titleFa: string;
+  caption: string;
+  captionFa: string;
+  imageUrl: string;
+  // "image" (default) shows a photo. "video" plays the file at imageUrl as a video.
+  type?: 'image' | 'video';
+}
 export interface Hotspot {
   id: string;
   x: number; // percentage
@@ -67,14 +77,14 @@ export interface Project {
   spatialNarrativeFa: string;
   details: MaterialDetail[];
   drawings: BlueprintDrawing[];
-  // Optional: "Execution Phase" gallery — photos of the building actually being built/completed.
+  // Optional: "Execution Phase" gallery — photos AND videos of the building being built/completed.
   // Optional means you don't have to fill this in for every project right away;
   // if it's missing, the section simply won't be shown for that project.
   executionSectionTitleEn?: string;
   executionSectionTitleFa?: string;
   executionNarrativeEn?: string;
   executionNarrativeFa?: string;
-  executionPhotos?: MaterialDetail[];
+  executionPhotos?: ExecutionMedia[];
   prevProjectId: string;
   nextProjectId: string;
 }
