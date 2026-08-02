@@ -245,7 +245,7 @@ export const projects: Project[] = [
         imageUrl: "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&q=80&w=1200"
       }
     ],
-    prevProjectId: "the-monolith-house",
+    prevProjectId: "Mousavinejad MDF Trading",
     nextProjectId: "desert-sanctuary"
   },
   {
@@ -298,7 +298,7 @@ export const projects: Project[] = [
       }
     ],
     prevProjectId: "desert-sanctuary",
-    nextProjectId: "the-monolith-house"
+    nextProjectId: "Mousavinejad MDF Trading"
   },
   {
     id: "desert-sanctuary",
@@ -402,6 +402,6 @@ export const projects: Project[] = [
       }
     ],
     prevProjectId: "desert-sanctuary",
-    nextProjectId: "the-monolith-house"
+    nextProjectId: "Mousavinejad MDF Trading"
   }
 ];
