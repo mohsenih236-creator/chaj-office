@@ -62,8 +62,8 @@ export const Header: React.FC<HeaderProps> = ({
         className="group flex flex-row sm:flex-row sm:items-end gap-2 text-left cursor-pointer focus:outline-none"
       >
         <img
-          src="/images/logo.jpg"
-          alt="CHAJ Office Logo"
+          src="/images/05-sun-8-1.jpg"
+          alt="CHAJ Group Logo"
           className="h-10 w-10 object-cover rounded-full"
         />
         <span className="font-serif font-normal text-2xl md:text-3xl tracking-tight text-[#1C1C1C] group-hover:opacity-80 transition-opacity">
