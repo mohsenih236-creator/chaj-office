@@ -105,10 +105,10 @@ export const projects: Project[] = [
     details: [
       {
         id: "d1",
-        title: "DETAIL: MATERIAL INTERSECTION",
+        title: "Details of the implementation of the complex door",
         titleFa: "جزئیات: تلاقی متریال‌ها",
-        caption: "Raw board-formed concrete meets precision-milled dark oak timber with a shadow gap.",
-        captionFa: "تلاقی بتن نمایان تخته‌کوب و چوب بلوط تیره با درز سایه دقیق.",
+        caption: "The scratched stone is integrated with the microcement of the door.",
+        captionFa: "سنگ اسکرچ شده با میکروسمنت درب یکی شده.",
         imageUrl: "/images/d1-render.jpg",
         aspectRatio: "square",
         galleryImages: [
