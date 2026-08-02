@@ -97,7 +97,7 @@ export const projects: Project[] = [
     lightSectionTitleFa: "نور به عنوان ماده",
     lightNarrativeEn: "In the arid climate of Yazd, light is both a blessing and a burden. Our design treats light not just as illumination, but as a physical material that defines the temporal experience of the house. Deep apertures and rhythmic skylights curate shadows that evolve throughout the day, animating the monolithic concrete surfaces.",
     lightNarrativeFa: "در اقلیم خشک یزد، نور هم نعمت است و هم چالش. طراحی ما با نور نه فقط به عنوان روشنایی، بلکه به عنوان یک ماده فیزیکی ملموس برخورد می‌کند که تجربه زمانی خانه را شکل می‌دهد. گشودگی‌های عمیق و نورگیرهای ریتمیک، سایه‌های متغیری ایجاد می‌کنند که در طول روز سطوح یکپارچه بتنی را زنده می‌سازند.",
-    lightImage: "/images/west view-01.jpg",
+    lightImage: "https://lh3.googleusercontent.com/aida-public/AB6AXuA_EI2D2eLYn_dRNA83joDsKlq0bmo6vutQwhCAP1Hyg_GcPkBKid8Yt59XQZy0Qx-wN2i8VAVDv4God4GXoMWI3ZCI_L3d5ywYjn0sYxYgmDAbSMsly--hlFXv62J8hZQFF7u5PtuLE-_qgbvLfy4PDbFKz6QQCvsmXN8agmDnrgJTZBL_-jwcrtbaeAXyZbR0bYck0XXNyAiQD7WyiSeGCkf8EgDprL-JD8wt-ItQ63PEstlqYi-LKQ",
     spatialSectionTitleEn: "Spatial Logic",
     spatialSectionTitleFa: "منطق فضایی",
     spatialNarrativeEn: "The plan is organized around a series of sequential voids, ensuring that every living space maintains a visual connection to the sky and the internal garden while providing absolute privacy from the street.",
@@ -109,8 +109,15 @@ export const projects: Project[] = [
         titleFa: "جزئیات: تلاقی متریال‌ها",
         caption: "Raw board-formed concrete meets precision-milled dark oak timber with a shadow gap.",
         captionFa: "تلاقی بتن نمایان تخته‌کوب و چوب بلوط تیره با درز سایه دقیق.",
-        imageUrl: "https://lh3.googleusercontent.com/aida-public/AB6AXuBB_Q6odGEuyLmXk9S6MMfCRZ9HeWqoi7Y05uc34msm418CGAEczC4Qzl8hoB6TcxX89u2KxRZo_M5yzlWJQtBMCJU0E-bUc1DPOZzl8DPI7feO94udT_EbR7zKRl1IfYIIoYKQb-pkFqbYa_8nszBU7VXGd5XKo1yJrrsMdifLycpSHThZaC52BtNoce-NQfnOQucmZol-W8RTKoshMwEPPe-9LoYO4tHKtQx8ikmZ-BKaSRcsCaPkbg",
-        aspectRatio: "square"
+        imageUrl: "/images/d1-render.jpg",
+        aspectRatio: "square",
+        galleryImages: [
+          "/images/d1-details01.jpg",
+          "/images/d1-details02.jpg",
+          "/images/d1-image01.jpg",
+          "/images/d1-image02.jpg",
+          "/images/d1-image03.jpg"
+        ]
       },
       {
         id: "d2",
@@ -188,7 +195,7 @@ export const projects: Project[] = [
         title: "Construction Progress",
         titleFa: "روند اجرای پروژه",
         caption: "On-site construction phase.",
-        captionFa: "مرحله اجرای فنداسیون و نصب گاتر",
+        captionFa: "مرحله اجرای پروژه در محل.",
         imageUrl: "/images/04.jpg",
         type: "image"
       },
@@ -197,7 +204,7 @@ export const projects: Project[] = [
         title: "Construction Progress",
         titleFa: "روند اجرای پروژه",
         caption: "On-site construction phase.",
-        captionFa: "مرحله اجرای فنداسیون و نصب گاتر",
+        captionFa: "مرحله اجرای پروژه در محل.",
         imageUrl: "/images/02.jpg",
         type: "image"
       }
