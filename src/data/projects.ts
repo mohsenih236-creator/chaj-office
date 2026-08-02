@@ -13,7 +13,7 @@ export const studioInfo: StudioInfo = {
       roleFa: "معمار ارشد و هم‌بنیان‌گذار",
       bioEn: "Specializes in tectonic structural expressions and desert climatic adaptations.",
       bioFa: "متخصص در بیان تکتونیک سازه‌ای و انطباق‌های اقلیمی مناطق کویری.",
-      image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=800"
+      image: "/images/vali.png"
     },
     {
       name: "Sadegh lagharei firozjaei",
