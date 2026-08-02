@@ -65,15 +65,7 @@ export const studioInfo: StudioInfo = {
       addressEn: "No. 47, Royal Mall Complex, Fereydounkenar to Babolsar road, Mazandaran, Iran",
       addressFa: "مازندران، جاده فریدونکنار به بابلسر مجتمع رویال مال ، پلاک 47",
       phone: "+98 9001112478",
-      email: "chajoffice@gmail.com"
-    },
-    {
-      cityEn: "Yazd Field Lab",
-      cityFa: "آزمایشگاه میدانی یزد",
-      addressEn: "Kashani Blvd, Historic Zone, Yazd, Iran",
-      addressFa: "یزد، بلوار کاشانی، بافت تاریخی",
-      phone: "+98 (35) 3622 9104",
-      email: "yazd@chajoffice.com"
+      email: "sadeghlagharei@gmail.com"
     }
   ]
 };
