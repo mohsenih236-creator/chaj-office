@@ -9,6 +9,9 @@ export interface MaterialDetail {
   captionFa: string;
   imageUrl: string;
   aspectRatio: 'square' | 'video' | 'portrait';
+  // Optional: extra photos shown together (with next/prev navigation) when this item is clicked.
+  // imageUrl is always shown first, then these are added after it.
+  galleryImages?: string[];
 }
 export interface ExecutionMedia {
   id: string;
