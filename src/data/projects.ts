@@ -169,9 +169,9 @@ export const projects: Project[] = [
       {
         id: "section-aa",
         title: "SECTION AA",
-        titleFa: "مقطع طولی AA",
+        titleFa: "مقطع عرضی AA",
         type: "Section",
-        imageUrl: "https://lh3.googleusercontent.com/aida-public/AB6AXuD4dZjBX2eKlr0cPPfy3sBcknkrDfU6hvmgorhLtx_zH3x_VfpU7AfZkaBAheTRpxTvilfMIwFOkk8h0ACf1luwnCUAqZNGoz0zL-OKrZeo4hmNkWglVC8e9DFAnfqCffTDQuazod_RNSdZVDhvuM_RP_6goCPiOdK8wdUnwmAaIj4Y7XS8wZaRjnNKrBH4__YwDZ2LZMd2oSyrHjWBwkai6nAhM7QzWwuvS7E_s_fQE4a0f0TqvG9JZw",
+        imageUrl: "/images/sectionA-A.jpg",
         hotspots: [
           {
             id: "hs1",
