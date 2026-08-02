@@ -97,7 +97,7 @@ export const projects: Project[] = [
     lightSectionTitleFa: "نور به عنوان ماده",
     lightNarrativeEn: "In the arid climate of Yazd, light is both a blessing and a burden. Our design treats light not just as illumination, but as a physical material that defines the temporal experience of the house. Deep apertures and rhythmic skylights curate shadows that evolve throughout the day, animating the monolithic concrete surfaces.",
     lightNarrativeFa: "در اقلیم خشک یزد، نور هم نعمت است و هم چالش. طراحی ما با نور نه فقط به عنوان روشنایی، بلکه به عنوان یک ماده فیزیکی ملموس برخورد می‌کند که تجربه زمانی خانه را شکل می‌دهد. گشودگی‌های عمیق و نورگیرهای ریتمیک، سایه‌های متغیری ایجاد می‌کنند که در طول روز سطوح یکپارچه بتنی را زنده می‌سازند.",
-    lightImage: "https://lh3.googleusercontent.com/aida-public/AB6AXuA_EI2D2eLYn_dRNA83joDsKlq0bmo6vutQwhCAP1Hyg_GcPkBKid8Yt59XQZy0Qx-wN2i8VAVDv4God4GXoMWI3ZCI_L3d5ywYjn0sYxYgmDAbSMsly--hlFXv62J8hZQFF7u5PtuLE-_qgbvLfy4PDbFKz6QQCvsmXN8agmDnrgJTZBL_-jwcrtbaeAXyZbR0bYck0XXNyAiQD7WyiSeGCkf8EgDprL-JD8wt-ItQ63PEstlqYi-LKQ",
+    lightImage: "/images/west view-01.jpg",
     spatialSectionTitleEn: "Spatial Logic",
     spatialSectionTitleFa: "منطق فضایی",
     spatialNarrativeEn: "The plan is organized around a series of sequential voids, ensuring that every living space maintains a visual connection to the sky and the internal garden while providing absolute privacy from the street.",
