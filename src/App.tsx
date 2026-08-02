@@ -6,6 +6,7 @@ import { ProjectHero } from './components/ProjectHero';
 import { ProjectMeta } from './components/ProjectMeta';
 import { EditorialSections } from './components/EditorialSections';
 import { SpatialLogicBlueprints } from './components/SpatialLogicBlueprints';
+import { ExecutionGallery } from './components/ExecutionGallery';
 import { ProjectNavigation } from './components/ProjectNavigation';
 import { ProjectsList } from './components/ProjectsList';
 import { AboutView } from './components/AboutView';
@@ -16,7 +17,7 @@ import { Footer } from './components/Footer';
 
 export default function App() {
   const [activeView, setActiveView] = useState<ViewMode>('project-detail');
-  const [selectedProjectId, setSelectedProjectId] = useState<string>('the-monolith-house');
+  const [selectedProjectId, setSelectedProjectId] = useState<string>('Mousavinejad MDF Trading');
   const [language, setLanguage] = useState<Language>('EN');
   const [contactModalOpen, setContactModalOpen] = useState<boolean>(false);
   const [lightbox, setLightbox] = useState<{ isOpen: boolean; url: string; caption: string }>({
@@ -87,11 +88,18 @@ export default function App() {
               onOpenImage={handleOpenImage}
             />
 
-            {/* Spatial Logic & Interactive Blueprints */}
+            {/* Spatial Logic & Interactive Blueprints (Design Phase: plans, sections, renders) */}
             <SpatialLogicBlueprints
               project={activeProject}
               language={language}
               onOpenDrawing={handleOpenImage}
+            />
+
+            {/* Execution Phase Gallery (real construction/site photos) */}
+            <ExecutionGallery
+              project={activeProject}
+              language={language}
+              onOpenImage={handleOpenImage}
             />
 
             {/* Previous / Next Project Navigation Footer */}
