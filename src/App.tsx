@@ -12,7 +12,7 @@ import { ProjectsList } from './components/ProjectsList';
 import { AboutView } from './components/AboutView';
 import { ServicesView } from './components/ServicesView';
 import { ContactModal } from './components/ContactModal';
-import { LightboxModal } from './components/LightboxModal';
+import { LightboxModal, LightboxImage } from './components/LightboxModal';
 import { Footer } from './components/Footer';
 
 export default function App() {
@@ -20,10 +20,17 @@ export default function App() {
   const [selectedProjectId, setSelectedProjectId] = useState<string>('Mousavinejad MDF Trading');
   const [language, setLanguage] = useState<Language>('EN');
   const [contactModalOpen, setContactModalOpen] = useState<boolean>(false);
-  const [lightbox, setLightbox] = useState<{ isOpen: boolean; url: string; caption: string }>({
+
+  // Lightbox now holds a LIST of images plus which one is currently shown,
+  // so it can support both a single image (old behavior) and a multi-image gallery.
+  const [lightbox, setLightbox] = useState<{
+    isOpen: boolean;
+    images: LightboxImage[];
+    currentIndex: number;
+  }>({
     isOpen: false,
-    url: '',
-    caption: ''
+    images: [],
+    currentIndex: 0
   });
 
   // Active Project resolution
@@ -45,12 +52,35 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  // Backward-compatible: opens the lightbox with just ONE image.
+  // Used by ProjectHero, SpatialLogicBlueprints (drawings), ExecutionGallery, etc.
   const handleOpenImage = (url: string, caption: string) => {
-    setLightbox({ isOpen: true, url, caption });
+    setLightbox({ isOpen: true, images: [{ url, caption }], currentIndex: 0 });
+  };
+
+  // New: opens the lightbox with a LIST of images the user can page through.
+  // Used by EditorialSections for material detail items that have extra photos.
+  const handleOpenGallery = (images: LightboxImage[], startIndex: number = 0) => {
+    if (!images || images.length === 0) return;
+    setLightbox({ isOpen: true, images, currentIndex: startIndex });
   };
 
   const handleCloseLightbox = () => {
     setLightbox((prev) => ({ ...prev, isOpen: false }));
+  };
+
+  const handleNextImage = () => {
+    setLightbox((prev) => ({
+      ...prev,
+      currentIndex: (prev.currentIndex + 1) % prev.images.length
+    }));
+  };
+
+  const handlePrevImage = () => {
+    setLightbox((prev) => ({
+      ...prev,
+      currentIndex: (prev.currentIndex - 1 + prev.images.length) % prev.images.length
+    }));
   };
 
   return (
@@ -86,6 +116,7 @@ export default function App() {
               project={activeProject}
               language={language}
               onOpenImage={handleOpenImage}
+              onOpenGallery={handleOpenGallery}
             />
 
             {/* Spatial Logic & Interactive Blueprints (Design Phase: plans, sections, renders) */}
@@ -154,12 +185,14 @@ export default function App() {
         language={language}
       />
 
-      {/* Full-screen Lightbox Inspector Modal */}
+      {/* Full-screen Lightbox Inspector Modal (single image OR multi-image gallery) */}
       <LightboxModal
         isOpen={lightbox.isOpen}
-        imageUrl={lightbox.url}
-        caption={lightbox.caption}
+        images={lightbox.images}
+        currentIndex={lightbox.currentIndex}
         onClose={handleCloseLightbox}
+        onNext={handleNextImage}
+        onPrev={handlePrevImage}
         language={language}
       />
     </div>
