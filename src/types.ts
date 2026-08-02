@@ -57,6 +57,8 @@ export interface Project {
   areaFa: string;
   architects: string;
   architectsFa: string;
+  presenter: string;
+  presenterFa: string;
   software: string;
   heroImage: string;
   narrativeEn: string;
