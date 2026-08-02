@@ -1,9 +1,6 @@
 export type Language = 'EN' | 'FA';
-
 export type ViewMode = 'project-detail' | 'projects-list' | 'about' | 'services' | 'contact';
-
 export type ProjectCategory = 'All' | 'Residential' | 'Cultural' | 'Interior' | 'Concept';
-
 export interface MaterialDetail {
   id: string;
   title: string;
@@ -13,7 +10,6 @@ export interface MaterialDetail {
   imageUrl: string;
   aspectRatio: 'square' | 'video' | 'portrait';
 }
-
 export interface Hotspot {
   id: string;
   x: number; // percentage
@@ -23,7 +19,6 @@ export interface Hotspot {
   description: string;
   descriptionFa: string;
 }
-
 export interface BlueprintDrawing {
   id: string;
   title: string;
@@ -33,14 +28,12 @@ export interface BlueprintDrawing {
   svgBlueprint?: string;
   hotspots?: Hotspot[];
 }
-
 export interface ProjectSpec {
   label: string;
   labelFa: string;
   value: string;
   valueFa: string;
 }
-
 export interface Project {
   id: string;
   title: string;
@@ -74,10 +67,17 @@ export interface Project {
   spatialNarrativeFa: string;
   details: MaterialDetail[];
   drawings: BlueprintDrawing[];
+  // Optional: "Execution Phase" gallery — photos of the building actually being built/completed.
+  // Optional means you don't have to fill this in for every project right away;
+  // if it's missing, the section simply won't be shown for that project.
+  executionSectionTitleEn?: string;
+  executionSectionTitleFa?: string;
+  executionNarrativeEn?: string;
+  executionNarrativeFa?: string;
+  executionPhotos?: MaterialDetail[];
   prevProjectId: string;
   nextProjectId: string;
 }
-
 export interface StudioInfo {
   name: string;
   taglineEn: string;
