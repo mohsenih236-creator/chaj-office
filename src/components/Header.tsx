@@ -138,7 +138,7 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
           ))}
           <div className="pt-2 flex justify-between items-center text-[10px] uppercase tracking-[0.2em] font-sans text-[#8C8C8C]">
-            <span>{isFa ? 'دفتر معماری چاج — تهران / یزد' : 'CHAJ Office — Tehran / Yazd'}</span>
+            <span>{isFa ? 'دفتر معماری چاج — مازندران / یزد' : 'CHAJ Office — Mazandaran / Babolsar'}</span>
             <span className="font-mono">2024</span>
           </div>
         </div>
