@@ -96,9 +96,8 @@ export const projects: Project[] = [
     architects: "valiallah lagharei & sadegh lagharei",
     architectsFa: "ولی اله لاغری و صادق لاغری",
     software: "Revit, 3Ds max",
-    heroImage: heroImage: "/images/12.jpg",
-    narrativeEn: "Designed for an MDF showroom, the façade draws inspiration from the vertical rhythm of stacked MDF panels, translating the essence of the product into an architectural expression.
-",
+    heroImage: "/images/12.jpg",
+    narrativeEn: "Designed for an MDF showroom, the façade draws inspiration from the vertical rhythm of stacked MDF panels, translating the essence of the product into an architectural expression.",
     narrativeFa: "ریتم لوورهای عمودی نما، برداشتی انتزاعی از چیدمان منظم ورق‌های MDF است؛ عنصری که به نمای ساختمان نظم، عمق و هویت می‌بخشد.",
     lightSectionTitleEn: "Light as Material",
     lightSectionTitleFa: "نور به عنوان ماده",
