@@ -16,6 +16,7 @@ export const ProjectMeta: React.FC<ProjectMetaProps> = ({ project, language }) =
     { labelEn: 'STATUS', labelFa: 'وضعیت', valEn: project.status, valFa: project.statusFa },
     { labelEn: 'AREA', labelFa: 'مساحت', valEn: project.area, valFa: project.areaFa },
     { labelEn: 'ARCHITECTS', labelFa: 'معماران', valEn: project.architects, valFa: project.architectsFa },
+    { labelEn: 'PRESENTER', labelFa: 'پرزانتر', valEn: project.presenter, valFa: project.presenterFa },
     { labelEn: 'SOFTWARE', labelFa: 'نرم‌افزارها', valEn: project.software, valFa: project.software }
   ];
 
