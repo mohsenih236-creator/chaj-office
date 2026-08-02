@@ -21,7 +21,7 @@ export const studioInfo: StudioInfo = {
       roleFa: "مدیر طراحی و هم‌بنیان‌گذار",
       bioEn: "Focuses on spatial sequencing, raw material research, and spatial phenomenology.",
       bioFa: "تمرکز بر توالی فضایی، پژوهش در مواد خام و پدیدارشناسی فضای معماری.",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=800"
+      image: "/images/sadegh.png"
     }
   ],
   services: [
