@@ -5,7 +5,7 @@ export const studioInfo: StudioInfo = {
   taglineEn: "An architectural practice dedicated to the exploration of space, light, and materiality.",
   taglineFa: "دفتر معماری چاج؛ پژوهش و کاوش در ماهیت فضا، نور و ماده.",
   aboutEn: "Founded in 2018 by H. Chaj and S. Rad, CHAJ Office operates at the intersection of contemporary architectural language and regional climatic intelligence. Our practice approaches every site as a nuanced dialogue between solid geometry, shadow, and tactile material craft.",
-  aboutFa: "دفتر معماری چاج در سال ۱۳۹۷ توسط ح. چاج و س. راد تأسیس شد. تمرکز این دفتر بر نقطه تلاقی زبان معماری معاصر و هوشمندی اقلیمی بومی است. ما به هر پروژه به عنوان گفتگو و مواجهه‌ای ظریف میان هندسه صلب، سایه‌روشن‌ها و صراحت مواد نگاه می‌کنیم.",
+  aboutFa: "گروه معماری چاج در سال ۱۳۹۵ در شهر بابلسر، توسط برادران صادق لاغری فیروزجایی و ولی‌الله لاغری فیروزجایی تأسیس شد و فعالیت خود را با تمرکز بر طراحی، توسعه و اجرای پروژه‌های معماری آغاز کرد.در چاج، معماری فرآیندی برای کشف و خلق کیفیت‌های تازه در فضاست؛ فرآیندی که از شناخت بستر، نیازها و ایده آغاز می‌شود و تا طراحی معماری و داخلی، توسعه جزئیات، مدل‌سازی و شبیه‌سازی سه‌بعدی و در نهایت اجرای پروژه ادامه پیدا می‌کند.ما تلاش می‌کنیم در هر پروژه، میان ایده، عملکرد، فرم، نور، متریال و زمینه، ارتباطی معنادار ایجاد کنیم؛ تا نتیجه تنها یک بنا نباشد، بلکه فضایی متناسب با انسان، بستر و شیوه زندگی شکل بگیرد.برای ما، هر پروژه فرصتی است برای بازتعریف رابطه میان انسان و فضا؛ از نخستین ایده تا تجربه نهایی معماری.",
   principals: [
     {
       name: "Valiallah lagharei firozjaei",
