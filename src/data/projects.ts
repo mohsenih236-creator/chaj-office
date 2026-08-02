@@ -188,7 +188,7 @@ export const projects: Project[] = [
         title: "Construction Progress",
         titleFa: "روند اجرای پروژه",
         caption: "On-site construction phase.",
-        captionFa: "مرحله اجرای پروژه در محل.",
+        captionFa: "مرحله اجرای فنداسیون و نصب گاتر",
         imageUrl: "/images/04.jpg",
         type: "image"
       },
@@ -197,7 +197,7 @@ export const projects: Project[] = [
         title: "Construction Progress",
         titleFa: "روند اجرای پروژه",
         caption: "On-site construction phase.",
-        captionFa: "مرحله اجرای پروژه در محل.",
+        captionFa: "مرحله اجرای فنداسیون و نصب گاتر",
         imageUrl: "/images/02.jpg",
         type: "image"
       }
