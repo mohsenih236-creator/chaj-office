@@ -135,7 +135,7 @@ export const projects: Project[] = [
         title: "GROUND FLOOR PLAN",
         titleFa: "پلان طبقه همکف",
         type: "Plan",
-        imageUrl: "https://lh3.googleusercontent.com/aida-public/AB6AXuDBj-id1q-ephygUB5gA8v9jn6oaWZtu5fT4BIbkKPe3QJifj9vDoFeSwEt3wusrw6XSdDPMcnKFNCc39tFRSoPz4iLebw2Di8JY2mjTthwSHU_AfE7tSmiviLkrxyPRqsV9P-8g7YgPjMH_fJ2Tm3YWkQkduerrV3y9rCZpt5sKNpw81DFCLD2vgWLskPP-a9xMFz1zoC35mZLLbqbH-kXaIiw7c6XsU8lMRePLJdGnmTfp1ficlr0Fg",
+        imageUrl: "/images/ground floor plan.jpg",
         hotspots: [
           {
             id: "h1",
