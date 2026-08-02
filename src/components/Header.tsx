@@ -55,14 +55,19 @@ export const Header: React.FC<HeaderProps> = ({
           : 'bg-[#F4F1EE]/95 backdrop-blur-sm border-black/10'
       }`}
     >
-      {/* Brand Logo */}
+{/* Brand Logo */}
       <button
         id="header-brand-logo"
         onClick={() => setActiveView('project-detail')}
-        className="group flex flex-col sm:flex-row sm:items-end gap-2 text-left cursor-pointer focus:outline-none"
+        className="group flex flex-row sm:flex-row sm:items-end gap-2 text-left cursor-pointer focus:outline-none"
       >
+        <img
+          src="/images/logo.jpg"
+          alt="CHAJ Office Logo"
+          className="h-10 w-10 object-cover rounded-full"
+        />
         <span className="font-serif font-normal text-2xl md:text-3xl tracking-tight text-[#1C1C1C] group-hover:opacity-80 transition-opacity">
-          CHAJ OFFICE
+          CHAJ Group
         </span>
         <span className="hidden sm:inline-block text-[9px] uppercase tracking-[0.25em] font-sans font-bold text-[#8C8C8C] px-2 py-0.5 border border-black/10 rounded-xs mb-0.5">
           {isFa ? 'دفتر معماری' : 'ARCH & RESEARCH'}
