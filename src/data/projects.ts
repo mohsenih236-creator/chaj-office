@@ -1,14 +1,14 @@
 import { Project, StudioInfo } from '../types';
 
 export const studioInfo: StudioInfo = {
-  name: "CHAJ Office",
+  name: "CHAJ Group",
   taglineEn: "An architectural practice dedicated to the exploration of space, light, and materiality.",
   taglineFa: "دفتر معماری چاج؛ پژوهش و کاوش در ماهیت فضا، نور و ماده.",
   aboutEn: "Founded in 2018 by H. Chaj and S. Rad, CHAJ Office operates at the intersection of contemporary architectural language and regional climatic intelligence. Our practice approaches every site as a nuanced dialogue between solid geometry, shadow, and tactile material craft.",
   aboutFa: "دفتر معماری چاج در سال ۱۳۹۷ توسط ح. چاج و س. راد تأسیس شد. تمرکز این دفتر بر نقطه تلاقی زبان معماری معاصر و هوشمندی اقلیمی بومی است. ما به هر پروژه به عنوان گفتگو و مواجهه‌ای ظریف میان هندسه صلب، سایه‌روشن‌ها و صراحت مواد نگاه می‌کنیم.",
   principals: [
     {
-      name: "H. Chaj",
+      name: "Valiallah lagharei firozjaei",
       role: "Lead Architect & Founder",
       roleFa: "معمار ارشد و هم‌بنیان‌گذار",
       bioEn: "Specializes in tectonic structural expressions and desert climatic adaptations.",
@@ -16,7 +16,7 @@ export const studioInfo: StudioInfo = {
       image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=800"
     },
     {
-      name: "S. Rad",
+      name: "Sadegh lagharei firozjaei",
       role: "Design Director & Co-Founder",
       roleFa: "مدیر طراحی و هم‌بنیان‌گذار",
       bioEn: "Focuses on spatial sequencing, raw material research, and spatial phenomenology.",
@@ -60,12 +60,12 @@ export const studioInfo: StudioInfo = {
   ],
   offices: [
     {
-      cityEn: "Tehran Studio",
-      cityFa: "دفتر تهران",
-      addressEn: "No. 14, Fereshteh Ave, District 1, Tehran, Iran",
-      addressFa: "تهران، خیابان فرشته، پلاک ۱۴",
-      phone: "+98 (21) 2200 4812",
-      email: "tehran@chajoffice.com"
+      cityEn: "Babolsar Studio",
+      cityFa: "دفتر بابلسر",
+      addressEn: "No. 47, Royal Mall Complex, Fereydounkenar to Babolsar road, Mazandaran, Iran",
+      addressFa: "مازندران، جاده فریدونکنار به بابلسر مجتمع رویال مال ، پلاک 47",
+      phone: "+98 9001112478",
+      email: "chajoffice@gmail.com"
     },
     {
       cityEn: "Yazd Field Lab",
@@ -80,25 +80,26 @@ export const studioInfo: StudioInfo = {
 
 export const projects: Project[] = [
   {
-    id: "the-monolith-house",
-    title: "The Monolith House",
-    titleFa: "خانه تک‌سنگی (مونولیت)",
-    subtitle: "A residential exploration into solid mass and transparency",
-    subtitleFa: "کاوشی مسکونی در رابطه میان جرم صلب و شفافیت",
-    category: "Residential",
+    id: "Mousavinejad MDF Trading",
+    title: "Mousavinejad MDF Trading",
+    titleFa: "بازرگانی ام دی اف موسوی نژاد",
+    subtitle: "Commercial project",
+    subtitleFa: "پروژه تجاری",
+    category: "Commercial",
     year: "2023",
-    location: "Yazd, Iran",
-    locationFa: "یزد، ایران",
-    status: "Completed",
-    statusFa: "تکمیل شده",
-    area: "450 m²",
-    areaFa: "۴۵۰ مترمربع",
-    architects: "H. Chaj, S. Rad",
-    architectsFa: "ح. چاج، س. راد",
-    software: "Revit, Rhino",
-    heroImage: "https://lh3.googleusercontent.com/aida-public/AB6AXuBChe8OiNUR6XPnSj9ZZsOArUZZirKmm_C1Oz5BpeOQemb8dQ2siVOt94-r29I7IU9xJoNx88F0Lax3MN0bPL5pv7MBvJ7QEev_Npfoy2CMzmwMBIEiECsMCnPS3zpy8yaANo2Sutl2luTe-pruJbPPMmqVCotiRRxUSdMXZhpHS8dDJgAbrcjGmFfbnHjx750D88C3OaNZeguoS5XUh-NxWIvYdQ3xw_1wHdVQD7FtGVU3kXv-FntiWg",
-    narrativeEn: "A residential exploration into the relationship between solid mass and transparency. Situated in the arid landscape of central Iran, the Monolith House reinterprets traditional courtyard archetypes through a contemporary lens of raw materiality and controlled light.",
-    narrativeFa: "پژوهشی مسکونی در رابطه میان جرم صلب و شفافیت. خانه تک‌سنگی واقع در چشم‌انداز خشک ایران مرکزی، الگوی کهن حیاط مرکزی را از زاویه دید معاصر متریال خام و نور کنترل‌شده بازتفسیر می‌کند.",
+    location: "Mazandaran, Iran",
+    locationFa: "مازندران، ایران",
+    status: "Running",
+    statusFa: "در حال اجرا",
+    area: "500 m²",
+    areaFa: "500 مترمربع",
+    architects: "valiallah lagharei & sadegh lagharei",
+    architectsFa: "ولی اله لاغری و صادق لاغری",
+    software: "Revit, 3Ds max",
+    heroImage: "heroImage: "/images/12.jpg",",
+    narrativeEn: "Designed for an MDF showroom, the façade draws inspiration from the vertical rhythm of stacked MDF panels, translating the essence of the product into an architectural expression.
+",
+    narrativeFa: "ریتم لوورهای عمودی نما، برداشتی انتزاعی از چیدمان منظم ورق‌های MDF است؛ عنصری که به نمای ساختمان نظم، عمق و هویت می‌بخشد.",
     lightSectionTitleEn: "Light as Material",
     lightSectionTitleFa: "نور به عنوان ماده",
     lightNarrativeEn: "In the arid climate of Yazd, light is both a blessing and a burden. Our design treats light not just as illumination, but as a physical material that defines the temporal experience of the house. Deep apertures and rhythmic skylights curate shadows that evolve throughout the day, animating the monolithic concrete surfaces.",
