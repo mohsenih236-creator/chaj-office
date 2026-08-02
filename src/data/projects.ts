@@ -178,6 +178,30 @@ export const projects: Project[] = [
         ]
       }
     ],
+    executionSectionTitleEn: "Execution Phase",
+    executionSectionTitleFa: "مراحل اجرا",
+    executionNarrativeEn: "A look at the construction process from start to completion.",
+    executionNarrativeFa: "نگاهی به روند اجرای پروژه از ابتدا تا تکمیل.",
+    executionPhotos: [
+      {
+        id: "exec1",
+        title: "Construction Progress",
+        titleFa: "روند اجرای پروژه",
+        caption: "On-site construction phase.",
+        captionFa: "مرحله اجرای پروژه در محل.",
+        imageUrl: "/images/04.jpg",
+        type: "image"
+      },
+      {
+        id: "exec2",
+        title: "Construction Progress",
+        titleFa: "روند اجرای پروژه",
+        caption: "On-site construction phase.",
+        captionFa: "مرحله اجرای پروژه در محل.",
+        imageUrl: "/images/02.jpg",
+        type: "image"
+      }
+    ],
     prevProjectId: "the-void-library",
     nextProjectId: "cloud-pavilion"
   },
