@@ -242,7 +242,7 @@ export const projects: Project[] = [
     heroImages: [
       "/images/shirvani-north-frount.jpg",
       "/images/shirvani-render03.png",
-      "/images/shirvani-east-view.jpg",
+      "/images/shirvani-render04.jpg",
       "/images/shirvani-night-view.jpg"
     ],
     narrativeEn: "\u201cShirvani\u201d is a reflection of living in harmony with the climate of Mazandaran, where architecture, nature, and rain become part of everyday life.",
