@@ -1,6 +1,17 @@
 export type Language = 'EN' | 'FA';
 export type ViewMode = 'project-detail' | 'projects-list' | 'about' | 'services' | 'contact';
-export type ProjectCategory = 'All' | 'Residential' | 'Cultural' | 'Interior' | 'Concept';
+export type ProjectCategory =
+  | 'All'
+  | 'Commercial'
+  | 'Residential'
+  | 'Administrative'
+  | 'Medical'
+  | 'Sports'
+  | 'Educational'
+  // Kept for backward compatibility with older sample projects; not shown as filter chips.
+  | 'Cultural'
+  | 'Interior'
+  | 'Concept';
 export interface MaterialDetail {
   id: string;
   title: string;
