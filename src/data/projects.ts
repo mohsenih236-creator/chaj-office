@@ -243,7 +243,7 @@ export const projects: Project[] = [
       "/images/shirvani-north-frount.jpg",
       "/images/shirvani-render03.png",
       "/images/shirvani-render04.jpg",
-      "/images/shirvani-night-view.jpg"
+      "/images/shirvani-render05.jpg"
     ],
     narrativeEn: "\u201cShirvani\u201d is a reflection of living in harmony with the climate of Mazandaran, where architecture, nature, and rain become part of everyday life.",
     narrativeFa: "«شیروانی» روایتی از زندگی در پیوند با اقلیم مازندران است؛ جایی که معماری، طبیعت و باران را به بخشی از تجربه‌ی روزمره تبدیل می‌کند.",
