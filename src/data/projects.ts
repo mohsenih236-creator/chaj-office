@@ -263,7 +263,7 @@ export const projects: Project[] = [
         titleFa: "جزئیات اتصال پنجره به گاتر",
         caption: "Where Details Shape the Quality of Living",
         captionFa: "جایی که جزئیات، کیفیت زندگی را شکل می‌دهند",
-        imageUrl: "/images/shirvani-detail-01.jpg",
+        imageUrl: "/images/shirvani-d1-render01.jpg",
         aspectRatio: "square",
         galleryImages: [
           "/images/shirvani-detail-01a.jpg",
