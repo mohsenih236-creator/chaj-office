@@ -267,7 +267,7 @@ export const projects: Project[] = [
         title: "Ground Floor Plan",
         titleFa: "پلان طبقه همکف",
         type: "Plan",
-        imageUrl: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=1200"
+        imageUrl: "/images/shirvani-ground-floor-plan.jpg"
       }
     ],
     prevProjectId: "Mousavinejad MDF Trading",
