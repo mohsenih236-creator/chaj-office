@@ -216,125 +216,8 @@ export const projects: Project[] = [
         type: "image"
       }
     ],
-    prevProjectId: "the-void-library",
-    nextProjectId: "cloud-pavilion"
-  },
-  {
-    id: "cloud-pavilion",
-    title: "Cloud Pavilion",
-    titleFa: "پاویون ابر",
-    subtitle: "A temporary lightweight steel and membrane installation",
-    subtitleFa: "سازه‌ای سبک از فولاد و پوسته نیمه‌شفاف",
-    category: "Concept",
-    year: "2024",
-    location: "Isfahan, Iran",
-    locationFa: "اصفهان، ایران",
-    status: "Completed",
-    statusFa: "تکمیل شده",
-    area: "280 m²",
-    areaFa: "۲۸۰ مترمربع",
-    architects: "H. Chaj, S. Rad",
-    architectsFa: "ح. چاج، س. راد",
-    presenter: "Name Surname",
-    presenterFa: "نام و نام خانوادگی",
-    software: "Rhino, Grasshopper, Karamba",
-    heroImage: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=1920",
-    narrativeEn: "Cloud Pavilion explores ultra-lightweight tensile membranes suspended over a reciprocal timber structural canopy. Designed as a temporary cultural venue along the Zayandeh Riverbed, it catches wind currents and filters harsh sunlight into soft ambient illumination.",
-    narrativeFa: "پاویون ابر به بررسی پوسته‌های کششی فوق سبک معلق بر روی چتر سازه‌ای چوبی می‌پردازد. این بنا به عنوان یک فضای فرهنگی موقت در کنار بستر زاینده‌رود طراحی شده است.",
-    lightSectionTitleEn: "Ephemeral Light Filtration",
-    lightSectionTitleFa: "فیلتراسیون نور گذرا",
-    lightNarrativeEn: "The translucent PTFE membrane diffuses direct solar radiation, reducing ambient interior temperature by up to 8°C while illuminating the subterranean gathering ring.",
-    lightNarrativeFa: "پوسته نیمه‌شفاف PTFE تابش مستقیم خورشید را پخش کرده و دمای داخلی را تا ۸ درجه سانتی‌گراد کاهش می‌دهد.",
-    lightImage: "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&q=80&w=1200",
-    spatialSectionTitleEn: "Tensile Geometry",
-    spatialSectionTitleFa: "هندسه کششی",
-    spatialNarrativeEn: "Parametrically optimized to withstand high wind loads with minimal anchor foundations.",
-    spatialNarrativeFa: "بهینه‌سازی شده به صورت پارامتریک برای تحمل بارهای باد با کمترین فونداسیون.",
-    details: [
-      {
-        id: "cp-d1",
-        title: "TIMBER JOINERY DETAIL",
-        titleFa: "جزئیات اتصالات چوبی",
-        caption: "CNC-milled larch wood nodes joined with concealed stainless steel pins.",
-        captionFa: "اتصالات چوب لارکس فرزکاری‌شده با پین‌های استیل پنهان.",
-        imageUrl: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&q=80&w=1000",
-        aspectRatio: "square"
-      },
-      {
-        id: "cp-d2",
-        title: "AMPHITHEATER CANOPY VIEW",
-        titleFa: "نمای سایبان آمفی‌تئاتر",
-        caption: "Curved seating steps cascading toward the central performing ring.",
-        captionFa: "پله‌های نشستن منحنی متصل به رینگ اجرای مرکزی.",
-        imageUrl: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&q=80&w=1200",
-        aspectRatio: "video"
-      }
-    ],
-    drawings: [
-      {
-        id: "cp-plan",
-        title: "CANOPY STRUCTURAL AXONOMETRIC",
-        titleFa: "آکسونومتری سازه‌ای سایبان",
-        type: "Axonometric",
-        imageUrl: "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&q=80&w=1200"
-      }
-    ],
-    prevProjectId: "Mousavinejad MDF Trading",
-    nextProjectId: "desert-sanctuary"
-  },
-  {
-    id: "the-void-library",
-    title: "The Void Library",
-    titleFa: "کتابخانه خلاء",
-    subtitle: "A subterranean reading sanctuary constructed from local stone",
-    subtitleFa: "پناهگاهی زیرزمینی برای مطالعه ساخته شده از سنگ بومی",
-    category: "Cultural",
-    year: "2022",
-    location: "Shiraz, Iran",
-    locationFa: "شیراز، ایران",
-    status: "Completed",
-    statusFa: "تکمیل شده",
-    area: "820 m²",
-    areaFa: "۸۲۰ مترمربع",
-    architects: "H. Chaj, S. Rad",
-    architectsFa: "ح. چاج، س. راد",
-    presenter: "Name Surname",
-    presenterFa: "نام و نام خانوادگی",
-    software: "Revit, V-Ray",
-    heroImage: "https://images.unsplash.com/photo-1541888946425-d0fbb186a5b3?auto=format&fit=crop&q=80&w=1920",
-    narrativeEn: "Carved into a limestone ridge outside Shiraz, The Void Library buries its primary book stacks beneath earth to preserve fragile manuscripts at constant relative humidity, while three sunken courtyards bring cool air and golden daylight.",
-    narrativeFa: "کتابخانه خلاء که در صخره‌های آهکی حومه شیراز تراشیده شده است، مخازن اصلی کتاب خود را برای حفظ نسخ خطی تحت رطوبت و دمای ثابت در دل زمین قرار داده است.",
-    lightSectionTitleEn: "Subterranean Chiaroscuro",
-    lightSectionTitleFa: "سایه‌روشن زیرزمینی",
-    lightNarrativeEn: "Sunlight is funnelled through tapered stone shafts, casting elongated beams across dark travertine reading tables.",
-    lightNarrativeFa: "نور خورشید از طریق مخروط‌های سنگی هدایت شده و پرتوهای کشیده‌ای را بر روی میزهای تراورتن مطالعه می‌افکند.",
-    lightImage: "https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&q=80&w=1200",
-    spatialSectionTitleEn: "Carved Volumetrics",
-    spatialSectionTitleFa: "احجم تراشیده شده",
-    spatialNarrativeEn: "Vast double-height reading halls carved out of local quarries.",
-    spatialNarrativeFa: "تالارهای مطالعه با ارتفاع مضاعف که از معادن سنگ بومی تراشیده شده‌اند.",
-    details: [
-      {
-        id: "vl-d1",
-        title: "STONE MASONRY JUNCTION",
-        titleFa: "اتصال سنگ‌کاری",
-        caption: "Dry-stacked limestone blocks with narrow recessed mortar lines.",
-        captionFa: "بلوک‌های سنگی خشک‌چین با درزهای باریک فرو رفته.",
-        imageUrl: "https://images.unsplash.com/photo-1600573472550-8090b5e0745e?auto=format&fit=crop&q=80&w=1000",
-        aspectRatio: "square"
-      }
-    ],
-    drawings: [
-      {
-        id: "vl-plan",
-        title: "LONGITUDINAL SECTION",
-        titleFa: "مقطع طولی کتابخانه",
-        type: "Section",
-        imageUrl: "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&q=80&w=1200"
-      }
-    ],
-    prevProjectId: "desert-sanctuary",
-    nextProjectId: "Mousavinejad MDF Trading"
+    prevProjectId: "SHIRVANI VILLA",
+    nextProjectId: "SHIRVANI VILLA"
   },
   {
     id: "SHIRVANI VILLA",
@@ -356,13 +239,13 @@ export const projects: Project[] = [
     presenterFa: "حسین محسنی",
     software: "3Ds max-Revite",
     heroImage: "/images/shirvani-north-frount.jpg",
-    narrativeEn: "“Shirvani” is a reflection of living in harmony with the climate of Mazandaran, where architecture, nature, and rain become part of everyday life.",
+    narrativeEn: "\u201cShirvani\u201d is a reflection of living in harmony with the climate of Mazandaran, where architecture, nature, and rain become part of everyday life.",
     narrativeFa: "«شیروانی» روایتی از زندگی در پیوند با اقلیم مازندران است؛ جایی که معماری، طبیعت و باران را به بخشی از تجربه‌ی روزمره تبدیل می‌کند.",
     lightSectionTitleEn: "Architecture for Every Season of Life",
     lightSectionTitleFa: "معماری برای تمام فصل‌های زندگی",
     lightNarrativeEn: "A home designed for comfort, independence, and quality of life through every stage.",
     lightNarrativeFa: "خانه‌ای طراحی‌شده برای آرامش، استقلال و کیفیت زندگی در تمام مراحل عمر.",
-    lightImage: "/images/shirvani-old woman.png",
+    lightImage: "/images/shirvani-old-woman.png",
     spatialSectionTitleEn: "Architecture for Every Season of Life",
     spatialSectionTitleFa: "معماری برای تمام فصل‌های زندگی",
     spatialNarrativeEn: "A home designed for comfort, independence, and quality of life through every stage.",
@@ -387,61 +270,7 @@ export const projects: Project[] = [
         imageUrl: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=1200"
       }
     ],
-    prevProjectId: "cloud-pavilion",
-    nextProjectId: "tehran-courtyard-villa"
-  },
-  {
-    id: "tehran-courtyard-villa",
-    title: "Tehran Courtyard Villa",
-    titleFa: "ویلای حیاط‌دار تهران",
-    subtitle: "A vertical stacked courtyard house responding to urban density",
-    subtitleFa: "خانه‌ای با حیاط‌های طبقاتی عمودی در پاسخ به تراکم شهری",
-    category: "Residential",
-    year: "2021",
-    location: "Tehran, Iran",
-    locationFa: "تهران، ایران",
-    status: "Completed",
-    statusFa: "تکمیل شده",
-    area: "620 m²",
-    areaFa: "۶۲۰ مترمربع",
-    architects: "H. Chaj, S. Rad",
-    architectsFa: "ح. چاج، س. راد",
-    presenter: "Name Surname",
-    presenterFa: "نام و نام خانوادگی",
-    software: "Revit, Enscape",
-    heroImage: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80&w=1920",
-    narrativeEn: "In the dense urban fabric of northern Tehran, this villa stacks three distinct courtyard terraces vertically, bringing greenery and outdoor privacy to every level of the family residence.",
-    narrativeFa: "در بافت متراکم شمال تهران، این ویلا سه حیاط تراسی را به صورت عمودی روی هم قرار داده است تا فضای سبز و محرمیت را در تمام طبقات فراهم کند.",
-    lightSectionTitleEn: "Urban Reflector",
-    lightSectionTitleFa: "بازتابنده شهری",
-    lightNarrativeEn: "Brushed aluminum louvers tilt dynamically according to seasonal sun angles.",
-    lightNarrativeFa: "لوورهای آلومینیومی مات متناسب با زاویه تابش فصل‌ها تغییر زاویه می‌دهند.",
-    lightImage: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&q=80&w=1200",
-    spatialSectionTitleEn: "Vertical Green Core",
-    spatialSectionTitleFa: "هسته سبز عمودی",
-    spatialNarrativeEn: "A central atrium binds living quarters around a mature indoor cypress tree.",
-    spatialNarrativeFa: "دهلیز مرکزی فضاهای زندگی را گرد یک درخت سرو کهنسال پیوند می‌دهد.",
-    details: [
-      {
-        id: "tc-d1",
-        title: "BRICK LOUVER SYSTEM",
-        titleFa: "سیستم لوور آجری",
-        caption: "Rotating vertical brick modules forming dynamic street privacy.",
-        captionFa: "ماژول‌های آجری گردان برای تنظیم میزان محرمیت از خیابان.",
-        imageUrl: "https://images.unsplash.com/photo-1600573472550-8090b5e0745e?auto=format&fit=crop&q=80&w=1000",
-        aspectRatio: "square"
-      }
-    ],
-    drawings: [
-      {
-        id: "tc-plan",
-        title: "VERTICAL SECTION DIAGRAM",
-        titleFa: "دیاگرام مقطع عمودی",
-        type: "Section",
-        imageUrl: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=1200"
-      }
-    ],
-    prevProjectId: "desert-sanctuary",
+    prevProjectId: "Mousavinejad MDF Trading",
     nextProjectId: "Mousavinejad MDF Trading"
   }
 ];
