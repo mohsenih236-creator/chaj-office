@@ -261,7 +261,7 @@ export const projects: Project[] = [
         aspectRatio: "square",
         galleryImages: [
           "/images/shirvani-d1-render02.jpg",
-          "/images/shirvani-detail-01b.jpg",
+          "/images/shirvani-d1-details01.jpg",
           "/images/shirvani-detail-01c.jpg",
           "/images/shirvani-detail-01d.jpg"
         ]
