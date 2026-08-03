@@ -245,7 +245,7 @@ export const projects: Project[] = [
     lightSectionTitleFa: "معماری برای تمام فصل‌های زندگی",
     lightNarrativeEn: "A home designed for comfort, independence, and quality of life through every stage.",
     lightNarrativeFa: "خانه‌ای طراحی‌شده برای آرامش، استقلال و کیفیت زندگی در تمام مراحل عمر.",
-    lightImage: "/images/shirvani-old-woman.png",
+    lightImage: "/images/shirvani-old-woman.jpg",
     spatialSectionTitleEn: "Architecture for Every Season of Life",
     spatialSectionTitleFa: "معماری برای تمام فصل‌های زندگی",
     spatialNarrativeEn: "A home designed for comfort, independence, and quality of life through every stage.",
