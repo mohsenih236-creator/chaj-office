@@ -78,6 +78,11 @@ export interface Project {
   presenterFa: string;
   software: string;
   heroImage: string;
+  // Optional: additional hero images shown as a slider/carousel in the hero section.
+  // heroImage is always shown first (and used as the fallback/thumbnail wherever a
+  // single image is needed, e.g. project list cards). If heroImages is present, the
+  // hero section can cycle through all of them instead of showing just heroImage.
+  heroImages?: string[];
   narrativeEn: string;
   narrativeFa: string;
   lightSectionTitleEn: string;
