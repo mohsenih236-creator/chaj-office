@@ -9,18 +9,18 @@ export const studioInfo: StudioInfo = {
   principals: [
     {
       name: "Valiallah lagharei firozjaei",
-      role: "Lead Architect & Founder",
-      roleFa: "معمار ارشد و هم‌بنیان‌گذار",
-      bioEn: "Specializes in tectonic structural expressions and desert climatic adaptations.",
-      bioFa: "متخصص در بیان تکتونیک سازه‌ای و انطباق‌های اقلیمی مناطق کویری.",
+      role: "Bachelor of Architecture",
+      roleFa: "کارشناسی معماری",
+      bioEn: "Specialist in architectural design and administrative protocols",
+      bioFa: "متخصص در طراحی معماری وپروتکلهای اداری",
       image: "/images/vali.png"
     },
     {
       name: "Sadegh lagharei firozjaei",
-      role: "Design Director & Co-Founder",
-      roleFa: "مدیر طراحی و هم‌بنیان‌گذار",
-      bioEn: "Focuses on spatial sequencing, raw material research, and spatial phenomenology.",
-      bioFa: "تمرکز بر توالی فضایی، پژوهش در مواد خام و پدیدارشناسی فضای معماری.",
+      role: "Bachelor of Architecture",
+      roleFa: "کارشناسی معماری",
+      bioEn: "Specialist in architectural design and executive details",
+      bioFa: "متخصص در طراحی معماری و دیتیل های اجرایی",
       image: "/images/sadegh.png"
     }
   ],
