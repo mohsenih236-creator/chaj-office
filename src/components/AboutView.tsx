@@ -20,7 +20,7 @@ export const AboutView: React.FC<AboutViewProps> = ({ studioInfo, language, open
       {/* Studio Header */}
       <div className="max-w-4xl mb-16">
         <span className="font-sans text-[10px] uppercase tracking-[0.3em] font-bold text-[#8C8C8C] block mb-2">
-          {isFa ? 'درباره دفتر معماری چاج' : 'STUDIO PROFILE & PHILOSOPHY'}
+          {isFa ? 'درباره گروه معماری چاج' : 'STUDIO PROFILE & PHILOSOPHY'}
         </span>
         <h1 className="text-4xl sm:text-6xl font-light italic text-[#1C1C1C] mb-8 font-serif leading-tight">
           {isFa ? studioInfo.taglineFa : studioInfo.taglineEn}
