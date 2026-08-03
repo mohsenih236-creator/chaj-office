@@ -121,10 +121,10 @@ export const projects: Project[] = [
       },
       {
         id: "d2",
-        title: "INTERNAL COURTYARD AND REFLECTING POOL",
-        titleFa: "حیاط داخلی و حوض انعکاس",
-        caption: "Central water basin reflecting raw concrete colonnades under the desert sun.",
-        captionFa: "حوض مرکزی منعکس‌کننده ستون‌های بتنی در زیر آفتاب کویر.",
+        title: "A Distinctive Entrance, Defining Identity",
+        titleFa: "ورودی شاخص، هویت متمایز مجموعه",
+        caption: "The intersection of function, form and identity",
+        captionFa: "تلاقی عملکرد، فرم و هویت",
         imageUrl: "/images/west-view-02.jpg",
         aspectRatio: "video"
       }
