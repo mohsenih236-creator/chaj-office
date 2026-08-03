@@ -252,22 +252,140 @@ export const projects: Project[] = [
     spatialNarrativeFa: "خانه‌ای طراحی‌شده برای آرامش، استقلال و کیفیت زندگی در تمام مراحل عمر.",
     details: [
       {
-        id: "ds-d1",
-        title: "RAMMED EARTH TEXTURE",
-        titleFa: "بافت خاک کوبیده",
+        id: "sv-d1",
+        title: "Rammed Earth Facade Texture",
+        titleFa: "بافت نمای خاک کوبیده",
         caption: "Layered iron oxide pigment banding within rammed earth strata.",
         captionFa: "باندهای لایه‌ای اکسید آهن در طبقات خاک کوبیده شده.",
-        imageUrl: "https://images.unsplash.com/photo-1600566752355-35792bedcfea?auto=format&fit=crop&q=80&w=1000",
-        aspectRatio: "square"
+        imageUrl: "/images/shirvani-detail-01.jpg",
+        aspectRatio: "square",
+        galleryImages: [
+          "/images/shirvani-detail-01a.jpg",
+          "/images/shirvani-detail-01b.jpg",
+          "/images/shirvani-detail-01c.jpg",
+          "/images/shirvani-detail-01d.jpg"
+        ]
+      },
+      {
+        id: "sv-d2",
+        title: "Roof Eave & Gutter Detail",
+        titleFa: "جزئیات لبه شیروانی و ناودان",
+        caption: "The pitched roof edge is detailed to shed heavy seasonal rainfall away from the walls.",
+        captionFa: "لبه سقف شیبدار به‌گونه‌ای طراحی شده که بارش‌های سنگین فصلی را از دیوارها دور کند.",
+        imageUrl: "/images/shirvani-detail-02.jpg",
+        aspectRatio: "video",
+        galleryImages: [
+          "/images/shirvani-detail-02a.jpg",
+          "/images/shirvani-detail-02b.jpg",
+          "/images/shirvani-detail-02c.jpg"
+        ]
+      },
+      {
+        id: "sv-d3",
+        title: "Timber Window Frame Junction",
+        titleFa: "جزئیات اتصال قاب چوبی پنجره",
+        caption: "A weathered timber frame meets the rammed-earth wall through a recessed shadow gap.",
+        captionFa: "قاب چوبی هوازده از طریق یک شکاف سایه فرورفته به دیوار خاک کوبیده متصل می‌شود.",
+        imageUrl: "/images/shirvani-detail-03.jpg",
+        aspectRatio: "square",
+        galleryImages: [
+          "/images/shirvani-detail-03a.jpg",
+          "/images/shirvani-detail-03b.jpg"
+        ]
       }
     ],
     drawings: [
       {
-        id: "ds-plan",
-        title: "Ground Floor Plan",
+        id: "sv-plan-ground",
+        title: "GROUND FLOOR PLAN",
         titleFa: "پلان طبقه همکف",
         type: "Plan",
-        imageUrl: "/images/shirvani-ground-floor-plan.jpg"
+        imageUrl: "/images/shirvani-ground-floor-plan.jpg",
+        hotspots: [
+          {
+            id: "sv-h1",
+            x: 40,
+            y: 55,
+            label: "Covered Veranda",
+            labelFa: "ایوان سرپوشیده",
+            description: "A sheltered transitional zone connecting the interior to the garden under the roof overhang.",
+            descriptionFa: "فضای واسط سرپوشیده که فضای داخلی را زیر سایه‌بان سقف به باغ متصل می‌کند."
+          },
+          {
+            id: "sv-h2",
+            x: 60,
+            y: 35,
+            label: "Living & Dining",
+            labelFa: "نشیمن و پذیرایی",
+            description: "Open-plan gathering space oriented toward the southern garden light.",
+            descriptionFa: "فضای باز جمع‌خانه رو به نور جنوبی باغ."
+          }
+        ]
+      },
+      {
+        id: "sv-elevation-north",
+        title: "NORTH ELEVATION",
+        titleFa: "نمای شمالی",
+        type: "Elevation",
+        imageUrl: "/images/shirvani-north-elevation.jpg"
+      },
+      {
+        id: "sv-elevation-south",
+        title: "SOUTH ELEVATION",
+        titleFa: "نمای جنوبی",
+        type: "Elevation",
+        imageUrl: "/images/shirvani-south-elevation.jpg"
+      },
+      {
+        id: "sv-section-aa",
+        title: "SECTION A-A",
+        titleFa: "مقطع A-A",
+        type: "Section",
+        imageUrl: "/images/shirvani-section-aa.jpg",
+        hotspots: [
+          {
+            id: "sv-hs1",
+            x: 50,
+            y: 25,
+            label: "Pitched Roof Cavity",
+            labelFa: "فضای زیرشیروانی",
+            description: "Ventilated roof cavity that buffers the interior from seasonal temperature swings.",
+            descriptionFa: "فضای تهویه‌شده زیر شیروانی که فضای داخلی را از نوسانات دمایی فصلی محافظت می‌کند."
+          }
+        ]
+      }
+    ],
+    executionSectionTitleEn: "Execution Phase",
+    executionSectionTitleFa: "مراحل اجرا",
+    executionNarrativeEn: "A look at the construction process from start to completion.",
+    executionNarrativeFa: "نگاهی به روند اجرای پروژه از ابتدا تا تکمیل.",
+    executionPhotos: [
+      {
+        id: "sv-exec1",
+        title: "Foundation & Structure",
+        titleFa: "فونداسیون و اسکلت",
+        caption: "Early structural phase on site.",
+        captionFa: "مرحله اولیه اجرای اسکلت در محل پروژه.",
+        imageUrl: "/images/shirvani-exec-01.jpg",
+        type: "image"
+      },
+      {
+        id: "sv-exec2",
+        title: "Roof Framing",
+        titleFa: "اجرای سازه سقف شیروانی",
+        caption: "Installation of the pitched roof framing.",
+        captionFa: "نصب سازه چوبی سقف شیروانی.",
+        imageUrl: "/images/shirvani-exec-02.jpg",
+        type: "image"
+      },
+      {
+        id: "sv-exec3",
+        title: "Facade Finishing",
+        titleFa: "اجرای نهایی نما",
+        caption: "Final facade and finishing works on site.",
+        captionFa: "مرحله نهایی اجرای نما و کارهای تکمیلی.",
+        imageUrl: "/images/shirvani-exec-03.jpg",
+        type: "image"
       }
     ],
     prevProjectId: "Mousavinejad MDF Trading",
