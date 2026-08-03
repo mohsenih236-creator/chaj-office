@@ -262,7 +262,7 @@ export const projects: Project[] = [
         galleryImages: [
           "/images/shirvani-d1-render02.jpg",
           "/images/shirvani-d1-details01.jpg",
-          "/images/shirvani-detail-01c.jpg",
+          "public/images/shirvani-d1-details02.jpg",
           "/images/shirvani-detail-01d.jpg"
         ]
       },
