@@ -12,9 +12,7 @@ export const AboutView: React.FC<AboutViewProps> = ({ studioInfo, language, open
   const isFa = language === 'FA';
 
   const awards = [
-    { year: "2023", title: "Memar Award - First Prize (Residential)", titleFa: "جایزه معمار - رتبه اول (مسکونی تک‌واحدی)", project: "The Monolith House" },
-    { year: "2022", title: "Aga Khan Award for Architecture (Nominee)", titleFa: "نامزد جایزه معماری آقاخان", project: "The Void Library" },
-    { year: "2021", title: "Tehran Architectural Biennial - Gold Medal", titleFa: "مدال طلای دوسالانه معماری تهران", project: "Tehran Courtyard Villa" },
+
   ];
 
   return (
