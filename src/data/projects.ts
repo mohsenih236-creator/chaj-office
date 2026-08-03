@@ -241,7 +241,7 @@ export const projects: Project[] = [
     heroImage: "/images/shirvani-render sterit.jpg",
     heroImages: [
       "/images/shirvani-north-frount.jpg",
-      "/images/shirvani-south-view.jpg",
+      "/images/shirvani-render03.png",
       "/images/shirvani-east-view.jpg",
       "/images/shirvani-night-view.jpg"
     ],
