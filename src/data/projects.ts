@@ -125,7 +125,7 @@ export const projects: Project[] = [
         titleFa: "حیاط داخلی و حوض انعکاس",
         caption: "Central water basin reflecting raw concrete colonnades under the desert sun.",
         captionFa: "حوض مرکزی منعکس‌کننده ستون‌های بتنی در زیر آفتاب کویر.",
-        imageUrl: "https://lh3.googleusercontent.com/aida-public/AB6AXuA04HHV69pc68mE8N5n5vE9-W_LL2tqEgzsL6J015LloaibAeyn1ue-e_-KeCM_Y_rMyx8SMTS2IwVlLbF0E1Mpndz23XbMdhIX3CLJ-3fONtB8OaZP1wJLXfliZLtC_hGcBNsLCIxWj9XMajnOlUCPLMA0K4Tt-CaZ5DD7UH-DjS_rXcxIFnMp3I4V_k1jSMD9U6wkDTVmIqmoU1vMv-h-lkoSBCZc_GYCNz1DXCOEp8E6wgZHhe9oqw",
+        imageUrl: "/images/west-view-02.jpg",
         aspectRatio: "video"
       }
     ],
