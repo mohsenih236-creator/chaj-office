@@ -238,7 +238,7 @@ export const projects: Project[] = [
     presenter: "hossein mohseni",
     presenterFa: "حسین محسنی",
     software: "3Ds max-Revite",
-    heroImage: "/images/shirvani-north-frount.jpg",
+    heroImage: "/images/shirvani-render sterit.jpg",
     heroImages: [
       "/images/shirvani-north-frount.jpg",
       "/images/shirvani-south-view.jpg",
