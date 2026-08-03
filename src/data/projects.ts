@@ -259,6 +259,12 @@ export const projects: Project[] = [
         captionFa: "باندهای لایه‌ای اکسید آهن در طبقات خاک کوبیده شده.",
         imageUrl: "https://images.unsplash.com/photo-1600566752355-35792bedcfea?auto=format&fit=crop&q=80&w=1000",
         aspectRatio: "square"
+        galleryImages: [
+          "/images/d1-details01.jpg",
+          "/images/d1-details02.jpg",
+          "/images/d1-image01.jpg",
+          "/images/d1-image02.jpg",
+          "/images/d1-image03.jpg"
       }
     ],
     drawings: [
