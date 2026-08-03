@@ -259,10 +259,10 @@ export const projects: Project[] = [
     details: [
       {
         id: "sv-d1",
-        title: "Rammed Earth Facade Texture",
-        titleFa: "بافت نمای خاک کوبیده",
-        caption: "Layered iron oxide pigment banding within rammed earth strata.",
-        captionFa: "باندهای لایه‌ای اکسید آهن در طبقات خاک کوبیده شده.",
+        title: "Window to gutter connection details",
+        titleFa: "جزئیات اتصال پنجره به گاتر",
+        caption: "Where Details Shape the Quality of Living",
+        captionFa: "جایی که جزئیات، کیفیت زندگی را شکل می‌دهند",
         imageUrl: "/images/shirvani-detail-01.jpg",
         aspectRatio: "square",
         galleryImages: [
