@@ -24,7 +24,7 @@ export const Footer: React.FC<FooterProps> = ({ language, openContact }) => {
           </div>
           <p className="text-xs text-[#4A4A4A] leading-relaxed max-w-sm italic">
             {isFa
-              ? 'دفتر معماری چاج؛ پژوهش و کاوش در ماهیت فضا، نور و ماده.'
+              ? 'گروه معماری چاج؛ پژوهش و کاوش در ماهیت فضا، نور و ماده.'
               : 'An architectural practice dedicated to the exploration of space, light, and materiality.'}
           </p>
         </div>
@@ -36,7 +36,7 @@ export const Footer: React.FC<FooterProps> = ({ language, openContact }) => {
               {isFa ? 'ارتباطات' : 'CONNECT'}
             </span>
             <a
-              href="https://instagram.com"
+              href="https://instagram.com/chajoffice"
               target="_blank"
               rel="noopener noreferrer"
               className="font-sans text-[10px] uppercase tracking-[0.2em] font-medium text-[#1C1C1C] hover:text-[#8C8C8C] transition-colors"
@@ -57,14 +57,14 @@ export const Footer: React.FC<FooterProps> = ({ language, openContact }) => {
             </span>
             <a
               href="#privacy"
-              onClick={(e) => { e.preventDefault(); alert(isFa ? 'بیانیه حریم خصوصی دفتر معماری چاج' : 'CHAJ Office Privacy Policy'); }}
+              onClick={(e) => { e.preventDefault(); alert(isFa ? 'بیانیه حریم خصوصی گروه معماری چاج' : 'CHAJ Group Privacy Policy'); }}
               className="font-sans text-[10px] uppercase tracking-[0.2em] font-medium text-[#1C1C1C] hover:text-[#8C8C8C] transition-colors"
             >
               {isFa ? 'حریم خصوصی' : 'Privacy Policy'}
             </a>
             <a
               href="#terms"
-              onClick={(e) => { e.preventDefault(); alert(isFa ? 'شرایط و ضوابط دفتر معماری چاج' : 'CHAJ Office Terms'); }}
+              onClick={(e) => { e.preventDefault(); alert(isFa ? 'شرایط و ضوابط گروه معماری چاج' : 'CHAJ Group Terms'); }}
               className="font-sans text-[10px] uppercase tracking-[0.2em] font-medium text-[#1C1C1C] hover:text-[#8C8C8C] transition-colors"
             >
               {isFa ? 'شرایط استفاده' : 'Terms'}
