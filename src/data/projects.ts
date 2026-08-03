@@ -268,11 +268,11 @@ export const projects: Project[] = [
       },
       {
         id: "sv-d2",
-        title: "Roof Eave & Gutter Detail",
-        titleFa: "جزئیات لبه شیروانی و ناودان",
+        title: "Parking implementation details",
+        titleFa: "جزئیات اجرایی پارکینگ",
         caption: "The pitched roof edge is detailed to shed heavy seasonal rainfall away from the walls.",
         captionFa: "لبه سقف شیبدار به‌گونه‌ای طراحی شده که بارش‌های سنگین فصلی را از دیوارها دور کند.",
-        imageUrl: "/images/shirvani-detail-02.jpg",
+        imageUrl: "/images/shirvani-d2-render01.jpg",
         aspectRatio: "video",
         galleryImages: [
           "/images/shirvani-detail-02a.jpg",
