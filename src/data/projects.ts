@@ -167,6 +167,13 @@ export const projects: Project[] = [
         ]
       },
       {
+        id: "plan-first-floor",
+        title: "FIRST FLOOR PLAN",
+        titleFa: "پلان طبقه اول",
+        type: "Plan",
+        imageUrl: "/images/first-floor-plan.jpg"
+      },
+      {
         id: "section-aa",
         title: "SECTION AA",
         titleFa: "مقطع عرضی AA",
