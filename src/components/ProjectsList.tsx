@@ -8,6 +8,20 @@ interface ProjectsListProps {
   onSelectProject: (projectId: string) => void;
 }
 
+// Persian/English labels for each filter chip.
+const CATEGORY_LABELS: Record<ProjectCategory, { en: string; fa: string }> = {
+  All: { en: 'All', fa: 'همه' },
+  Commercial: { en: 'Commercial', fa: 'تجاری' },
+  Residential: { en: 'Residential', fa: 'مسکونی' },
+  Administrative: { en: 'Administrative', fa: 'اداری' },
+  Medical: { en: 'Medical', fa: 'درمانی' },
+  Sports: { en: 'Sports', fa: 'ورزشی' },
+  Educational: { en: 'Educational', fa: 'آموزشی' },
+  Cultural: { en: 'Cultural', fa: 'فرهنگی' },
+  Interior: { en: 'Interior', fa: 'داخلی' },
+  Concept: { en: 'Concept', fa: 'مفهومی' }
+};
+
 export const ProjectsList: React.FC<ProjectsListProps> = ({
   projects,
   language,
@@ -17,7 +31,17 @@ export const ProjectsList: React.FC<ProjectsListProps> = ({
   const [selectedCategory, setSelectedCategory] = useState<ProjectCategory>('All');
   const [searchQuery, setSearchQuery] = useState('');
 
-  const categories: ProjectCategory[] = ['All', 'Residential', 'Cultural', 'Concept'];
+  // The six requested categories, plus "All". Any project whose category isn't
+  // in this list (e.g. older sample data) will still show up under "All".
+  const categories: ProjectCategory[] = [
+    'All',
+    'Commercial',
+    'Residential',
+    'Administrative',
+    'Medical',
+    'Sports',
+    'Educational'
+  ];
 
   const filteredProjects = projects.filter((p) => {
     const matchesCategory =
@@ -69,15 +93,7 @@ export const ProjectsList: React.FC<ProjectsListProps> = ({
                   : 'bg-[#F4F1EE] text-[#8C8C8C] hover:text-[#1C1C1C] border border-black/15'
               }`}
             >
-              {isFa
-                ? cat === 'All'
-                  ? 'همه'
-                  : cat === 'Residential'
-                  ? 'مسکونی'
-                  : cat === 'Cultural'
-                  ? 'فرهنگی'
-                  : 'مفهومی'
-                : cat}
+              {isFa ? CATEGORY_LABELS[cat].fa : CATEGORY_LABELS[cat].en}
             </button>
           ))}
         </div>
@@ -120,7 +136,7 @@ export const ProjectsList: React.FC<ProjectsListProps> = ({
                 </div>
 
                 <div className="mt-6 pt-4 border-t border-black/10 flex justify-between items-center font-sans text-[10px] font-bold tracking-[0.2em] uppercase text-[#8C8C8C]">
-                  <span>{p.category}</span>
+                  <span>{isFa ? CATEGORY_LABELS[p.category].fa : CATEGORY_LABELS[p.category].en}</span>
                   <span className="text-[#1C1C1C] group-hover:underline">
                     {isFa ? 'مشاهده جزئیات' : 'Explore Detail'}
                   </span>
@@ -137,3 +153,4 @@ export const ProjectsList: React.FC<ProjectsListProps> = ({
     </div>
   );
 };
+
