@@ -355,7 +355,7 @@ export const projects: Project[] = [
     presenter: "Name Surname",
     presenterFa: "نام و نام خانوادگی",
     software: "Rhino, ArchiCAD",
-    heroImage: "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&q=80&w=1920",
+    heroImage: "/images/shirvani-north-frount.jpg",
     narrativeEn: "Utilizing excavated clay directly from the construction site, Desert Sanctuary features 60cm thick monolithic rammed earth walls that absorb diurnal heat fluctuations in Kashan's high desert.",
     narrativeFa: "با استفاده از خاک رس استخراج‌شده از خود سایت، خلوتگاه کویر دارای دیوارهای ۶۰ سانتی‌متری خاک کوبیده است که نوسانات دمایی شبانه‌روز کاشان را خنثی می‌سازد.",
     lightSectionTitleEn: "Filter of Dust and Daylight",
