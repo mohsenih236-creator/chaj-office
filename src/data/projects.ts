@@ -135,7 +135,7 @@ export const projects: Project[] = [
         title: "GROUND FLOOR PLAN",
         titleFa: "پلان طبقه همکف",
         type: "Plan",
-        imageUrl: "/images/ground floor plan.jpg",
+        imageUrl: "/images/ground-floor-plan.jpg",
         hotspots: [
           {
             id: "h1",
