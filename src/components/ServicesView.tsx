@@ -24,7 +24,7 @@ export const ServicesView: React.FC<ServicesViewProps> = ({ services, language, 
   const steps = [
     { titleEn: "1. Site & Climatic Research", titleFa: "۱. پژوهش سایت و تحلیل اقلیم", descEn: "Topographic survey, solar trajectory mapping, and local masonry analysis.", descFa: "نقشه‌برداری توپوگرافی، مدل‌سازی مسیر خورشید و آنالیز مصالح بومی." },
     { titleEn: "2. Conceptual Volumetrics", titleFa: "۲. حجم‌پردازی مفهومی", descEn: "Spatial sequencing diagrams, physical scale massing models, and mass/void iterations.", descFa: "دیاگرام‌های توالی فضایی، ماکت‌های حجمی و کاوش فضاهای پر و خالی." },
-    { titleEn: "3. Tectonic Detailing", titleFa: "۳. جزئیات اجرایی و تکتونیک", descEn: "BIM modeling, custom material junction drawings, and acoustic/thermal optimization.", descFa: "مدل‌سازی BIM، ترسیم دیتایل‌های اختصاصی و بهینه‌سازی حرارتی/آکوستیک." },
+    { titleEn: "3. Designing executive details and preparing BIM drawings", titleFa: "۳. طراحی جزئیات اجرایی و تهیه نقشه های بیم", descEn: "Designing executive details and preparing BIM drawings and implementing them with the most experienced executive force", descFa: "مدل‌سازی BIM، طراحی جزئیات اجرایی و تهیه نقشه‌های BIM و اجرای آنها با مجرب‌ترین نیروی اجرایی" },
     { titleEn: "4. On-Site Supervision", titleFa: "۴. نظارت دقیق بر اجرا", descEn: "Direct site presence during concrete pours, stone masonry, and timber joinery.", descFa: "حضور مستقیم در کارگاه حین بتن‌ریزی، سنگ‌کاری و نصب اتصالات چوبی." },
   ];
 
