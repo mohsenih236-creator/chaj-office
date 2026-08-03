@@ -239,6 +239,12 @@ export const projects: Project[] = [
     presenterFa: "حسین محسنی",
     software: "3Ds max-Revite",
     heroImage: "/images/shirvani-north-frount.jpg",
+    heroImages: [
+      "/images/shirvani-north-frount.jpg",
+      "/images/shirvani-south-view.jpg",
+      "/images/shirvani-east-view.jpg",
+      "/images/shirvani-night-view.jpg"
+    ],
     narrativeEn: "\u201cShirvani\u201d is a reflection of living in harmony with the climate of Mazandaran, where architecture, nature, and rain become part of everyday life.",
     narrativeFa: "«شیروانی» روایتی از زندگی در پیوند با اقلیم مازندران است؛ جایی که معماری، طبیعت و باران را به بخشی از تجربه‌ی روزمره تبدیل می‌کند.",
     lightSectionTitleEn: "Architecture for Every Season of Life",
@@ -253,33 +259,31 @@ export const projects: Project[] = [
     details: [
       {
         id: "sv-d1",
-        title: "Details of connecting an aluminum window to the gutter",
-        titleFa: "جزئیات اتصال پنجره آلمینیومی به گاتر",
-        caption: "Where Details Shape the Quality of Living",
-        captionFa: "جایی که جزئیات، کیفیت زندگی را شکل می‌دهند",
-        imageUrl: "/images/shirvani-d1-render01.jpg",
+        title: "Rammed Earth Facade Texture",
+        titleFa: "بافت نمای خاک کوبیده",
+        caption: "Layered iron oxide pigment banding within rammed earth strata.",
+        captionFa: "باندهای لایه‌ای اکسید آهن در طبقات خاک کوبیده شده.",
+        imageUrl: "/images/shirvani-detail-01.jpg",
         aspectRatio: "square",
         galleryImages: [
-          "/images/shirvani-d1-render02.jpg",
-          "/images/shirvani-d1-details01.jpg",
-          "/images/shirvani-d1-details02.jpg",
-          "/images/shirvani-d1-details03.jpg"
+          "/images/shirvani-detail-01a.jpg",
+          "/images/shirvani-detail-01b.jpg",
+          "/images/shirvani-detail-01c.jpg",
+          "/images/shirvani-detail-01d.jpg"
         ]
       },
       {
         id: "sv-d2",
-        title: "Parking implementation details",
-        titleFa: "جزئیات اجرایی پارکینگ",
+        title: "Roof Eave & Gutter Detail",
+        titleFa: "جزئیات لبه شیروانی و ناودان",
         caption: "The pitched roof edge is detailed to shed heavy seasonal rainfall away from the walls.",
         captionFa: "لبه سقف شیبدار به‌گونه‌ای طراحی شده که بارش‌های سنگین فصلی را از دیوارها دور کند.",
-        imageUrl: "/images/shirvani-d2-render01.jpg",
+        imageUrl: "/images/shirvani-detail-02.jpg",
         aspectRatio: "video",
         galleryImages: [
-          "/images/shirvani-d2-details01.jpg",
-          "/images/shirvani-d2-details02.jpg",
-          "/images/shirvani-d2-details03.jpg",
-          "/images/shirvani-d2-details04.jpg",
-          "/images/shirvani-d2-details05.jpg"
+          "/images/shirvani-detail-02a.jpg",
+          "/images/shirvani-detail-02b.jpg",
+          "/images/shirvani-detail-02c.jpg"
         ]
       },
       {
