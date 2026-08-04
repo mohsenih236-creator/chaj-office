@@ -350,7 +350,7 @@ export const projects: Project[] = [
         title: "SECTION A-A",
         titleFa: "مقطع A-A",
         type: "Section",
-        imageUrl: "/images/shirvani-section-aa.jpg",
+        imageUrl: "/images/shirvani-sectionA-A.jpg",
         hotspots: [
           {
             id: "sv-hs1",
