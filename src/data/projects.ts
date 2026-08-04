@@ -238,7 +238,7 @@ export const projects: Project[] = [
     presenter: "hossein mohseni",
     presenterFa: "حسین محسنی",
     software: "3Ds max-Revite",
-    heroImage: "/images/shirvani-render sterit.jpg",
+    heroImage: "/images/shirvani-render-sterit.jpg",
     heroImages: [
       "/images/shirvani-north-frount.jpg",
       "/images/shirvani-render03.png",
@@ -278,7 +278,7 @@ export const projects: Project[] = [
         titleFa: "جزئیات اجرایی درب و پارکینگ",
         caption: "The pitched roof edge is detailed to shed heavy seasonal rainfall away from the walls.",
         captionFa: "لبه سقف شیبدار به‌گونه‌ای طراحی شده که بارش‌های سنگین فصلی را از دیوارها دور کند.",
-        imageUrl: "/images/shirvani-render sterit.jpg",
+        imageUrl: "/images/shirvani-render-sterit.jpg",
         aspectRatio: "video",
         galleryImages: [
           "/images/shirvani-d2-render01.jpg",
