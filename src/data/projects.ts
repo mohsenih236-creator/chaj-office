@@ -389,11 +389,11 @@ export const projects: Project[] = [
       },  
       {
         id: "sv-exec3",
-        title: "beams and columns",
-        titleFa: "تیر و ستون",
-        caption: "The second stage of implementing beams and columns",
-        captionFa: "مرحله دوم اجرای تیر و ستون",
-        imageUrl: "/images/shirvani-EX-02.jpg",
+        title: "Gable roof",
+        titleFa: "سقف شیروانی",
+        caption: "Implementation of metal beams for the gable roof",
+        captionFa: "اجرای تیر فلزی سقف شیروانی",
+        imageUrl: "/images/shirvani-EX-03.jpg",
         type: "image"
       },
       {
