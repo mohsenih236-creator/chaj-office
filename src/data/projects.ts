@@ -24,12 +24,12 @@ export const studioInfo: StudioInfo = {
       image: "/images/sadegh.png"
     },
     {
-      name: "REPLACE_WITH_NAME",
+      name: "Hossein Mohseni",
       role: "CG Artist & BIM Modeler",
       roleFa: "متخصص سی‌جی آرت و بیم مدلینگ",
       bioEn: "Specialist in 3D visualization, CG rendering, and BIM modeling.",
       bioFa: "متخصص در بصری‌سازی سه‌بعدی، رندرینگ سی‌جی و مدل‌سازی بیم.",
-      image: "/images/REPLACE_WITH_IMAGE.png"
+      image: "/images/hossein.png"
     }
   ],
   services: [
