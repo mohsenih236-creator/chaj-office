@@ -24,12 +24,12 @@ export const studioInfo: StudioInfo = {
       image: "/images/sadegh.png"
     },
     {
-      name: "Hossein Mohseni",
+      name: "REPLACE_WITH_NAME",
       role: "CG Artist & BIM Modeler",
       roleFa: "متخصص سی‌جی آرت و بیم مدلینگ",
       bioEn: "Specialist in 3D visualization, CG rendering, and BIM modeling.",
       bioFa: "متخصص در بصری‌سازی سه‌بعدی، رندرینگ سی‌جی و مدل‌سازی بیم.",
-      image: "/images/hossein.png"
+      image: "/images/REPLACE_WITH_IMAGE.png"
     }
   ],
   services: [
@@ -307,17 +307,22 @@ export const projects: Project[] = [
     presenterFa: "حسین محسنی",
     software: "Revit, 3Ds max",
     heroImage: "/images/12.jpg",
+    heroImages: [
+      "/images/12.jpg",
+      "/images/west-view-01.jpg",
+      "/images/west-view-02.jpg"
+    ],
     narrativeEn: "Designed for an MDF showroom, the façade draws inspiration from the vertical rhythm of stacked MDF panels, translating the essence of the product into an architectural expression.",
     narrativeFa: "ریتم لوورهای عمودی نما، برداشتی انتزاعی از چیدمان منظم ورق‌های MDF است؛ عنصری که به نمای ساختمان نظم، عمق و هویت می‌بخشد.",
-    lightSectionTitleEn: "Nature and industry",
-    lightSectionTitleFa: "طبیعت و صنعت",
-    lightNarrativeEn: "The presence of a tree in the design is not just a decorative element; it is also a reminder of the natural origin of wood and the connection between nature and the industry that draws inspiration from it.",
-    lightNarrativeFa: "حضور درخت در دل نما، تنها یک عنصر تزئینی نیست؛ بلکه یادآور منشأ طبیعی چوب و پیوند میان طبیعت و صنعتی است که از آن الهام می‌گیرد.",
+    lightSectionTitleEn: "Light as Material",
+    lightSectionTitleFa: "نور به عنوان ماده",
+    lightNarrativeEn: "In the arid climate of Yazd, light is both a blessing and a burden. Our design treats light not just as illumination, but as a physical material that defines the temporal experience of the house. Deep apertures and rhythmic skylights curate shadows that evolve throughout the day, animating the monolithic concrete surfaces.",
+    lightNarrativeFa: "در اقلیم خشک یزد، نور هم نعمت است و هم چالش. طراحی ما با نور نه فقط به عنوان روشنایی، بلکه به عنوان یک ماده فیزیکی ملموس برخورد می‌کند که تجربه زمانی خانه را شکل می‌دهد. گشودگی‌های عمیق و نورگیرهای ریتمیک، سایه‌های متغیری ایجاد می‌کنند که در طول روز سطوح یکپارچه بتنی را زنده می‌سازند.",
     lightImage: "/images/west-view-01.jpg",
     spatialSectionTitleEn: "Spatial Logic",
     spatialSectionTitleFa: "منطق فضایی",
-    spatialNarrativeEn: "Rather than functioning as a decorative element, every component contributes to the identity of the building, allowing the architecture to communicate the story of the brand.",
-    spatialNarrativeFa: "بازتابه نمایی است که فراتر از یک پوسته عمل می‌کند و پیش از ورود، داستان فعالیت مجموعه را روایت می‌کند.",
+    spatialNarrativeEn: "The plan is organized around a series of sequential voids, ensuring that every living space maintains a visual connection to the sky and the internal garden while providing absolute privacy from the street.",
+    spatialNarrativeFa: "پلان پروژه بر حول سلسله‌مراتبی از فضاهای خالی ترتیب یافته است، به‌گونه‌ای که هر فضای زندگی ارتباط چشمی مداومی با آسمان و حیاط داخلی داشته باشد و در عین حال محرمیت مطلق را در برابر خیابان حفظ کند.",
     details: [
       {
         id: "d1",
