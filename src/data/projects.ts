@@ -22,6 +22,14 @@ export const studioInfo: StudioInfo = {
       bioEn: "Specialist in architectural design and executive details",
       bioFa: "متخصص در طراحی معماری و دیتیل های اجرایی",
       image: "/images/sadegh.png"
+    },
+    {
+      name: "REPLACE_WITH_NAME",
+      role: "CG Artist & BIM Modeler",
+      roleFa: "متخصص سی‌جی آرت و بیم مدلینگ",
+      bioEn: "Specialist in 3D visualization, CG rendering, and BIM modeling.",
+      bioFa: "متخصص در بصری‌سازی سه‌بعدی، رندرینگ سی‌جی و مدل‌سازی بیم.",
+      image: "/images/REPLACE_WITH_IMAGE.png"
     }
   ],
   services: [
@@ -71,154 +79,6 @@ export const studioInfo: StudioInfo = {
 };
 
 export const projects: Project[] = [
-  {
-    id: "Mousavinejad MDF Trading",
-    title: "Mousavinejad MDF Trading",
-    titleFa: "بازرگانی ام دی اف موسوی نژاد",
-    subtitle: "Commercial project",
-    subtitleFa: "پروژه تجاری",
-    category: "Commercial",
-    year: "2023",
-    location: "Mazandaran, Iran",
-    locationFa: "مازندران، ایران",
-    status: "Running",
-    statusFa: "در حال اجرا",
-    area: "500 m²",
-    areaFa: "500 مترمربع",
-    architects: "valiallah lagharei & sadegh lagharei",
-    architectsFa: "ولی اله لاغری و صادق لاغری",
-    presenter: "Hossein mohseni",
-    presenterFa: "حسین محسنی",
-    software: "Revit, 3Ds max",
-    heroImage: "/images/12.jpg",
-    narrativeEn: "Designed for an MDF showroom, the façade draws inspiration from the vertical rhythm of stacked MDF panels, translating the essence of the product into an architectural expression.",
-    narrativeFa: "ریتم لوورهای عمودی نما، برداشتی انتزاعی از چیدمان منظم ورق‌های MDF است؛ عنصری که به نمای ساختمان نظم، عمق و هویت می‌بخشد.",
-    lightSectionTitleEn: "Light as Material",
-    lightSectionTitleFa: "نور به عنوان ماده",
-    lightNarrativeEn: "In the arid climate of Yazd, light is both a blessing and a burden. Our design treats light not just as illumination, but as a physical material that defines the temporal experience of the house. Deep apertures and rhythmic skylights curate shadows that evolve throughout the day, animating the monolithic concrete surfaces.",
-    lightNarrativeFa: "در اقلیم خشک یزد، نور هم نعمت است و هم چالش. طراحی ما با نور نه فقط به عنوان روشنایی، بلکه به عنوان یک ماده فیزیکی ملموس برخورد می‌کند که تجربه زمانی خانه را شکل می‌دهد. گشودگی‌های عمیق و نورگیرهای ریتمیک، سایه‌های متغیری ایجاد می‌کنند که در طول روز سطوح یکپارچه بتنی را زنده می‌سازند.",
-    lightImage: "/images/west-view-01.jpg",
-    spatialSectionTitleEn: "Spatial Logic",
-    spatialSectionTitleFa: "منطق فضایی",
-    spatialNarrativeEn: "The plan is organized around a series of sequential voids, ensuring that every living space maintains a visual connection to the sky and the internal garden while providing absolute privacy from the street.",
-    spatialNarrativeFa: "پلان پروژه بر حول سلسله‌مراتبی از فضاهای خالی ترتیب یافته است، به‌گونه‌ای که هر فضای زندگی ارتباط چشمی مداومی با آسمان و حیاط داخلی داشته باشد و در عین حال محرمیت مطلق را در برابر خیابان حفظ کند.",
-    details: [
-      {
-        id: "d1",
-        title: "Details of the implementation of the complex door",
-        titleFa: "جزئیات: تلاقی متریال‌ها",
-        caption: "The scratched stone is integrated with the microcement of the door.",
-        captionFa: "سنگ اسکرچ شده با میکروسمنت درب یکی شده.",
-        imageUrl: "/images/d1-render.jpg",
-        aspectRatio: "square",
-        galleryImages: [
-          "/images/d1-details01.jpg",
-          "/images/d1-details02.jpg",
-          "/images/d1-image01.jpg",
-          "/images/d1-image02.jpg",
-          "/images/d1-image03.jpg"
-        ]
-      },
-      {
-        id: "d2",
-        title: "A Distinctive Entrance, Defining Identity",
-        titleFa: "ورودی شاخص، هویت متمایز مجموعه",
-        caption: "The intersection of function, form and identity",
-        captionFa: "تلاقی عملکرد، فرم و هویت",
-        imageUrl: "/images/west-view-02.jpg",
-        aspectRatio: "video"
-      }
-    ],
-    drawings: [
-      {
-        id: "plan-ground",
-        title: "GROUND FLOOR PLAN",
-        titleFa: "پلان طبقه همکف",
-        type: "Plan",
-        imageUrl: "/images/ground-floor-plan.jpg",
-        hotspots: [
-          {
-            id: "h1",
-            x: 35,
-            y: 50,
-            label: "Central Courtyard & Pool",
-            labelFa: "حیاط مرکزی و حوض",
-            description: "Microclimate thermal regulator providing convective cooling during hot afternoon hours.",
-            descriptionFa: "تنظیم‌کننده میکروکلیما و خنک‌سازی خاستگاهی در ساعات گرم بعدازظهر."
-          },
-          {
-            id: "h2",
-            x: 65,
-            y: 40,
-            label: "Living Pavilion",
-            labelFa: "تالار اصلی نشیمن",
-            description: "Double-height space framed by monolithic concrete walls and floor-to-ceiling acoustic glass.",
-            descriptionFa: "فضای با ارتفاع مضاعف قاب‌شده با دیوارهای بتنی و شیشه‌های آکوستیک."
-          },
-          {
-            id: "h3",
-            x: 20,
-            y: 70,
-            label: "Private Suite Entry",
-            labelFa: "ورودی بخش خصوصی",
-            description: "A recessed transitional threshold maintaining absolute privacy from communal areas.",
-            descriptionFa: "آستانه گذار برای حفظ محرمیت کامل نسبت به فضاهای عمومی."
-          }
-        ]
-      },
-      {
-        id: "plan-first-floor",
-        title: "FIRST FLOOR PLAN",
-        titleFa: "پلان طبقه اول",
-        type: "Plan",
-        imageUrl: "/images/first-floor-plan.jpg"
-      },
-      {
-        id: "section-aa",
-        title: "SECTION AA",
-        titleFa: "مقطع عرضی AA",
-        type: "Section",
-        imageUrl: "/images/sectionA-A.jpg",
-        hotspots: [
-          {
-            id: "hs1",
-            x: 50,
-            y: 30,
-            label: "Light Shaft Chamber",
-            labelFa: "نورگیر و هواکش سقفی",
-            description: "Directs natural zenith light deep into subterranean study quarters.",
-            descriptionFa: "هدایت مستقیم نور مستقیم آسمان به فضاهای مطالعه زیرزمین."
-          }
-        ]
-      }
-    ],
-    executionSectionTitleEn: "Execution Phase",
-    executionSectionTitleFa: "مراحل اجرا",
-    executionNarrativeEn: "A look at the construction process from start to completion.",
-    executionNarrativeFa: "نگاهی به روند اجرای پروژه از ابتدا تا تکمیل.",
-    executionPhotos: [
-      {
-        id: "exec1",
-        title: "Construction Progress",
-        titleFa: "روند اجرای پروژه",
-        caption: "On-site construction phase.",
-        captionFa: "مرحله اجرای پروژه در محل.",
-        imageUrl: "/images/04.jpg",
-        type: "image"
-      },
-      {
-        id: "exec2",
-        title: "Construction Progress",
-        titleFa: "روند اجرای پروژه",
-        caption: "On-site construction phase.",
-        captionFa: "مرحله اجرای پروژه در محل.",
-        imageUrl: "/images/02.jpg",
-        type: "image"
-      }
-    ],
-    prevProjectId: "SHIRVANI VILLA",
-    nextProjectId: "SHIRVANI VILLA"
-  },
   {
     id: "SHIRVANI VILLA",
     title: "Shirvani Villa",
@@ -386,7 +246,7 @@ export const projects: Project[] = [
         captionFa: "مرحله دوم اجرای تیر و ستون",
         imageUrl: "/images/shirvani-EX-02.jpg",
         type: "image"
-      },  
+      },
       {
         id: "sv-exec3",
         title: "Gable roof",
@@ -395,7 +255,7 @@ export const projects: Project[] = [
         captionFa: "اجرای تیر فلزی سقف شیروانی",
         imageUrl: "/images/shirvani-EX-03.jpg",
         type: "image"
-      },  
+      },
       {
         id: "sv-exec4",
         title: "Wall construction",
@@ -404,7 +264,7 @@ export const projects: Project[] = [
         captionFa: "اجرای دیوار چینی و سیمانکاری",
         imageUrl: "/images/shirvani-EX-04.jpg",
         type: "image"
-      },  
+      },
       {
         id: "sv-exec5",
         title: "Gable roof covering",
@@ -426,5 +286,153 @@ export const projects: Project[] = [
     ],
     prevProjectId: "Mousavinejad MDF Trading",
     nextProjectId: "Mousavinejad MDF Trading"
+  },
+  {
+    id: "Mousavinejad MDF Trading",
+    title: "Mousavinejad MDF Trading",
+    titleFa: "بازرگانی ام دی اف موسوی نژاد",
+    subtitle: "Commercial project",
+    subtitleFa: "پروژه تجاری",
+    category: "Commercial",
+    year: "2023",
+    location: "Mazandaran, Iran",
+    locationFa: "مازندران، ایران",
+    status: "Running",
+    statusFa: "در حال اجرا",
+    area: "500 m²",
+    areaFa: "500 مترمربع",
+    architects: "valiallah lagharei & sadegh lagharei",
+    architectsFa: "ولی اله لاغری و صادق لاغری",
+    presenter: "Hossein mohseni",
+    presenterFa: "حسین محسنی",
+    software: "Revit, 3Ds max",
+    heroImage: "/images/12.jpg",
+    narrativeEn: "Designed for an MDF showroom, the façade draws inspiration from the vertical rhythm of stacked MDF panels, translating the essence of the product into an architectural expression.",
+    narrativeFa: "ریتم لوورهای عمودی نما، برداشتی انتزاعی از چیدمان منظم ورق‌های MDF است؛ عنصری که به نمای ساختمان نظم، عمق و هویت می‌بخشد.",
+    lightSectionTitleEn: "Light as Material",
+    lightSectionTitleFa: "نور به عنوان ماده",
+    lightNarrativeEn: "In the arid climate of Yazd, light is both a blessing and a burden. Our design treats light not just as illumination, but as a physical material that defines the temporal experience of the house. Deep apertures and rhythmic skylights curate shadows that evolve throughout the day, animating the monolithic concrete surfaces.",
+    lightNarrativeFa: "در اقلیم خشک یزد، نور هم نعمت است و هم چالش. طراحی ما با نور نه فقط به عنوان روشنایی، بلکه به عنوان یک ماده فیزیکی ملموس برخورد می‌کند که تجربه زمانی خانه را شکل می‌دهد. گشودگی‌های عمیق و نورگیرهای ریتمیک، سایه‌های متغیری ایجاد می‌کنند که در طول روز سطوح یکپارچه بتنی را زنده می‌سازند.",
+    lightImage: "/images/west-view-01.jpg",
+    spatialSectionTitleEn: "Spatial Logic",
+    spatialSectionTitleFa: "منطق فضایی",
+    spatialNarrativeEn: "The plan is organized around a series of sequential voids, ensuring that every living space maintains a visual connection to the sky and the internal garden while providing absolute privacy from the street.",
+    spatialNarrativeFa: "پلان پروژه بر حول سلسله‌مراتبی از فضاهای خالی ترتیب یافته است، به‌گونه‌ای که هر فضای زندگی ارتباط چشمی مداومی با آسمان و حیاط داخلی داشته باشد و در عین حال محرمیت مطلق را در برابر خیابان حفظ کند.",
+    details: [
+      {
+        id: "d1",
+        title: "Details of the implementation of the complex door",
+        titleFa: "جزئیات: تلاقی متریال‌ها",
+        caption: "The scratched stone is integrated with the microcement of the door.",
+        captionFa: "سنگ اسکرچ شده با میکروسمنت درب یکی شده.",
+        imageUrl: "/images/d1-render.jpg",
+        aspectRatio: "square",
+        galleryImages: [
+          "/images/d1-details01.jpg",
+          "/images/d1-details02.jpg",
+          "/images/d1-image01.jpg",
+          "/images/d1-image02.jpg",
+          "/images/d1-image03.jpg"
+        ]
+      },
+      {
+        id: "d2",
+        title: "A Distinctive Entrance, Defining Identity",
+        titleFa: "ورودی شاخص، هویت متمایز مجموعه",
+        caption: "The intersection of function, form and identity",
+        captionFa: "تلاقی عملکرد، فرم و هویت",
+        imageUrl: "/images/west-view-02.jpg",
+        aspectRatio: "video"
+      }
+    ],
+    drawings: [
+      {
+        id: "plan-ground",
+        title: "GROUND FLOOR PLAN",
+        titleFa: "پلان طبقه همکف",
+        type: "Plan",
+        imageUrl: "/images/ground-floor-plan.jpg",
+        hotspots: [
+          {
+            id: "h1",
+            x: 35,
+            y: 50,
+            label: "Central Courtyard & Pool",
+            labelFa: "حیاط مرکزی و حوض",
+            description: "Microclimate thermal regulator providing convective cooling during hot afternoon hours.",
+            descriptionFa: "تنظیم‌کننده میکروکلیما و خنک‌سازی خاستگاهی در ساعات گرم بعدازظهر."
+          },
+          {
+            id: "h2",
+            x: 65,
+            y: 40,
+            label: "Living Pavilion",
+            labelFa: "تالار اصلی نشیمن",
+            description: "Double-height space framed by monolithic concrete walls and floor-to-ceiling acoustic glass.",
+            descriptionFa: "فضای با ارتفاع مضاعف قاب‌شده با دیوارهای بتنی و شیشه‌های آکوستیک."
+          },
+          {
+            id: "h3",
+            x: 20,
+            y: 70,
+            label: "Private Suite Entry",
+            labelFa: "ورودی بخش خصوصی",
+            description: "A recessed transitional threshold maintaining absolute privacy from communal areas.",
+            descriptionFa: "آستانه گذار برای حفظ محرمیت کامل نسبت به فضاهای عمومی."
+          }
+        ]
+      },
+      {
+        id: "plan-first-floor",
+        title: "FIRST FLOOR PLAN",
+        titleFa: "پلان طبقه اول",
+        type: "Plan",
+        imageUrl: "/images/first-floor-plan.jpg"
+      },
+      {
+        id: "section-aa",
+        title: "SECTION AA",
+        titleFa: "مقطع عرضی AA",
+        type: "Section",
+        imageUrl: "/images/sectionA-A.jpg",
+        hotspots: [
+          {
+            id: "hs1",
+            x: 50,
+            y: 30,
+            label: "Light Shaft Chamber",
+            labelFa: "نورگیر و هواکش سقفی",
+            description: "Directs natural zenith light deep into subterranean study quarters.",
+            descriptionFa: "هدایت مستقیم نور مستقیم آسمان به فضاهای مطالعه زیرزمین."
+          }
+        ]
+      }
+    ],
+    executionSectionTitleEn: "Execution Phase",
+    executionSectionTitleFa: "مراحل اجرا",
+    executionNarrativeEn: "A look at the construction process from start to completion.",
+    executionNarrativeFa: "نگاهی به روند اجرای پروژه از ابتدا تا تکمیل.",
+    executionPhotos: [
+      {
+        id: "exec1",
+        title: "Construction Progress",
+        titleFa: "روند اجرای پروژه",
+        caption: "On-site construction phase.",
+        captionFa: "مرحله اجرای پروژه در محل.",
+        imageUrl: "/images/04.jpg",
+        type: "image"
+      },
+      {
+        id: "exec2",
+        title: "Construction Progress",
+        titleFa: "روند اجرای پروژه",
+        caption: "On-site construction phase.",
+        captionFa: "مرحله اجرای پروژه در محل.",
+        imageUrl: "/images/02.jpg",
+        type: "image"
+      }
+    ],
+    prevProjectId: "SHIRVANI VILLA",
+    nextProjectId: "SHIRVANI VILLA"
   }
 ];
