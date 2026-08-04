@@ -411,7 +411,7 @@ export const projects: Project[] = [
         titleFa: "پوشش سقف شیروانی",
         caption: "Installation of the Pitched Roof Covering",
         captionFa: "اجرای پوشش سقف شیروانی",
-        imageUrl: "/images/shirvani-EX-04.jpg",
+        imageUrl: "/images/shirvani-EX-05.jpg",
         type: "image"
       },
       {
