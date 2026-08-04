@@ -282,6 +282,7 @@ export const projects: Project[] = [
         aspectRatio: "video",
         galleryImages: [
           "/images/shirvani-d2-render01.jpg",
+          "/images/shirvani-d2-render01.jpg",
           "/images/shirvani-d2-details02.jpg",
           "/images/shirvani-d2-details03.jpg",
           "/images/shirvani-d2-details04.jpg",
