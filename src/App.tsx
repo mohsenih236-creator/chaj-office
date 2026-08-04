@@ -1,6 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  useNavigate,
+  useParams
+} from 'react-router-dom';
 import { projects, studioInfo } from './data/projects';
-import { ViewMode, Language } from './types';
+import { Language } from './types';
 import { Header } from './components/Header';
 import { ProjectHero } from './components/ProjectHero';
 import { ProjectMeta } from './components/ProjectMeta';
@@ -15,15 +23,116 @@ import { ContactModal } from './components/ContactModal';
 import { LightboxModal, LightboxImage } from './components/LightboxModal';
 import { Footer } from './components/Footer';
 
-export default function App() {
-  const [activeView, setActiveView] = useState<ViewMode>('project-detail');
-  const [selectedProjectId, setSelectedProjectId] = useState<string>('Mousavinejad MDF Trading');
-  const [language, setLanguage] = useState<Language>('EN');
-  const [contactModalOpen, setContactModalOpen] = useState<boolean>(false);
+// Turns a project's internal id ("SHIRVANI VILLA") into a clean URL slug
+// ("shirvani-villa"). Keeping this as a pure function (instead of adding a
+// field to every project) means old data keeps working automatically.
+const slugify = (id: string) =>
+  id.trim().toLowerCase().replace(/\s+/g, '-');
 
-  // Lightbox now holds a LIST of images plus which one is currently shown,
-  // so it can support both a single image (old behavior) and a multi-image gallery.
-  const [lightbox, setLightbox] = useState<{
+const findProjectBySlug = (slug: string | undefined) =>
+  projects.find((p) => slugify(p.id) === slug);
+
+interface SharedState {
+  language: Language;
+  setLanguage: (lang: Language) => void;
+  contactModalOpen: boolean;
+  setContactModalOpen: (open: boolean) => void;
+  lightbox: {
+    isOpen: boolean;
+    images: LightboxImage[];
+    currentIndex: number;
+  };
+  onOpenImage: (url: string, caption: string) => void;
+  onOpenGallery: (images: LightboxImage[], startIndex?: number) => void;
+}
+
+function ProjectDetailPage({ language, onOpenImage, onOpenGallery }: SharedState) {
+  const { slug } = useParams<{ slug: string }>();
+  const navigate = useNavigate();
+  const project = findProjectBySlug(slug);
+
+  // Unknown slug -> send back to the projects list instead of a blank page.
+  if (!project) {
+    return <Navigate to="/projects" replace />;
+  }
+
+  const prevProject = projects.find((p) => p.id === project.prevProjectId);
+  const nextProject = projects.find((p) => p.id === project.nextProjectId);
+
+  const handleSelectProject = (projectId: string) => {
+    const target = projects.find((p) => p.id === projectId);
+    if (target) {
+      navigate(`/projects/${slugify(target.id)}`);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
+  return (
+    <div className="animate-fade-in">
+      <ProjectHero project={project} language={language} onOpenImage={onOpenImage} />
+      <ProjectMeta project={project} language={language} />
+      <EditorialSections
+        project={project}
+        language={language}
+        onOpenImage={onOpenImage}
+        onOpenGallery={onOpenGallery}
+      />
+      <SpatialLogicBlueprints
+        project={project}
+        language={language}
+        onOpenDrawing={onOpenImage}
+      />
+      <ExecutionGallery project={project} language={language} onOpenImage={onOpenImage} />
+      <ProjectNavigation
+        prevProject={prevProject}
+        nextProject={nextProject}
+        language={language}
+        onSelectProject={handleSelectProject}
+      />
+    </div>
+  );
+}
+
+function ProjectsListPage({ language }: SharedState) {
+  const navigate = useNavigate();
+  const handleSelectProject = (projectId: string) => {
+    const target = projects.find((p) => p.id === projectId);
+    if (target) {
+      navigate(`/projects/${slugify(target.id)}`);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+  return (
+    <ProjectsList projects={projects} language={language} onSelectProject={handleSelectProject} />
+  );
+}
+
+function AboutPage({ language, setContactModalOpen }: SharedState) {
+  return (
+    <AboutView
+      studioInfo={studioInfo}
+      language={language}
+      openContact={() => setContactModalOpen(true)}
+    />
+  );
+}
+
+function ServicesPage({ language, setContactModalOpen }: SharedState) {
+  return (
+    <ServicesView
+      services={studioInfo.services}
+      language={language}
+      openContact={() => setContactModalOpen(true)}
+    />
+  );
+}
+
+function AppShell() {
+  const navigate = useNavigate();
+  const [language, setLanguage] = React.useState<Language>('EN');
+  const [contactModalOpen, setContactModalOpen] = React.useState<boolean>(false);
+
+  const [lightbox, setLightbox] = React.useState<{
     isOpen: boolean;
     images: LightboxImage[];
     currentIndex: number;
@@ -33,33 +142,15 @@ export default function App() {
     currentIndex: 0
   });
 
-  // Active Project resolution
-  const activeProject =
-    projects.find((p) => p.id === selectedProjectId) || projects[0];
-
-  const prevProject = projects.find((p) => p.id === activeProject.prevProjectId);
-  const nextProject = projects.find((p) => p.id === activeProject.nextProjectId);
-
-  // Set RTL or LTR document direction depending on language
   useEffect(() => {
     document.documentElement.dir = language === 'FA' ? 'rtl' : 'ltr';
     document.documentElement.lang = language === 'FA' ? 'fa' : 'en';
   }, [language]);
 
-  const handleSelectProject = (projectId: string) => {
-    setSelectedProjectId(projectId);
-    setActiveView('project-detail');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  // Backward-compatible: opens the lightbox with just ONE image.
-  // Used by ProjectHero, SpatialLogicBlueprints (drawings), ExecutionGallery, etc.
   const handleOpenImage = (url: string, caption: string) => {
     setLightbox({ isOpen: true, images: [{ url, caption }], currentIndex: 0 });
   };
 
-  // New: opens the lightbox with a LIST of images the user can page through.
-  // Used by EditorialSections for material detail items that have extra photos.
   const handleOpenGallery = (images: LightboxImage[], startIndex: number = 0) => {
     if (!images || images.length === 0) return;
     setLightbox({ isOpen: true, images, currentIndex: startIndex });
@@ -83,101 +174,61 @@ export default function App() {
     }));
   };
 
+  const shared: SharedState = {
+    language,
+    setLanguage,
+    contactModalOpen,
+    setContactModalOpen,
+    lightbox,
+    onOpenImage: handleOpenImage,
+    onOpenGallery: handleOpenGallery
+  };
+
+  // Maps the current URL to Header's old "active tab" concept, so the header
+  // still highlights the right nav item even though routing now drives the page.
+  const goTo = (path: string) => {
+    navigate(path);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
-    <div className={`min-h-screen bg-[#F4F1EE] text-[#1C1C1C] font-sans selection:bg-[#1C1C1C] selection:text-[#F4F1EE]`}>
-      {/* Top Fixed Header Navigation */}
+    <div className="min-h-screen bg-[#F4F1EE] text-[#1C1C1C] font-sans selection:bg-[#1C1C1C] selection:text-[#F4F1EE]">
       <Header
-        activeView={activeView}
+        activeView={
+          window.location.pathname.startsWith('/projects/')
+            ? 'project-detail'
+            : window.location.pathname.startsWith('/projects')
+            ? 'projects-list'
+            : window.location.pathname.startsWith('/about')
+            ? 'about'
+            : window.location.pathname.startsWith('/services')
+            ? 'services'
+            : 'project-detail'
+        }
         setActiveView={(view) => {
-          setActiveView(view);
-          window.scrollTo({ top: 0, behavior: 'smooth' });
+          if (view === 'project-detail') goTo(`/projects/${slugify(projects[0].id)}`);
+          else if (view === 'projects-list') goTo('/projects');
+          else if (view === 'about') goTo('/about');
+          else if (view === 'services') goTo('/services');
         }}
         language={language}
         setLanguage={setLanguage}
         openContact={() => setContactModalOpen(true)}
       />
 
-      {/* Main Content Area */}
       <main className="w-full">
-        {activeView === 'project-detail' && (
-          <div className="animate-fade-in">
-            {/* Project Hero Section */}
-            <ProjectHero
-              project={activeProject}
-              language={language}
-              onOpenImage={handleOpenImage}
-            />
-
-            {/* Project Specifications & Narrative */}
-            <ProjectMeta project={activeProject} language={language} />
-
-            {/* Editorial Sections ("Light as Material", Material Pairs) */}
-            <EditorialSections
-              project={activeProject}
-              language={language}
-              onOpenImage={handleOpenImage}
-              onOpenGallery={handleOpenGallery}
-            />
-
-            {/* Spatial Logic & Interactive Blueprints (Design Phase: plans, sections, renders) */}
-            <SpatialLogicBlueprints
-              project={activeProject}
-              language={language}
-              onOpenDrawing={handleOpenImage}
-            />
-
-            {/* Execution Phase Gallery (real construction/site photos) */}
-            <ExecutionGallery
-              project={activeProject}
-              language={language}
-              onOpenImage={handleOpenImage}
-            />
-
-            {/* Previous / Next Project Navigation Footer */}
-            <ProjectNavigation
-              prevProject={prevProject}
-              nextProject={nextProject}
-              language={language}
-              onSelectProject={handleSelectProject}
-            />
-          </div>
-        )}
-
-        {/* All Projects Archive View */}
-        {activeView === 'projects-list' && (
-          <ProjectsList
-            projects={projects}
-            language={language}
-            onSelectProject={handleSelectProject}
-          />
-        )}
-
-        {/* Studio About View */}
-        {activeView === 'about' && (
-          <AboutView
-            studioInfo={studioInfo}
-            language={language}
-            openContact={() => setContactModalOpen(true)}
-          />
-        )}
-
-        {/* Studio Services View */}
-        {activeView === 'services' && (
-          <ServicesView
-            services={studioInfo.services}
-            language={language}
-            openContact={() => setContactModalOpen(true)}
-          />
-        )}
+        <Routes>
+          <Route path="/" element={<Navigate to={`/projects/${slugify(projects[0].id)}`} replace />} />
+          <Route path="/projects" element={<ProjectsListPage {...shared} />} />
+          <Route path="/projects/:slug" element={<ProjectDetailPage {...shared} />} />
+          <Route path="/about" element={<AboutPage {...shared} />} />
+          <Route path="/services" element={<ServicesPage {...shared} />} />
+          <Route path="*" element={<Navigate to="/projects" replace />} />
+        </Routes>
       </main>
 
-      {/* Footer */}
-      <Footer
-        language={language}
-        openContact={() => setContactModalOpen(true)}
-      />
+      <Footer language={language} openContact={() => setContactModalOpen(true)} />
 
-      {/* Contact Inquiry Modal */}
       <ContactModal
         isOpen={contactModalOpen}
         onClose={() => setContactModalOpen(false)}
@@ -185,7 +236,6 @@ export default function App() {
         language={language}
       />
 
-      {/* Full-screen Lightbox Inspector Modal (single image OR multi-image gallery) */}
       <LightboxModal
         isOpen={lightbox.isOpen}
         images={lightbox.images}
@@ -196,6 +246,14 @@ export default function App() {
         language={language}
       />
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AppShell />
+    </BrowserRouter>
   );
 }
 
