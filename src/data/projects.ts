@@ -395,6 +395,15 @@ export const projects: Project[] = [
         captionFa: "اجرای تیر فلزی سقف شیروانی",
         imageUrl: "/images/shirvani-EX-03.jpg",
         type: "image"
+      },  
+      {
+        id: "sv-exec4",
+        title: "Gable roof",
+        titleFa: "سقف شیروانی",
+        caption: "Implementation of metal beams for the gable roof",
+        captionFa: "اجرای تیر فلزی سقف شیروانی",
+        imageUrl: "/images/shirvani-EX-03.jpg",
+        type: "image"
       },
       {
         id: "sv-exec4",
