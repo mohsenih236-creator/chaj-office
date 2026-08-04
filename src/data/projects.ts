@@ -347,7 +347,12 @@ export const projects: Project[] = [
         caption: "The intersection of function, form and identity",
         captionFa: "تلاقی عملکرد، فرم و هویت",
         imageUrl: "/images/west-view-02.jpg",
-        aspectRatio: "video"
+        aspectRatio: "video",
+        galleryImages: [
+          "/images/d2-details01.jpg",
+          "/images/d2-details02.jpg",
+          "/images/d2-image01.jpg"
+        ]
       }
     ],
     drawings: [
