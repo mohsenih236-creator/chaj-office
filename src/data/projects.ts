@@ -380,10 +380,10 @@ export const projects: Project[] = [
       },
       {
         id: "sv-exec2",
-        title: "Roof Framing",
-        titleFa: "اجرای سازه سقف شیروانی",
-        caption: "Installation of the pitched roof framing.",
-        captionFa: "نصب سازه چوبی سقف شیروانی.",
+        title: "beams and columns",
+        titleFa: "تیر و ستون",
+        caption: "The second stage of implementing beams and columns",
+        captionFa: "مرحله دوم اجرای تیر و ستون",
         imageUrl: "/images/shirvani-exec-02.jpg",
         type: "image"
       },
