@@ -371,11 +371,11 @@ export const projects: Project[] = [
     executionPhotos: [
       {
         id: "sv-exec1",
-        title: "Foundation & Structure",
-        titleFa: "فونداسیون و اسکلت",
-        caption: "Early structural phase on site.",
-        captionFa: "مرحله اولیه اجرای اسکلت در محل پروژه.",
-        imageUrl: "/images/shirvani-exec-01.jpg",
+        title: "Foundation",
+        titleFa: "فونداسیون",
+        caption: "The first stage of foundation implementation",
+        captionFa: "مرحله اول اجرای فنداسیون",
+        imageUrl: "/images/shirvani-EX-01.jpg",
         type: "image"
       },
       {
