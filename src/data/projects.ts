@@ -400,13 +400,22 @@ export const projects: Project[] = [
         id: "sv-exec4",
         title: "Wall construction",
         titleFa: "اجرای دیوار",
-        caption: "Implementation of metal beams for the gable roof",
-        captionFa: "اجرای تیر فلزی سقف شیروانی",
+        caption: "The walls were constructed using clay blocks.",
+        captionFa: "اجرای دیوار چینی و سیمانکاری",
+        imageUrl: "/images/shirvani-EX-04.jpg",
+        type: "image"
+      },  
+      {
+        id: "sv-exec5",
+        title: "Gable roof covering",
+        titleFa: "پوشش سقف شیروانی",
+        caption: "Installation of the Pitched Roof Covering",
+        captionFa: "اجرای پوشش سقف شیروانی",
         imageUrl: "/images/shirvani-EX-04.jpg",
         type: "image"
       },
       {
-        id: "sv-exec4",
+        id: "sv-exec6",
         title: "Facade Finishing",
         titleFa: "اجرای نهایی نما",
         caption: "Final facade and finishing works on site.",
