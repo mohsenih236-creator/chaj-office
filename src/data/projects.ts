@@ -336,7 +336,7 @@ export const projects: Project[] = [
         title: "NORTH ELEVATION",
         titleFa: "نمای شمالی",
         type: "Elevation",
-        imageUrl: "/images/shirvani-north-elevation.jpg"
+        imageUrl: "/images/shirvani-north-view.jpg"
       },
       {
         id: "sv-elevation-south",
