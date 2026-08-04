@@ -384,11 +384,20 @@ export const projects: Project[] = [
         titleFa: "تیر و ستون",
         caption: "The second stage of implementing beams and columns",
         captionFa: "مرحله دوم اجرای تیر و ستون",
-        imageUrl: "/images/shirvani-exec-02.jpg",
+        imageUrl: "/images/shirvani-EX-02.jpg",
+        type: "image"
+      },  
+      {
+        id: "sv-exec3",
+        title: "beams and columns",
+        titleFa: "تیر و ستون",
+        caption: "The second stage of implementing beams and columns",
+        captionFa: "مرحله دوم اجرای تیر و ستون",
+        imageUrl: "/images/shirvani-EX-02.jpg",
         type: "image"
       },
       {
-        id: "sv-exec3",
+        id: "sv-exec4",
         title: "Facade Finishing",
         titleFa: "اجرای نهایی نما",
         caption: "Final facade and finishing works on site.",
