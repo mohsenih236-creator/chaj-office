@@ -29,7 +29,7 @@ export const studioInfo: StudioInfo = {
       roleFa: "متخصص سی‌جی آرت و بیم مدلینگ",
       bioEn: "Specialist in 3D visualization, CG rendering, and BIM modeling.",
       bioFa: "متخصص در بصری‌سازی سه‌بعدی، رندرینگ سی‌جی و مدل‌سازی بیم.",
-      image: "/images/REPLACE_WITH_IMAGE.png"
+      image: "/images/hossein.png"
     }
   ],
   services: [
