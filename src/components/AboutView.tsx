@@ -17,17 +17,62 @@ export const AboutView: React.FC<AboutViewProps> = ({ studioInfo, language, open
 
   return (
     <div className="pt-28 pb-20 px-6 md:px-16 max-w-7xl mx-auto animate-fade-in">
-      {/* Studio Header */}
-      <div className="max-w-4xl mb-16">
-        <span className="font-sans text-[10px] uppercase tracking-[0.3em] font-bold text-[#8C8C8C] block mb-2">
-          {isFa ? 'درباره گروه معماری چاج' : 'STUDIO PROFILE & PHILOSOPHY'}
-        </span>
-        <h1 className="text-4xl sm:text-6xl font-light italic text-[#1C1C1C] mb-8 font-serif leading-tight">
-          {isFa ? studioInfo.taglineFa : studioInfo.taglineEn}
-        </h1>
-        <p className="text-lg sm:text-xl text-[#4A4A4A] leading-relaxed font-light italic">
-          {isFa ? studioInfo.aboutFa : studioInfo.aboutEn}
-        </p>
+      {/* Studio Header + Location Map (side by side) */}
+      <div className="mb-16 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-start">
+        <div className="max-w-2xl">
+          <span className="font-sans text-[10px] uppercase tracking-[0.3em] font-bold text-[#8C8C8C] block mb-2">
+            {isFa ? 'درباره گروه معماری چاج' : 'STUDIO PROFILE & PHILOSOPHY'}
+          </span>
+          <h1 className="text-4xl sm:text-6xl font-light italic text-[#1C1C1C] mb-8 font-serif leading-tight">
+            {isFa ? studioInfo.taglineFa : studioInfo.taglineEn}
+          </h1>
+          <p className="text-lg sm:text-xl text-[#4A4A4A] leading-relaxed font-light italic">
+            {isFa ? studioInfo.aboutFa : studioInfo.aboutEn}
+          </p>
+        </div>
+
+        {/* Location map(s), shown next to the intro text */}
+        <div className="flex flex-col gap-6">
+          {studioInfo.offices.map((office) => {
+            const hasCoords =
+              typeof office.latitude === 'number' && typeof office.longitude === 'number';
+            const mapSrc = hasCoords
+              ? `https://www.google.com/maps?q=${office.latitude},${office.longitude}&z=17&output=embed`
+              : `https://www.google.com/maps?q=${encodeURIComponent(
+                  isFa ? office.addressFa : office.addressEn
+                )}&output=embed`;
+            return (
+              <div key={office.cityEn} className="flex flex-col border border-black/10 bg-[#F4F1EE]">
+                <div className="w-full h-64 sm:h-80">
+                  <iframe
+                    src={mapSrc}
+                    title={isFa ? office.cityFa : office.cityEn}
+                    className="w-full h-full grayscale-[20%]"
+                    style={{ border: 0 }}
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                  />
+                </div>
+                <div className="p-5 flex flex-col gap-2">
+                  <div className="flex items-center gap-2">
+                    <MapPin className="w-4 h-4 text-[#1C1C1C] shrink-0" />
+                    <h3 className="text-base font-light italic text-[#1C1C1C] font-serif">
+                      {isFa ? office.cityFa : office.cityEn}
+                    </h3>
+                  </div>
+                  <p className="text-xs text-[#4A4A4A] italic leading-relaxed">
+                    {isFa ? office.addressFa : office.addressEn}
+                  </p>
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 mt-1 font-sans text-[10px] uppercase tracking-[0.2em] text-[#8C8C8C] font-bold">
+                    <span>{office.phone}</span>
+                    <span className="hidden sm:inline">/</span>
+                    <span>{office.email}</span>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </div>
 
       {/* Principals Section */}
@@ -54,54 +99,6 @@ export const AboutView: React.FC<AboutViewProps> = ({ studioInfo, language, open
               </div>
             </div>
           ))}
-        </div>
-      </div>
-
-      {/* Studio Location Section (simple Google Maps embed, no API key required) */}
-      <div className="my-20 border-t border-black/10 pt-16">
-        <span className="font-sans text-[10px] uppercase tracking-[0.3em] font-bold text-[#8C8C8C] block mb-8">
-          {isFa ? 'موقعیت دفتر' : 'STUDIO LOCATION'}
-        </span>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {studioInfo.offices.map((office) => {
-            const hasCoords =
-              typeof office.latitude === 'number' && typeof office.longitude === 'number';
-            const mapSrc = hasCoords
-              ? `https://www.google.com/maps?q=${office.latitude},${office.longitude}&z=17&output=embed`
-              : `https://www.google.com/maps?q=${encodeURIComponent(
-                  isFa ? office.addressFa : office.addressEn
-                )}&output=embed`;
-            return (
-              <div key={office.cityEn} className="flex flex-col border border-black/10 bg-[#F4F1EE]">
-                <div className="w-full h-72 sm:h-80">
-                  <iframe
-                    src={mapSrc}
-                    title={isFa ? office.cityFa : office.cityEn}
-                    className="w-full h-full grayscale-[20%]"
-                    style={{ border: 0 }}
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                  />
-                </div>
-                <div className="p-6 flex flex-col gap-2">
-                  <div className="flex items-center gap-2">
-                    <MapPin className="w-4 h-4 text-[#1C1C1C] shrink-0" />
-                    <h3 className="text-lg font-light italic text-[#1C1C1C] font-serif">
-                      {isFa ? office.cityFa : office.cityEn}
-                    </h3>
-                  </div>
-                  <p className="text-xs text-[#4A4A4A] italic leading-relaxed">
-                    {isFa ? office.addressFa : office.addressEn}
-                  </p>
-                  <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 mt-2 font-sans text-[10px] uppercase tracking-[0.2em] text-[#8C8C8C] font-bold">
-                    <span>{office.phone}</span>
-                    <span className="hidden sm:inline">/</span>
-                    <span>{office.email}</span>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
         </div>
       </div>
 
