@@ -1,6 +1,6 @@
 import React from 'react';
 import { StudioInfo, Language } from '../types';
-import { Award, BookOpen, Compass, ShieldCheck } from 'lucide-react';
+import { Award, BookOpen, Compass, ShieldCheck, MapPin } from 'lucide-react';
 
 interface AboutViewProps {
   studioInfo: StudioInfo;
@@ -57,6 +57,51 @@ export const AboutView: React.FC<AboutViewProps> = ({ studioInfo, language, open
         </div>
       </div>
 
+      {/* Studio Location Section (simple Google Maps embed, no API key required) */}
+      <div className="my-20 border-t border-black/10 pt-16">
+        <span className="font-sans text-[10px] uppercase tracking-[0.3em] font-bold text-[#8C8C8C] block mb-8">
+          {isFa ? 'موقعیت دفتر' : 'STUDIO LOCATION'}
+        </span>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {studioInfo.offices.map((office) => {
+            const addressForMap = isFa ? office.addressFa : office.addressEn;
+            const mapSrc = `https://www.google.com/maps?q=${encodeURIComponent(
+              addressForMap
+            )}&output=embed`;
+            return (
+              <div key={office.cityEn} className="flex flex-col border border-black/10 bg-[#F4F1EE]">
+                <div className="w-full h-72 sm:h-80">
+                  <iframe
+                    src={mapSrc}
+                    title={isFa ? office.cityFa : office.cityEn}
+                    className="w-full h-full grayscale-[20%]"
+                    style={{ border: 0 }}
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                  />
+                </div>
+                <div className="p-6 flex flex-col gap-2">
+                  <div className="flex items-center gap-2">
+                    <MapPin className="w-4 h-4 text-[#1C1C1C] shrink-0" />
+                    <h3 className="text-lg font-light italic text-[#1C1C1C] font-serif">
+                      {isFa ? office.cityFa : office.cityEn}
+                    </h3>
+                  </div>
+                  <p className="text-xs text-[#4A4A4A] italic leading-relaxed">
+                    {isFa ? office.addressFa : office.addressEn}
+                  </p>
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 mt-2 font-sans text-[10px] uppercase tracking-[0.2em] text-[#8C8C8C] font-bold">
+                    <span>{office.phone}</span>
+                    <span className="hidden sm:inline">/</span>
+                    <span>{office.email}</span>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
       {/* Awards & Recognition */}
       <div className="my-20 border-t border-black/10 pt-16">
         <span className="font-sans text-[10px] uppercase tracking-[0.3em] font-bold text-[#8C8C8C] block mb-8">
@@ -102,3 +147,4 @@ export const AboutView: React.FC<AboutViewProps> = ({ studioInfo, language, open
     </div>
   );
 };
+
