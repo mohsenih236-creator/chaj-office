@@ -1,5 +1,5 @@
 export type Language = 'EN' | 'FA';
-export type ViewMode = 'project-detail' | 'projects-list' | 'about' | 'services' | 'contact';
+export type ViewMode = 'home' | 'project-detail' | 'projects-list' | 'about' | 'services' | 'contact';
 export type ProjectCategory =
   | 'All'
   | 'Commercial'
