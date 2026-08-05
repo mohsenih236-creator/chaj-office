@@ -56,7 +56,7 @@ export const Home: React.FC<HomeProps> = ({
         <img
           src="/images/chaj-logo.png"
           alt="CHAJ Architecture Group"
-          className="w-[190px] sm:w-[230px] md:w-[270px] animate-chaj-logo"
+          className="w-[220px] sm:w-[270px] md:w-[320px] animate-chaj-logo"
         />
       </div>
 
