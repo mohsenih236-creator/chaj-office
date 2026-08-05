@@ -62,7 +62,7 @@ export const Header: React.FC<HeaderProps> = ({
         className="group flex flex-row sm:flex-row sm:items-end gap-2 text-left cursor-pointer focus:outline-none"
       >
         <img
-          src="/images/05-sun-8-1.jpg"
+          src="/images/heder sait copy.jpg"
           alt="CHAJ Group Logo"
           className="h-10 w-10 object-cover rounded-full"
         />
