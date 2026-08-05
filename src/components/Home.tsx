@@ -28,24 +28,38 @@ export const Home: React.FC<HomeProps> = ({
     return () => clearTimeout(timer);
   }, []);
 
-  const items: {
-    labelEn: string;
-    labelFa: string;
-    action: () => void;
-  }[] = [
-    { labelEn: 'Projects', labelFa: 'پروژه‌ها', action: onProjects },
-    { labelEn: 'About', labelFa: 'درباره ما', action: onAbout },
-    { labelEn: 'Services', labelFa: 'خدمات', action: onServices },
-    { labelEn: 'Contact', labelFa: 'تماس با ما', action: onContact }
+  const items = [
+    {
+      labelEn: 'PROJECTS',
+      labelFa: 'پروژه‌ها',
+      action: onProjects
+    },
+    {
+      labelEn: 'ABOUT',
+      labelFa: 'درباره ما',
+      action: onAbout
+    },
+    {
+      labelEn: 'SERVICES',
+      labelFa: 'خدمات',
+      action: onServices
+    },
+    {
+      labelEn: 'CONTACT',
+      labelFa: 'تماس با ما',
+      action: onContact
+    }
   ];
 
   return (
     <div
       id="home-landing"
-      className="relative min-h-screen overflow-hidden bg-[#F4F1EE]"
+      className="relative min-h-screen overflow-hidden bg-[#F4F1EE] text-[#111111]"
     >
 
-      {/* CHAJ LOGO INTRO */}
+      {/* =========================
+          CHAJ INTRO
+      ========================= */}
       <div
         className={`absolute inset-0 z-50 flex items-center justify-center bg-[#F4F1EE] transition-opacity duration-1000 ${
           introFinished
@@ -60,38 +74,126 @@ export const Home: React.FC<HomeProps> = ({
         />
       </div>
 
-      {/* MAIN NAVIGATION */}
-      <div
-        className={`min-h-screen pt-20 flex flex-col md:flex-row items-stretch justify-center transition-opacity duration-1000 ${
+
+      {/* =========================
+          MAIN HOME
+      ========================= */}
+      <main
+        className={`relative min-h-screen flex items-center justify-center px-8 sm:px-12 md:px-20 lg:px-32 transition-opacity duration-1000 ${
           introFinished ? 'opacity-100' : 'opacity-0'
         }`}
       >
-        {items.map((item, idx) => (
-          <button
-            key={item.labelEn}
-            onClick={item.action}
-            className={`group flex-1 flex items-center justify-center py-16 md:py-0 cursor-pointer transition-colors duration-500 hover:bg-black/[0.025] border-black/10 ${
-              idx === 0
-                ? 'border-b md:border-b-0 md:border-r'
-                : ''
-            } ${
-              idx > 0 && idx < items.length - 1
-                ? 'border-b md:border-b-0 md:border-r md:border-l'
-                : ''
-            } ${
-              idx === items.length - 1
-                ? 'md:border-l'
-                : ''
-            }`}
+
+        <div className="relative w-full max-w-[1050px] h-[620px] sm:h-[650px]">
+
+          {/* =========================
+              CHAJ SYMBOL / TOP BAR
+          ========================= */}
+
+          <div className="absolute top-[35px] left-1/2 -translate-x-1/2 w-[55%] sm:w-[53%] md:w-[52%]">
+
+            {/* diagonal upper bar */}
+            <div
+              className="absolute left-0 top-0 w-full h-[28px] sm:h-[32px] md:h-[38px] bg-black origin-left"
+              style={{
+                transform: 'rotate(15deg)'
+              }}
+            />
+
+            {/* vertical CHAJ stem */}
+            <div className="absolute right-[10%] top-[20px] w-[30px] sm:w-[34px] md:w-[38px] h-[340px] bg-black" />
+
+            {/* small horizontal detail */}
+            <div className="absolute right-[4%] top-[55px] w-[125px] sm:w-[140px] md:w-[155px] h-[5px] bg-black" />
+
+            {/* small vertical detail */}
+            <div className="absolute right-[4%] top-[55px] w-[5px] h-[45px] bg-black" />
+
+          </div>
+
+
+          {/* =========================
+              NAVIGATION AREA
+          ========================= */}
+
+          <div
+            className="absolute left-[22%] right-[22%] bottom-[55px] top-[160px] grid grid-cols-4"
           >
-            <span
-              className="font-serif italic text-xl sm:text-2xl md:text-3xl text-[#1C1C1C] group-hover:opacity-40 transition-opacity duration-500 tracking-tight"
-            >
-              {isFa ? item.labelFa : item.labelEn}
-            </span>
-          </button>
-        ))}
-      </div>
+
+            {items.map((item, index) => (
+
+              <button
+                key={item.labelEn}
+                onClick={item.action}
+                className={`
+                  group relative h-full
+                  flex items-center justify-center
+                  cursor-pointer
+                  transition-all duration-500
+                  ${index !== 0 ? 'border-l border-black' : ''}
+                `}
+              >
+
+                {/* Hover background */}
+                <span
+                  className="
+                    absolute inset-0
+                    bg-black/[0.025]
+                    opacity-0
+                    group-hover:opacity-100
+                    transition-opacity duration-500
+                  "
+                />
+
+                {/* Vertical text */}
+                <span
+                  className="
+                    relative z-10
+                    flex flex-col
+                    items-center justify-center
+                    text-[13px] sm:text-[14px] md:text-[15px]
+                    font-normal
+                    tracking-[0.28em]
+                    leading-[1.55]
+                    text-[#111111]
+                    transition-opacity duration-500
+                    group-hover:opacity-40
+                  "
+                >
+                  {(isFa ? item.labelFa : item.labelEn)
+                    .split('')
+                    .map((char, charIndex) => (
+                      <span key={charIndex}>
+                        {char === ' ' ? '\u00A0' : char}
+                      </span>
+                    ))}
+                </span>
+
+              </button>
+
+            ))}
+
+          </div>
+
+
+          {/* =========================
+              BOTTOM LINE
+          ========================= */}
+
+          <div
+            className="
+              absolute
+              left-[22%]
+              right-[22%]
+              bottom-[55px]
+              h-px
+              bg-black
+            "
+          />
+
+        </div>
+
+      </main>
     </div>
   );
 };
