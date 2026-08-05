@@ -64,10 +64,13 @@ export const AboutView: React.FC<AboutViewProps> = ({ studioInfo, language, open
         </span>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {studioInfo.offices.map((office) => {
-            const addressForMap = isFa ? office.addressFa : office.addressEn;
-            const mapSrc = `https://www.google.com/maps?q=${encodeURIComponent(
-              addressForMap
-            )}&output=embed`;
+            const hasCoords =
+              typeof office.latitude === 'number' && typeof office.longitude === 'number';
+            const mapSrc = hasCoords
+              ? `https://www.google.com/maps?q=${office.latitude},${office.longitude}&z=17&output=embed`
+              : `https://www.google.com/maps?q=${encodeURIComponent(
+                  isFa ? office.addressFa : office.addressEn
+                )}&output=embed`;
             return (
               <div key={office.cityEn} className="flex flex-col border border-black/10 bg-[#F4F1EE]">
                 <div className="w-full h-72 sm:h-80">
