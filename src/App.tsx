@@ -10,6 +10,7 @@ import {
 import { projects, studioInfo } from './data/projects';
 import { Language } from './types';
 import { Header } from './components/Header';
+import { Home } from './components/Home';
 import { ProjectHero } from './components/ProjectHero';
 import { ProjectMeta } from './components/ProjectMeta';
 import { EditorialSections } from './components/EditorialSections';
@@ -44,6 +45,30 @@ interface SharedState {
   };
   onOpenImage: (url: string, caption: string) => void;
   onOpenGallery: (images: LightboxImage[], startIndex?: number) => void;
+}
+
+// New: the landing page shown at "/" — a minimal menu of Projects / About /
+// Services / Contact, instead of dropping the visitor straight into a project.
+function HomePage({ language, setContactModalOpen }: SharedState) {
+  const navigate = useNavigate();
+  return (
+    <Home
+      language={language}
+      onProjects={() => {
+        navigate('/projects');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }}
+      onAbout={() => {
+        navigate('/about');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }}
+      onServices={() => {
+        navigate('/services');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }}
+      onContact={() => setContactModalOpen(true)}
+    />
+  );
 }
 
 function ProjectDetailPage({ language, onOpenImage, onOpenGallery }: SharedState) {
@@ -203,10 +228,11 @@ function AppShell() {
             ? 'about'
             : window.location.pathname.startsWith('/services')
             ? 'services'
-            : 'project-detail'
+            : 'home'
         }
         setActiveView={(view) => {
-          if (view === 'project-detail') goTo(`/projects/${slugify(projects[0].id)}`);
+          if (view === 'home') goTo('/');
+          else if (view === 'project-detail') goTo(`/projects/${slugify(projects[0].id)}`);
           else if (view === 'projects-list') goTo('/projects');
           else if (view === 'about') goTo('/about');
           else if (view === 'services') goTo('/services');
@@ -218,16 +244,19 @@ function AppShell() {
 
       <main className="w-full">
         <Routes>
-          <Route path="/" element={<Navigate to={`/projects/${slugify(projects[0].id)}`} replace />} />
+          <Route path="/" element={<HomePage {...shared} />} />
           <Route path="/projects" element={<ProjectsListPage {...shared} />} />
           <Route path="/projects/:slug" element={<ProjectDetailPage {...shared} />} />
           <Route path="/about" element={<AboutPage {...shared} />} />
           <Route path="/services" element={<ServicesPage {...shared} />} />
-          <Route path="*" element={<Navigate to="/projects" replace />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
 
-      <Footer language={language} openContact={() => setContactModalOpen(true)} />
+      {/* Footer hidden on the minimal home landing page */}
+      {window.location.pathname !== '/' && (
+        <Footer language={language} openContact={() => setContactModalOpen(true)} />
+      )}
 
       <ContactModal
         isOpen={contactModalOpen}
