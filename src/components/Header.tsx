@@ -55,10 +55,10 @@ export const Header: React.FC<HeaderProps> = ({
           : 'bg-[#F4F1EE]/95 backdrop-blur-sm border-black/10'
       }`}
     >
-{/* Brand Logo */}
+{/* Brand Logo — now returns to the Home landing page */}
       <button
         id="header-brand-logo"
-        onClick={() => setActiveView('project-detail')}
+        onClick={() => setActiveView('home')}
         className="group flex flex-row sm:flex-row sm:items-end gap-2 text-left cursor-pointer focus:outline-none"
       >
         <img
@@ -146,3 +146,4 @@ export const Header: React.FC<HeaderProps> = ({
     </header>
   );
 };
+
