@@ -73,7 +73,9 @@ export const studioInfo: StudioInfo = {
       addressEn: "No. 47, Royal Mall Complex, Fereydounkenar to Babolsar road, Mazandaran, Iran",
       addressFa: "مازندران، جاده فریدونکنار به بابلسر مجتمع رویال مال ، پلاک 47",
       phone: "+98 9001112478",
-      email: "sadeghlagharei@gmail.com"
+      email: "sadeghlagharei@gmail.com",
+      latitude: 36.692692425588945,
+      longitude: 52.59098739143947
     }
   ]
 };
