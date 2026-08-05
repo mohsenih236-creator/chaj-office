@@ -136,5 +136,9 @@ export interface StudioInfo {
     addressFa: string;
     phone: string;
     email: string;
+    // Optional: precise GPS coordinates for an accurate map pin.
+    // If present, the About page map uses these instead of the text address.
+    latitude?: number;
+    longitude?: number;
   }[];
 }
