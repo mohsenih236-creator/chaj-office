@@ -99,7 +99,7 @@ export const projects: Project[] = [
     architectsFa: "ولی اله لاغری فیروزجائی و صادق لاغری فیروزجائی",
     presenter: "Hossein Mohseni",
     presenterFa: "حسین محسنی",
-    software: "3ds Max, Revit"
+    software: "3ds Max, Revit",
     heroImage: "/images/shirvani-render-sterit.jpg",
     heroImages: [
       "/images/shirvani-north-frount.jpg",
@@ -307,7 +307,7 @@ export const projects: Project[] = [
     architectsFa: "ولی اله لاغری فیروزجائی و صادق لاغری فیروزجائی",
     presenter: "Hossein Mohseni",
     presenterFa: "حسین محسنی",
-    software: "Revit, 3ds Max"
+    software: "Revit, 3ds Max",
     heroImage: "/images/12.jpg",
     heroImages: [
       "/images/12.jpg",
