@@ -50,7 +50,7 @@ export const LightboxModal: React.FC<LightboxModalProps> = ({
       {/* Top Bar Controls */}
       <div className="flex justify-between items-center z-10">
         <div className="text-white/80 font-sans text-[10px] uppercase tracking-[0.25em]">
-          CHAJ OFFICE • INSPECTOR VIEW
+          CHAJ GROUP • INSPECTOR VIEW
           {hasMultiple && (
             <span className="ml-3 text-white/50">
               {currentIndex + 1} / {images.length}
