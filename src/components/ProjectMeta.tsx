@@ -33,7 +33,7 @@ export const ProjectMeta: React.FC<ProjectMetaProps> = ({ project, language }) =
           </p>
 
           <div className="mt-8 pt-6 border-t border-black/10 flex flex-wrap gap-4 font-sans text-[10px] uppercase tracking-[0.25em] text-[#8C8C8C]">
-            <span>CHAJ Office Architectural Record</span>
+            <span>CHAJ GROUP Architectural Record</span>
             <span>•</span>
             <span>Ref ID: #{project.id.toUpperCase()}</span>
           </div>
