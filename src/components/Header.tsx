@@ -63,14 +63,14 @@ export const Header: React.FC<HeaderProps> = ({
       >
         <img
           src="/images/heder-sait-copy.jpg"
-          alt="CHAJ Group Logo"
+          alt="CHAJ GROUP Logo"
           className="h-10 w-10 object-cover rounded-full"
         />
         <span className="font-serif font-normal text-2xl md:text-3xl tracking-tight text-[#1C1C1C] group-hover:opacity-80 transition-opacity">
           CHAJ Group
         </span>
         <span className="hidden sm:inline-block text-[9px] uppercase tracking-[0.25em] font-sans font-bold text-[#8C8C8C] px-2 py-0.5 border border-black/10 rounded-xs mb-0.5">
-          {isFa ? 'دفتر معماری' : 'ARCH & RESEARCH'}
+          {isFa ? 'گروه معماری' : 'ARCH & RESEARCH'}
         </span>
       </button>
 
@@ -138,7 +138,7 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
           ))}
           <div className="pt-2 flex justify-between items-center text-[10px] uppercase tracking-[0.2em] font-sans text-[#8C8C8C]">
-            <span>{isFa ? 'دفتر معماری چاج — مازندران / یزد' : 'CHAJ Office — Mazandaran / Babolsar'}</span>
+            <span>{isFa ? 'گروه معماری چاج-مازندران/ بابلسر' : 'CHAJ GROUP — Mazandaran / Babolsar'}</span>
             <span className="font-mono">2024</span>
           </div>
         </div>
