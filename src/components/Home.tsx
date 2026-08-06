@@ -51,6 +51,41 @@ export const Home: React.FC<HomeProps> = ({
   const pillarX = 72;
   const pillarTopY = 28; // where the beam bends into the pillar
   const pillarBottomY = 100;
+  const beamStrokeWidth = 8;
+
+  // --- Continuation of the roof beam PAST the pillar. ---
+  // In the reference, the solid beam bends into the pillar, and on the far side
+  // of the pillar the SAME diagonal keeps going, but opens up into two thin
+  // parallel lines (the top and bottom edge of the beam), capped off at the
+  // right edge of the box. These are derived geometrically from the beam's own
+  // direction and thickness so the slope matches the main beam exactly instead
+  // of being eyeballed.
+  const beamDx = pillarX - 0;
+  const beamDy = pillarTopY - 0;
+  const beamLen = Math.sqrt(beamDx * beamDx + beamDy * beamDy);
+  const beamUx = beamDx / beamLen;
+  const beamUy = beamDy / beamLen;
+  // perpendicular unit vector (rotate direction 90°)
+  const perpX = -beamUy;
+  const perpY = beamUx;
+  const halfThickness = beamStrokeWidth / 2;
+
+  const continuationEndX = 100; // right edge of the box
+
+  const topStart = {
+    x: pillarX - halfThickness * perpX,
+    y: pillarTopY - halfThickness * perpY
+  };
+  const bottomStart = {
+    x: pillarX + halfThickness * perpX,
+    y: pillarTopY + halfThickness * perpY
+  };
+
+  const tTop = (continuationEndX - topStart.x) / beamUx;
+  const topEnd = { x: continuationEndX, y: topStart.y + tTop * beamUy };
+
+  const tBottom = (continuationEndX - bottomStart.x) / beamUx;
+  const bottomEnd = { x: continuationEndX, y: bottomStart.y + tBottom * beamUy };
 
   // Vertical zone (% of box) where each word/letters sits — same for all 4 words.
   const wordZoneTop = 41;
@@ -91,7 +126,7 @@ export const Home: React.FC<HomeProps> = ({
               points={`0,0 ${pillarX},${pillarTopY}`}
               fill="none"
               stroke="#1C1C1C"
-              strokeWidth="8"
+              strokeWidth={beamStrokeWidth}
               strokeLinecap="square"
             />
             <line
@@ -100,19 +135,32 @@ export const Home: React.FC<HomeProps> = ({
               x2={pillarX}
               y2={pillarBottomY}
               stroke="#1C1C1C"
-              strokeWidth="8"
+              strokeWidth={beamStrokeWidth}
             />
-            {/* Small decorative notch/gap accent at the beam-to-pillar joint */}
-            <rect
-              x={pillarX + 1}
-              y={pillarTopY - 4}
-              width="7"
-              height="4.5"
-              fill="#F4F1EE"
+
+            {/* Continuation of the beam past the pillar: opens into two thin
+               parallel lines along the exact same slope, capped at the end. */}
+            <line
+              x1={topStart.x}
+              y1={topStart.y}
+              x2={topEnd.x}
+              y2={topEnd.y}
+              stroke="#1C1C1C"
+              strokeWidth="0.6"
             />
-            <path
-              d={`M ${pillarX + 1} ${pillarTopY - 4} h 7 v 4.5`}
-              fill="none"
+            <line
+              x1={bottomStart.x}
+              y1={bottomStart.y}
+              x2={bottomEnd.x}
+              y2={bottomEnd.y}
+              stroke="#1C1C1C"
+              strokeWidth="0.6"
+            />
+            <line
+              x1={topEnd.x}
+              y1={topEnd.y}
+              x2={bottomEnd.x}
+              y2={bottomEnd.y}
               stroke="#1C1C1C"
               strokeWidth="0.6"
             />
