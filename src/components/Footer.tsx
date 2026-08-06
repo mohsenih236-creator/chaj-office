@@ -75,7 +75,7 @@ export const Footer: React.FC<FooterProps> = ({ language, openContact }) => {
         {/* Bottom Bar */}
         <div className="md:col-span-12 pt-8 mt-4 border-t border-black/10 flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="font-sans text-[10px] uppercase tracking-[0.25em] text-[#8C8C8C]">
-            © 2024 CHAJ OFFICE. {isFa ? 'تمامی حقوق محفوظ است.' : 'ALL RIGHTS RESERVED.'}
+            © 2024 CHAJ GROUP. {isFa ? 'تمامی حقوق محفوظ است.' : 'ALL RIGHTS RESERVED.'}
           </p>
 
           <button
