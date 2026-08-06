@@ -37,28 +37,28 @@ export const Home: React.FC<HomeProps> = ({
     { labelEn: 'Contact', labelFa: 'تماس با ما', action: onContact }
   ];
 
-  // Horizontal position (as % of container width) of each of the 5 boundary
-  // lines. Gaps between consecutive lines are where the 4 nav words live.
-  const lineX = [28, 38, 48, 58, 68]; // percent
-  // How tall each boundary line is (staggered, tallest on the left) — matches
-  // the reference image's "stepped" look. All lines share the same bottom.
-  const lineTopY = [31.5, 37.1, 42.9, 48.6, 48.6]; // percent (y-top)
-  const lineBottomY = 92.9; // percent (shared bottom for all 5 lines)
-  // The thick diagonal beam + its vertical pillar (decorative only). The
-  // pillar sits exactly above the 5th boundary line (lineX[4]) and continues
-  // seamlessly into it.
-  const pillarX = lineX[4];
-  const pillarTopY = 8;
-  const pillarBottomY = lineTopY[4];
-  // A short, separate decorative stub line further right (unlabeled), like
-  // the floating short line in the reference image.
-  const stubX = 72;
-  const stubTopY = 54;
-  const stubBottomY = 74;
+  // --- Geometry (all values are % of the diagram box, matching the reference proportions) ---
+  // 4 thin boundary lines mark the left edges of PROJECTS / ABOUT / SERVICES / CONTACT.
+  // The thick pillar (below) forms the RIGHT edge of CONTACT — note the CONTACT gap
+  // (58 -> 78) is roughly double the width of the other three gaps, matching the reference.
+  const thinLineX = [28, 38, 48, 58];
+  const thinLineTopY = [18, 22, 26, 29]; // staggered — tallest (smallest y) on the left
+  const lineBottomY = 92; // shared bottom for the 4 thin lines AND the pillar
 
-  // Vertical zone (as % of container height) where the clickable word sits.
-  const wordZoneTop = 54.3;
-  const wordZoneBottom = 92.9;
+  const pillarX = 78;
+  const pillarTopY = 5; // where the diagonal beam bends into the vertical pillar
+
+  // Short floating decorative stub line, further right, unlabeled (not clickable).
+  const stubX = 88;
+  const stubTopY = 31;
+  const stubBottomY = 72;
+
+  // Vertical zone (% of diagram box) where each word/letters is centered.
+  // Kept the same across all four gaps, roughly matching the reference.
+  const wordZoneTop = 34;
+  const wordZoneBottom = 63;
+
+  const gapEdges = [...thinLineX, pillarX]; // 5 edges -> 4 gaps
 
   return (
     <div id="home-landing" className="relative min-h-screen overflow-hidden bg-[#F4F1EE]">
@@ -90,7 +90,7 @@ export const Home: React.FC<HomeProps> = ({
             className="absolute inset-0 w-full h-full pointer-events-none"
             aria-hidden="true"
           >
-            {/* Diagonal roof beam bending into the vertical pillar */}
+            {/* Diagonal roof beam bending into the vertical pillar (uniformly thick all the way down) */}
             <polyline
               points={`150,20 ${pillarX * 10},${pillarTopY * 7}`}
               fill="none"
@@ -102,17 +102,17 @@ export const Home: React.FC<HomeProps> = ({
               x1={pillarX * 10}
               y1={pillarTopY * 7}
               x2={pillarX * 10}
-              y2={pillarBottomY * 7}
+              y2={lineBottomY * 7}
               stroke="#1C1C1C"
               strokeWidth="18"
             />
 
-            {/* The 5 staggered boundary lines */}
-            {lineX.map((x, i) => (
+            {/* The 4 thin staggered boundary lines */}
+            {thinLineX.map((x, i) => (
               <line
                 key={x}
                 x1={x * 10}
-                y1={lineTopY[i] * 7}
+                y1={thinLineTopY[i] * 7}
                 x2={x * 10}
                 y2={lineBottomY * 7}
                 stroke="#1C1C1C"
@@ -133,8 +133,8 @@ export const Home: React.FC<HomeProps> = ({
 
           {/* Clickable word zones, positioned in the gaps between boundary lines */}
           {items.map((item, idx) => {
-            const left = lineX[idx];
-            const width = lineX[idx + 1] - lineX[idx];
+            const left = gapEdges[idx];
+            const width = gapEdges[idx + 1] - gapEdges[idx];
             return (
               <button
                 key={item.labelEn}
@@ -153,7 +153,7 @@ export const Home: React.FC<HomeProps> = ({
                     {item.labelFa}
                   </span>
                 ) : (
-                  <span className="flex flex-col items-center leading-tight font-sans font-bold uppercase text-[11px] sm:text-xs tracking-widest text-[#1C1C1C]">
+                  <span className="flex flex-col items-center leading-tight font-mono font-medium uppercase text-[11px] sm:text-xs tracking-[0.15em] text-[#1C1C1C]">
                     {item.labelEn
                       .toUpperCase()
                       .split('')
