@@ -37,28 +37,24 @@ export const Home: React.FC<HomeProps> = ({
     { labelEn: 'Contact', labelFa: 'تماس با ما', action: onContact }
   ];
 
-  // --- Geometry (all values are % of the diagram box, matching the reference proportions) ---
-  // 4 thin boundary lines mark the left edges of PROJECTS / ABOUT / SERVICES / CONTACT.
-  // The thick pillar (below) forms the RIGHT edge of CONTACT — note the CONTACT gap
-  // (58 -> 78) is roughly double the width of the other three gaps, matching the reference.
-  const thinLineX = [28, 38, 48, 58];
-  const thinLineTopY = [18, 22, 26, 29]; // staggered — tallest (smallest y) on the left
-  const lineBottomY = 92; // shared bottom for the 4 thin lines AND the pillar
+  // --- Geometry, all in % of the diagram box (0-100), measured directly from the
+  // reference image. SVG viewBox is "0 0 100 100" so these values can be used as-is. ---
 
-  const pillarX = 78;
-  const pillarTopY = 5; // where the diagonal beam bends into the vertical pillar
+  // 5 thin lines create the 4 equal-width word gaps (Projects / About / Services / Contact).
+  const thinLineX = [5, 18, 32, 45, 58];
+  const thinLineTopY = [23, 27, 31, 34, 38]; // staggered, tallest (smallest y) on the left
+  const thinLineBottomY = 91; // shared bottom for all 5 thin lines
 
-  // Short floating decorative stub line, further right, unlabeled (not clickable).
-  const stubX = 88;
-  const stubTopY = 31;
-  const stubBottomY = 72;
+  // The thick pillar sits separately, further right, with an empty unlabeled gap
+  // between it and the 5th thin line. It bends out of the diagonal roof beam at
+  // the top, and overhangs slightly LOWER than the thin lines at the bottom.
+  const pillarX = 72;
+  const pillarTopY = 28; // where the beam bends into the pillar
+  const pillarBottomY = 100;
 
-  // Vertical zone (% of diagram box) where each word/letters is centered.
-  // Kept the same across all four gaps, roughly matching the reference.
-  const wordZoneTop = 34;
-  const wordZoneBottom = 63;
-
-  const gapEdges = [...thinLineX, pillarX]; // 5 edges -> 4 gaps
+  // Vertical zone (% of box) where each word/letters sits — same for all 4 words.
+  const wordZoneTop = 41;
+  const wordZoneBottom = 79;
 
   return (
     <div id="home-landing" className="relative min-h-screen overflow-hidden bg-[#F4F1EE]">
@@ -82,59 +78,63 @@ export const Home: React.FC<HomeProps> = ({
         }`}
       >
         {/* Desktop / tablet: architectural diagram layout */}
-        <div className="hidden md:block relative w-full max-w-5xl aspect-[10/7] mx-auto px-6">
+        <div className="hidden md:block relative w-full max-w-2xl aspect-[6/5] mx-auto px-6">
           {/* Decorative beam + divider lines (purely visual, sits behind the buttons) */}
           <svg
-            viewBox="0 0 1000 700"
+            viewBox="0 0 100 100"
             preserveAspectRatio="none"
             className="absolute inset-0 w-full h-full pointer-events-none"
             aria-hidden="true"
           >
-            {/* Diagonal roof beam bending into the vertical pillar (uniformly thick all the way down) */}
+            {/* Diagonal roof beam bending into the vertical pillar */}
             <polyline
-              points={`150,20 ${pillarX * 10},${pillarTopY * 7}`}
+              points={`0,0 ${pillarX},${pillarTopY}`}
               fill="none"
               stroke="#1C1C1C"
-              strokeWidth="18"
+              strokeWidth="8"
               strokeLinecap="square"
             />
             <line
-              x1={pillarX * 10}
-              y1={pillarTopY * 7}
-              x2={pillarX * 10}
-              y2={lineBottomY * 7}
+              x1={pillarX}
+              y1={pillarTopY}
+              x2={pillarX}
+              y2={pillarBottomY}
               stroke="#1C1C1C"
-              strokeWidth="18"
+              strokeWidth="8"
+            />
+            {/* Small decorative notch/gap accent at the beam-to-pillar joint */}
+            <rect
+              x={pillarX + 1}
+              y={pillarTopY - 4}
+              width="7"
+              height="4.5"
+              fill="#F4F1EE"
+            />
+            <path
+              d={`M ${pillarX + 1} ${pillarTopY - 4} h 7 v 4.5`}
+              fill="none"
+              stroke="#1C1C1C"
+              strokeWidth="0.6"
             />
 
-            {/* The 4 thin staggered boundary lines */}
+            {/* The 5 thin staggered boundary lines */}
             {thinLineX.map((x, i) => (
               <line
                 key={x}
-                x1={x * 10}
-                y1={thinLineTopY[i] * 7}
-                x2={x * 10}
-                y2={lineBottomY * 7}
+                x1={x}
+                y1={thinLineTopY[i]}
+                x2={x}
+                y2={thinLineBottomY}
                 stroke="#1C1C1C"
-                strokeWidth="2"
+                strokeWidth="0.7"
               />
             ))}
-
-            {/* Short floating decorative stub line */}
-            <line
-              x1={stubX * 10}
-              y1={stubTopY * 7}
-              x2={stubX * 10}
-              y2={stubBottomY * 7}
-              stroke="#1C1C1C"
-              strokeWidth="2"
-            />
           </svg>
 
-          {/* Clickable word zones, positioned in the gaps between boundary lines */}
+          {/* Clickable word zones, positioned in the gaps between the thin lines */}
           {items.map((item, idx) => {
-            const left = gapEdges[idx];
-            const width = gapEdges[idx + 1] - gapEdges[idx];
+            const left = thinLineX[idx];
+            const width = thinLineX[idx + 1] - thinLineX[idx];
             return (
               <button
                 key={item.labelEn}
@@ -153,7 +153,7 @@ export const Home: React.FC<HomeProps> = ({
                     {item.labelFa}
                   </span>
                 ) : (
-                  <span className="flex flex-col items-center leading-tight font-mono font-medium uppercase text-[11px] sm:text-xs tracking-[0.15em] text-[#1C1C1C]">
+                  <span className="flex flex-col items-center leading-tight font-mono font-medium uppercase text-xs sm:text-sm tracking-[0.1em] text-[#1C1C1C]">
                     {item.labelEn
                       .toUpperCase()
                       .split('')
