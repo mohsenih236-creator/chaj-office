@@ -57,14 +57,14 @@ export const Footer: React.FC<FooterProps> = ({ language, openContact }) => {
             </span>
             <a
               href="#privacy"
-              onClick={(e) => { e.preventDefault(); alert(isFa ? 'بیانیه حریم خصوصی گروه معماری چاج' : 'CHAJ Group Privacy Policy'); }}
+              onClick={(e) => { e.preventDefault(); alert(isFa ? 'بیانیه حریم خصوصی گروه معماری چاج' : 'CHAJ GROUP Privacy Policy'); }}
               className="font-sans text-[10px] uppercase tracking-[0.2em] font-medium text-[#1C1C1C] hover:text-[#8C8C8C] transition-colors"
             >
               {isFa ? 'حریم خصوصی' : 'Privacy Policy'}
             </a>
             <a
               href="#terms"
-              onClick={(e) => { e.preventDefault(); alert(isFa ? 'شرایط و ضوابط گروه معماری چاج' : 'CHAJ Group Terms'); }}
+              onClick={(e) => { e.preventDefault(); alert(isFa ? 'شرایط و ضوابط گروه معماری چاج' : 'CHAJ GROUP Terms'); }}
               className="font-sans text-[10px] uppercase tracking-[0.2em] font-medium text-[#1C1C1C] hover:text-[#8C8C8C] transition-colors"
             >
               {isFa ? 'شرایط استفاده' : 'Terms'}
