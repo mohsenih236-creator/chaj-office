@@ -3,7 +3,7 @@ import { Project, StudioInfo } from '../types';
 export const studioInfo: StudioInfo = {
   name: "CHAJ Group",
   taglineEn: "An architectural practice dedicated to the exploration of space, light, and materiality.",
-  taglineFa: "دفتر معماری چاج؛ پژوهش و کاوش در ماهیت فضا، نور و ماده.",
+  taglineFa: "گروه معماری چاج؛ پژوهش و کاوش در ماهیت فضا، نور و ماده.",
   aboutEn: "Chaj Architecture Group was founded in 2016 in Babolsar, Iran, by brothers Sadegh Laghaei Firouzjaei and Valiollah Laghaei Firouzjaei, with a focus on architectural design, project development, and construction.At Chaj, we see architecture as a process of discovering and creating new qualities in space. Our approach begins with understanding the context, needs, and underlying ideas of each project, and continues through architectural and interior design, detailing, 3D modeling, architectural visualization, and ultimately, project execution.We seek to establish a meaningful relationship between concept, function, form, light, material, and context in every project. The result is not simply a building, but a space shaped around people, place, and the way they live.For us, every project is an opportunity to redefine the relationship between people and space, from the initial idea to the final architectural experience.",
   aboutFa: "گروه معماری چاج در سال ۱۳۹۵ در شهر بابلسر، توسط برادران صادق لاغری فیروزجایی و ولی‌الله لاغری فیروزجایی تأسیس شد و فعالیت خود را با تمرکز بر طراحی، توسعه و اجرای پروژه‌های معماری آغاز کرد.در چاج، معماری فرآیندی برای کشف و خلق کیفیت‌های تازه در فضاست؛ فرآیندی که از شناخت بستر، نیازها و ایده آغاز می‌شود و تا طراحی معماری و داخلی، توسعه جزئیات، مدل‌سازی و شبیه‌سازی سه‌بعدی و در نهایت اجرای پروژه ادامه پیدا می‌کند.ما تلاش می‌کنیم در هر پروژه، میان ایده، عملکرد، فرم، نور، متریال و زمینه، ارتباطی معنادار ایجاد کنیم؛ تا نتیجه تنها یک بنا نباشد، بلکه فضایی متناسب با انسان، بستر و شیوه زندگی شکل بگیرد.برای ما، هر پروژه فرصتی است برای بازتعریف رابطه میان انسان و فضا؛ از نخستین ایده تا تجربه نهایی معماری.",
   principals: [
@@ -12,7 +12,7 @@ export const studioInfo: StudioInfo = {
       role: "Bachelor of Architecture",
       roleFa: "کارشناسی معماری",
       bioEn: "Specialist in architectural design and administrative protocols",
-      bioFa: "متخصص در طراحی معماری وپروتکلهای اداری",
+      bioFa: "متخصص طراحی معماری و فرآیندهای اجرایی و اداری",
       image: "/images/vali.png"
     },
     {
@@ -95,11 +95,11 @@ export const projects: Project[] = [
     statusFa: "تکمیل شده",
     area: "130 m²",
     areaFa: "130 مترمربع",
-    architects: "Valiallah lagharei & sadegh lagharei",
-    architectsFa: "ولی اله لاغری و صادق لاغری",
-    presenter: "hossein mohseni",
+    architects: "Valiollah Laghaei Firouzjaei & Sadegh Laghaei Firouzjaei",
+    architectsFa: "ولی اله لاغری فیروزجائی و صادق لاغری فیروزجائی",
+    presenter: "Hossein Mohseni",
     presenterFa: "حسین محسنی",
-    software: "3Ds max-Revite",
+    software: "3ds Max, Revit"
     heroImage: "/images/shirvani-render-sterit.jpg",
     heroImages: [
       "/images/shirvani-north-frount.jpg",
@@ -303,11 +303,11 @@ export const projects: Project[] = [
     statusFa: "در حال اجرا",
     area: "500 m²",
     areaFa: "500 مترمربع",
-    architects: "valiallah lagharei & sadegh lagharei",
-    architectsFa: "ولی اله لاغری و صادق لاغری",
-    presenter: "Hossein mohseni",
+    architects: "Valiollah Laghaei Firouzjaei & Sadegh Laghaei Firouzjaei",
+    architectsFa: "ولی اله لاغری فیروزجائی و صادق لاغری فیروزجائی",
+    presenter: "Hossein Mohseni",
     presenterFa: "حسین محسنی",
-    software: "Revit, 3Ds max",
+    software: "Revit, 3ds Max"
     heroImage: "/images/12.jpg",
     heroImages: [
       "/images/12.jpg",
