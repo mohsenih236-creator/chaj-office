@@ -71,6 +71,9 @@ export const Header: React.FC<HeaderProps> = ({
 
   const isFa = language === 'FA';
 
+  // فقط در صفحه Home منوی اصلی مخفی می‌شود
+  const isHome = activeView === 'home';
+
   return (
     <header
       id="main-header"
@@ -81,28 +84,29 @@ export const Header: React.FC<HeaderProps> = ({
       }`}
     >
 
-      {/* Brand Logo */}
+      {/* =========================
+          CHAJ GROUP LOGO
+          همیشه نمایش داده می‌شود
+      ========================== */}
       <button
         id="header-brand-logo"
-        onClick={() => {
-          setActiveView('home');
-          setMobileMenuOpen(false);
-        }}
-        className="group flex flex-row sm:flex-row sm:items-end gap-2 text-left cursor-pointer focus:outline-none"
+        onClick={() => setActiveView('home')}
+        className="group flex items-center cursor-pointer focus:outline-none"
+        aria-label="CHAJ Group Home"
       >
-        <span className="font-serif text-2xl text-[#1C1C1C]">
-          CHAJ Group
-        </span>
-
-        <span className="text-[9px] uppercase tracking-[0.2em] text-[#8C8C8C] border border-black/10 px-2 py-1">
-          {isFa ? 'گروه معماری' : 'ARCH & RESEARCH'}
-        </span>
+        <img
+          src="/images/heder-sait-copy.jpg"
+          alt="CHAJ Group"
+          className="h-10 md:h-11 w-auto object-contain"
+        />
       </button>
 
 
-      {/* Desktop Navigation
-          فقط در صفحات داخلی نمایش داده می‌شود */}
-      {activeView !== 'home' && (
+      {/* =========================
+          DESKTOP NAVIGATION
+          فقط خارج از Home نمایش داده می‌شود
+      ========================== */}
+      {!isHome && (
         <nav
           id="desktop-nav"
           className="hidden md:flex items-center gap-8 lg:gap-10"
@@ -131,7 +135,10 @@ export const Header: React.FC<HeaderProps> = ({
       )}
 
 
-      {/* Language Switcher & Controls */}
+      {/* =========================
+          RIGHT SIDE CONTROLS
+          همیشه نمایش داده می‌شود
+      ========================== */}
       <div className="flex items-center gap-4">
 
         {/* Language Toggle */}
@@ -148,15 +155,15 @@ export const Header: React.FC<HeaderProps> = ({
           }
         >
           <Globe className="w-3.5 h-3.5" />
+
           <span>
             {language === 'EN' ? 'EN / FA' : 'FA / EN'}
           </span>
         </button>
 
 
-        {/* Mobile Menu Button
-            در Home مخفی می‌شود */}
-        {activeView !== 'home' && (
+        {/* Mobile Menu Button */}
+        {!isHome && (
           <button
             id="mobile-menu-trigger"
             onClick={() =>
@@ -176,8 +183,11 @@ export const Header: React.FC<HeaderProps> = ({
       </div>
 
 
-      {/* Mobile Drawer Menu */}
-      {activeView !== 'home' && mobileMenuOpen && (
+      {/* =========================
+          MOBILE DRAWER
+          فقط خارج از Home
+      ========================== */}
+      {!isHome && mobileMenuOpen && (
         <div
           id="mobile-nav-drawer"
           className="md:hidden fixed inset-x-0 top-20 bg-[#F4F1EE] border-b border-black/10 shadow-xl px-6 py-8 flex flex-col gap-6 animate-fade-in"
