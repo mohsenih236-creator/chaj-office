@@ -1,74 +1,79 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Project, Language } from '../types';
 import {
-  HardHat,
-  Maximize2,
-  Play,
   ChevronLeft,
   ChevronRight,
-  X
+  X,
+  Play,
+  Maximize2,
 } from 'lucide-react';
 
 interface ExecutionGalleryProps {
   project: Project;
   language: Language;
-  onOpenImage: (url: string, caption: string) => void;
+
+  // Kept for compatibility with the current parent component.
+  // The gallery is now handled internally.
+  onOpenImage?: (url: string, caption: string) => void;
 }
 
 export const ExecutionGallery: React.FC<ExecutionGalleryProps> = ({
   project,
   language,
-  onOpenImage
 }) => {
   const isFa = language === 'FA';
 
-  const [activeMedia, setActiveMedia] = useState<number | null>(null);
-  const [activeImage, setActiveImage] = useState(0);
-
-  if (!project.executionPhotos || project.executionPhotos.length === 0) {
-    return null;
-  }
-
-  const titleEn =
-    project.executionSectionTitleEn || 'Execution Phase';
-
-  const titleFa =
-    project.executionSectionTitleFa || 'مراحل اجرا';
-
-  const narrativeEn =
-    project.executionNarrativeEn || '';
-
-  const narrativeFa =
-    project.executionNarrativeFa || '';
+  const [activeStage, setActiveStage] = useState<number | null>(null);
+  const [activeImage, setActiveImage] = useState<number>(0);
 
   /*
-   * Return all images belonging to one execution stage.
+   * ------------------------------------------------------------
+   * GET ALL IMAGES OF ONE EXECUTION STAGE
+   * ------------------------------------------------------------
    *
    * imageUrl is always the first image.
-   * galleryImages are additional images.
+   * galleryImages are added after it.
    */
-  const getImages = (media: typeof project.executionPhotos[number]) => {
+  const getImages = (stage: NonNullable<Project['executionPhotos']>[number]) => {
     return [
-      media.imageUrl,
-      ...(media.galleryImages || [])
+      stage.imageUrl,
+      ...(stage.galleryImages || []),
     ];
   };
 
-  const openGallery = (mediaIndex: number) => {
-    setActiveMedia(mediaIndex);
+  /*
+   * ------------------------------------------------------------
+   * OPEN / CLOSE GALLERY
+   * ------------------------------------------------------------
+   */
+
+  const openGallery = (stageIndex: number) => {
+    setActiveStage(stageIndex);
     setActiveImage(0);
   };
 
   const closeGallery = () => {
-    setActiveMedia(null);
+    setActiveStage(null);
     setActiveImage(0);
   };
 
-  const nextImage = () => {
-    if (activeMedia === null) return;
+  /*
+   * ------------------------------------------------------------
+   * NEXT / PREVIOUS IMAGE
+   * ------------------------------------------------------------
+   */
 
-    const media = project.executionPhotos![activeMedia];
-    const images = getImages(media);
+  const nextImage = () => {
+    if (
+      activeStage === null ||
+      !project.executionPhotos
+    ) {
+      return;
+    }
+
+    const images = getImages(
+      project.executionPhotos[activeStage]
+    );
 
     setActiveImage((current) =>
       current < images.length - 1 ? current + 1 : 0
@@ -76,48 +81,125 @@ export const ExecutionGallery: React.FC<ExecutionGalleryProps> = ({
   };
 
   const previousImage = () => {
-    if (activeMedia === null) return;
+    if (
+      activeStage === null ||
+      !project.executionPhotos
+    ) {
+      return;
+    }
 
-    const media = project.executionPhotos![activeMedia];
-    const images = getImages(media);
+    const images = getImages(
+      project.executionPhotos[activeStage]
+    );
 
     setActiveImage((current) =>
       current > 0 ? current - 1 : images.length - 1
     );
   };
 
-  const activeMediaData =
-    activeMedia !== null
-      ? project.executionPhotos[activeMedia]
+  /*
+   * ------------------------------------------------------------
+   * KEYBOARD CONTROLS
+   * ------------------------------------------------------------
+   */
+
+  useEffect(() => {
+    if (activeStage === null) {
+      return;
+    }
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        closeGallery();
+      }
+
+      if (event.key === 'ArrowRight') {
+        nextImage();
+      }
+
+      if (event.key === 'ArrowLeft') {
+        previousImage();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    // Prevent background page scrolling while gallery is open.
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = '';
+    };
+  }, [activeStage]);
+
+  /*
+   * ------------------------------------------------------------
+   * NO EXECUTION PHOTOS
+   * ------------------------------------------------------------
+   */
+
+  if (
+    !project.executionPhotos ||
+    project.executionPhotos.length === 0
+  ) {
+    return null;
+  }
+
+  /*
+   * ------------------------------------------------------------
+   * ACTIVE STAGE
+   * ------------------------------------------------------------
+   */
+
+  const activeStageData =
+    activeStage !== null
+      ? project.executionPhotos[activeStage]
       : null;
 
   const activeImages =
-    activeMediaData
-      ? getImages(activeMediaData)
+    activeStageData
+      ? getImages(activeStageData)
       : [];
+
+  const titleEn =
+    project.executionSectionTitleEn ||
+    'Execution Phase';
+
+  const titleFa =
+    project.executionSectionTitleFa ||
+    'مراحل اجرا';
+
+  const narrativeEn =
+    project.executionNarrativeEn || '';
+
+  const narrativeFa =
+    project.executionNarrativeFa || '';
 
   return (
     <>
+      {/* ========================================================
+          EXECUTION SECTION
+      ======================================================== */}
+
       <section
         id="execution-gallery"
         className="w-full bg-[#F4F1EE] py-24 md:py-32"
       >
         <div className="px-6 md:px-16">
 
-          {/* ================================================== */}
-          {/* HEADER */}
-          {/* ================================================== */}
+          {/* ----------------------------------------------------
+              HEADER
+          ---------------------------------------------------- */}
 
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 mb-16">
 
             <div className="md:col-span-4">
-
               <span className="text-[10px] uppercase tracking-[0.25em] text-[#8C8C8C]">
                 {isFa
-                  ? 'روند ساخت و اجرا'
+                  ? 'روند ساخت و اجرای پروژه'
                   : 'CONSTRUCTION & SITE PROGRESS'}
               </span>
-
             </div>
 
             <div className="md:col-span-8">
@@ -126,190 +208,161 @@ export const ExecutionGallery: React.FC<ExecutionGalleryProps> = ({
                 {isFa ? titleFa : titleEn}
               </h2>
 
+              {(narrativeEn || narrativeFa) && (
+                <p className="mt-6 max-w-3xl text-base md:text-lg leading-relaxed text-[#4A4A4A]">
+                  {isFa ? narrativeFa : narrativeEn}
+                </p>
+              )}
+
             </div>
 
           </div>
 
 
-          {/* ================================================== */}
-          {/* NARRATIVE */}
-          {/* ================================================== */}
-
-          {(narrativeEn || narrativeFa) && (
-
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-8 mb-20">
-
-              <div className="md:col-span-4">
-
-                <span className="text-xs uppercase tracking-[0.2em] text-[#8C8C8C]">
-                  {isFa
-                    ? 'روند ساخت'
-                    : 'CONSTRUCTION PROCESS'}
-                </span>
-
-              </div>
-
-              <div className="md:col-span-6">
-
-                <p className="text-base md:text-lg leading-relaxed text-[#4A4A4A]">
-                  {isFa
-                    ? narrativeFa
-                    : narrativeEn}
-                </p>
-
-              </div>
-
-            </div>
-
-          )}
-
-
-          {/* ================================================== */}
-          {/* EXECUTION MEDIA GRID */}
-          {/* ================================================== */}
+          {/* ----------------------------------------------------
+              EXECUTION MEDIA GRID
+          ---------------------------------------------------- */}
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
 
-            {project.executionPhotos.map((media, mediaIndex) => {
+            {project.executionPhotos.map(
+              (media, stageIndex) => {
 
-              const images = getImages(media);
-              const isVideo = media.type === 'video';
+                const images = getImages(media);
 
-              return (
+                const isVideo =
+                  media.type === 'video';
 
-                <div
-                  key={media.id}
-                  className="flex flex-col"
-                >
+                return (
+                  <article
+                    key={media.id}
+                    className="group flex flex-col cursor-pointer"
+                    onClick={() =>
+                      openGallery(stageIndex)
+                    }
+                  >
 
-                  {/* ================================================== */}
-                  {/* MAIN MEDIA */}
-                  {/* ================================================== */}
+                    {/* IMAGE / VIDEO */}
+                    <div className="relative w-full aspect-[4/3] overflow-hidden bg-[#E8E4E0] border border-black/5 shadow-xs">
 
-                  {isVideo ? (
+                      {isVideo ? (
+                        <div className="relative w-full h-full">
 
-                    <div className="w-full aspect-[4/3] bg-black overflow-hidden relative border border-black/5 shadow-xs">
+                          <video
+                            src={media.imageUrl}
+                            muted
+                            playsInline
+                            preload="metadata"
+                            className="w-full h-full object-cover"
+                          />
 
-                      <video
-                        src={media.imageUrl}
-                        controls
-                        className="w-full h-full object-cover"
-                        preload="metadata"
-                      />
+                          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
 
-                      <div className="absolute top-3 left-3 bg-[#1C1C1C]/80 text-white px-2 py-1 flex items-center gap-1.5 text-[9px] uppercase tracking-[0.2em] font-sans pointer-events-none">
+                            <div className="w-14 h-14 rounded-full bg-[#F4F1EE]/90 flex items-center justify-center">
 
-                        <Play className="w-3 h-3" />
+                              <Play
+                                className="w-5 h-5 fill-current text-[#1C1C1C] ml-1"
+                              />
 
-                        {isFa
-                          ? 'ویدیو'
-                          : 'Video'}
+                            </div>
 
-                      </div>
+                          </div>
 
-                    </div>
+                        </div>
+                      ) : (
+                        <img
+                          src={media.imageUrl}
+                          alt={
+                            isFa
+                              ? media.titleFa
+                              : media.title
+                          }
+                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                        />
+                      )}
 
-                  ) : (
 
-                    <div
-                      className="w-full aspect-[4/3] bg-[#E8E4E0] bg-cover bg-center overflow-hidden cursor-pointer group relative border border-black/5 shadow-xs hover:shadow-md transition-shadow duration-300"
-                      style={{
-                        backgroundImage: `url('${media.imageUrl}')`
-                      }}
-                      onClick={() => openGallery(mediaIndex)}
-                    >
+                      {/* ------------------------------------------------
+                          IMAGE COUNT
+                      ------------------------------------------------ */}
 
-                      {/* Hover Overlay */}
+                      {images.length > 1 && (
+                        <div className="absolute top-3 right-3 bg-[#1C1C1C]/80 text-white px-3 py-1.5 text-[9px] uppercase tracking-[0.2em] backdrop-blur-md">
+                          {images.length}{' '}
+                          {isFa
+                            ? 'تصویر'
+                            : 'IMAGES'}
+                        </div>
+                      )}
 
-                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/25 transition-colors flex items-center justify-center">
 
-                        <span className="opacity-0 group-hover:opacity-100 transition-opacity bg-[#1C1C1C] text-[#F4F1EE] px-3 py-1.5 font-sans text-[10px] uppercase tracking-[0.2em] flex items-center gap-2">
+                      {/* ------------------------------------------------
+                          HOVER VIEW
+                      ------------------------------------------------ */}
+
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500 flex items-center justify-center">
+
+                        <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-[#1C1C1C] text-[#F4F1EE] px-4 py-2 font-sans text-[10px] uppercase tracking-[0.2em] flex items-center gap-2">
 
                           <Maximize2 className="w-3.5 h-3.5" />
 
                           {isFa
-                            ? 'مشاهده'
-                            : 'View'}
-
-                        </span>
-
-                      </div>
-
-
-                      {/* IMAGE COUNT */}
-
-                      {images.length > 1 && (
-
-                        <div className="absolute top-3 right-3 bg-[#1C1C1C]/80 text-white px-2.5 py-1 text-[9px] uppercase tracking-[0.15em]">
-
-                          {images.length}{' '}
-
-                          {isFa
-                            ? 'تصویر'
-                            : 'IMAGES'}
+                            ? 'مشاهده گالری'
+                            : 'VIEW GALLERY'}
 
                         </div>
 
-                      )}
+                      </div>
 
                     </div>
 
-                  )}
 
+                    {/* ------------------------------------------------
+                        STAGE INFORMATION
+                    ------------------------------------------------ */}
 
-                  {/* ================================================== */}
-                  {/* TITLE / CAPTION */}
-                  {/* ================================================== */}
-
-                  <div className="mt-3">
-
-                    <div className="flex items-start justify-between gap-4">
+                    <div className="mt-4 flex justify-between gap-5">
 
                       <div>
 
-                        <p className="font-sans text-[10px] font-bold tracking-[0.25em] text-[#1C1C1C] uppercase">
+                        <div className="text-[10px] uppercase tracking-[0.2em] text-[#8C8C8C] mb-2">
+                          {String(
+                            stageIndex + 1
+                          ).padStart(2, '0')}
+                        </div>
 
+                        <h3 className="font-sans text-[10px] font-bold tracking-[0.25em] text-[#1C1C1C] uppercase">
                           {isFa
                             ? media.titleFa
                             : media.title}
+                        </h3>
 
-                        </p>
-
-                        {(media.caption || media.captionFa) && (
-
-                          <p className="text-xs text-[#4A4A4A] italic mt-1 leading-relaxed">
-
+                        {(media.caption ||
+                          media.captionFa) && (
+                          <p className="text-xs text-[#4A4A4A] italic mt-2 leading-relaxed">
                             {isFa
                               ? media.captionFa
                               : media.caption}
-
                           </p>
-
                         )}
 
                       </div>
 
 
-                      {/* ADDITIONAL IMAGE COUNT */}
+                      {/* Additional image count */}
 
                       {images.length > 1 && (
-
-                        <span className="flex-shrink-0 text-[10px] text-[#8C8C8C] uppercase tracking-[0.15em]">
-
+                        <div className="flex-shrink-0 text-[10px] uppercase tracking-[0.15em] text-[#8C8C8C] pt-1">
                           +{images.length - 1}
-
-                        </span>
-
+                        </div>
                       )}
 
                     </div>
 
-                  </div>
-
-                </div>
-
-              );
-            })}
+                  </article>
+                );
+              }
+            )}
 
           </div>
 
@@ -317,214 +370,232 @@ export const ExecutionGallery: React.FC<ExecutionGalleryProps> = ({
       </section>
 
 
-      {/* ====================================================== */}
-      {/* FULLSCREEN GALLERY */}
-      {/* ====================================================== */}
+      {/* ========================================================
+          FULLSCREEN GALLERY MODAL
+      ======================================================== */}
 
-      {activeMediaData && (
-
+      {activeStageData && (
         <div
-          className="fixed inset-0 z-[100] bg-[#111]/95 flex items-center justify-center p-4 md:p-10"
+          className="fixed inset-0 z-[9999] bg-[#111]/95 flex items-center justify-center p-4 md:p-8"
           onClick={closeGallery}
         >
 
-          {/* ================================================== */}
-          {/* CLOSE */}
-          {/* ================================================== */}
+          {/* ----------------------------------------------------
+              CLOSE BUTTON
+          ---------------------------------------------------- */}
 
           <button
             type="button"
-            onClick={(e) => {
-              e.stopPropagation();
+            onClick={(event) => {
+              event.stopPropagation();
               closeGallery();
             }}
-            className="absolute top-5 right-5 z-30 w-12 h-12 flex items-center justify-center text-white hover:bg-white/10 transition-colors"
+            className="absolute top-4 right-4 md:top-6 md:right-6 z-30 w-12 h-12 flex items-center justify-center text-white hover:bg-white/10 transition-colors"
             aria-label="Close gallery"
           >
-
-            <X className="w-6 h-6" />
-
+            <X className="w-7 h-7" />
           </button>
 
 
-          {/* ================================================== */}
-          {/* PREVIOUS */}
-          {/* ================================================== */}
+          {/* ----------------------------------------------------
+              PREVIOUS BUTTON
+          ---------------------------------------------------- */}
 
           {activeImages.length > 1 && (
-
             <button
               type="button"
-              onClick={(e) => {
-                e.stopPropagation();
+              onClick={(event) => {
+                event.stopPropagation();
                 previousImage();
               }}
-              className="absolute left-4 md:left-8 z-30 w-12 h-12 flex items-center justify-center text-white hover:bg-white/10 transition-colors"
+              className="absolute left-3 md:left-8 top-1/2 -translate-y-1/2 z-30 w-12 h-12 flex items-center justify-center text-white hover:bg-white/10 transition-colors"
               aria-label="Previous image"
             >
-
               <ChevronLeft className="w-8 h-8" />
-
             </button>
-
           )}
 
 
-          {/* ================================================== */}
-          {/* MAIN GALLERY */}
-          {/* ================================================== */}
+          {/* ----------------------------------------------------
+              MAIN GALLERY CONTENT
+          ---------------------------------------------------- */}
 
           <div
-            className="relative max-w-7xl max-h-full w-full h-full flex flex-col items-center justify-center"
-            onClick={(e) => e.stopPropagation()}
+            className="relative w-full max-w-7xl h-full flex flex-col items-center justify-center"
+            onClick={(event) =>
+              event.stopPropagation()
+            }
           >
 
-            {/* MAIN IMAGE */}
+            {/* MAIN MEDIA */}
 
-            <div className="flex-1 w-full flex items-center justify-center min-h-0">
+            <div className="flex-1 w-full min-h-0 flex items-center justify-center">
 
-              {activeMediaData.type === 'video' &&
+              {activeStageData.type === 'video' &&
               activeImage === 0 ? (
-
                 <video
+                  key={activeImages[activeImage]}
                   src={activeImages[activeImage]}
                   controls
                   autoPlay
-                  className="max-w-full max-h-[75vh] object-contain"
+                  className="max-w-full max-h-[72vh] object-contain"
                 />
-
               ) : (
-
                 <img
+                  key={activeImages[activeImage]}
                   src={activeImages[activeImage]}
                   alt={
                     isFa
-                      ? activeMediaData.titleFa
-                      : activeMediaData.title
+                      ? activeStageData.titleFa
+                      : activeStageData.title
                   }
-                  className="max-w-full max-h-[75vh] object-contain"
+                  className="max-w-full max-h-[72vh] object-contain select-none"
                 />
-
               )}
 
             </div>
 
 
-            {/* ================================================== */}
-            {/* INFO */}
-            {/* ================================================== */}
+            {/* --------------------------------------------------
+                INFORMATION
+            -------------------------------------------------- */}
 
             <div className="w-full max-w-5xl flex items-end justify-between gap-6 pt-5 text-white">
 
               <div>
 
                 <div className="text-[10px] uppercase tracking-[0.2em] text-white/50 mb-2">
+                  {String(
+                    (activeStage ?? 0) + 1
+                  ).padStart(2, '0')}
 
-                  {String(activeMedia + 1).padStart(2, '0')}
                   {' / '}
-                  {String(project.executionPhotos.length).padStart(2, '0')}
 
+                  {String(
+                    project.executionPhotos.length
+                  ).padStart(2, '0')}
                 </div>
 
                 <h3 className="text-xl md:text-2xl font-serif">
-
                   {isFa
-                    ? activeMediaData.titleFa
-                    : activeMediaData.title}
-
+                    ? activeStageData.titleFa
+                    : activeStageData.title}
                 </h3>
 
-                <p className="text-sm text-white/60 mt-2">
-
-                  {isFa
-                    ? activeMediaData.captionFa
-                    : activeMediaData.caption}
-
-                </p>
+                {(activeStageData.caption ||
+                  activeStageData.captionFa) && (
+                  <p className="text-sm text-white/60 mt-2">
+                    {isFa
+                      ? activeStageData.captionFa
+                      : activeStageData.caption}
+                  </p>
+                )}
 
               </div>
 
 
-              {/* IMAGE NUMBER */}
+              {/* CURRENT IMAGE NUMBER */}
 
               <div className="text-sm text-white/60 whitespace-nowrap">
-
                 {activeImage + 1}
                 {' / '}
                 {activeImages.length}
-
               </div>
 
             </div>
 
 
-            {/* ================================================== */}
-            {/* THUMBNAILS */}
-            {/* ================================================== */}
+            {/* --------------------------------------------------
+                THUMBNAILS
+            -------------------------------------------------- */}
 
             {activeImages.length > 1 && (
-
               <div className="w-full max-w-5xl overflow-x-auto mt-5 pb-2">
 
                 <div className="flex gap-2">
 
-                  {activeImages.map((image, index) => (
+                  {activeImages.map(
+                    (image, imageIndex) => {
 
-                    <button
-                      key={`${image}-${index}`}
-                      type="button"
-                      onClick={() => setActiveImage(index)}
-                      className={`relative flex-shrink-0 w-20 h-14 overflow-hidden border transition-all ${
-                        activeImage === index
-                          ? 'border-white'
-                          : 'border-white/20 opacity-60 hover:opacity-100'
-                      }`}
-                    >
+                      const isActive =
+                        activeImage === imageIndex;
 
-                      <img
-                        src={image}
-                        alt=""
-                        className="w-full h-full object-cover"
-                      />
+                      const isVideoThumbnail =
+                        activeStageData.type === 'video' &&
+                        imageIndex === 0;
 
-                    </button>
+                      return (
+                        <button
+                          key={`${image}-${imageIndex}`}
+                          type="button"
+                          onClick={() =>
+                            setActiveImage(
+                              imageIndex
+                            )
+                          }
+                          className={`relative flex-shrink-0 w-20 h-14 md:w-24 md:h-16 overflow-hidden border transition-all ${
+                            isActive
+                              ? 'border-white opacity-100'
+                              : 'border-white/20 opacity-50 hover:opacity-100'
+                          }`}
+                        >
 
-                  ))}
+                          {isVideoThumbnail ? (
+                            <video
+                              src={image}
+                              muted
+                              preload="metadata"
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <img
+                              src={image}
+                              alt=""
+                              className="w-full h-full object-cover"
+                            />
+                          )}
+
+                          {/* Active thumbnail indicator */}
+
+                          {isActive && (
+                            <div className="absolute inset-0 border-2 border-white pointer-events-none" />
+                          )}
+
+                        </button>
+                      );
+                    }
+                  )}
 
                 </div>
 
               </div>
-
             )}
 
           </div>
 
 
-          {/* ================================================== */}
-          {/* NEXT */}
-          {/* ================================================== */}
+          {/* ----------------------------------------------------
+              NEXT BUTTON
+          ---------------------------------------------------- */}
 
           {activeImages.length > 1 && (
-
             <button
               type="button"
-              onClick={(e) => {
-                e.stopPropagation();
+              onClick={(event) => {
+                event.stopPropagation();
                 nextImage();
               }}
-              className="absolute right-4 md:right-8 z-30 w-12 h-12 flex items-center justify-center text-white hover:bg-white/10 transition-colors"
+              className="absolute right-3 md:right-8 top-1/2 -translate-y-1/2 z-30 w-12 h-12 flex items-center justify-center text-white hover:bg-white/10 transition-colors"
               aria-label="Next image"
             >
-
               <ChevronRight className="w-8 h-8" />
-
             </button>
-
           )}
 
         </div>
-
       )}
     </>
   );
 };
+
+export default ExecutionGallery;
