@@ -102,16 +102,19 @@ export const Home: React.FC<HomeProps> = ({
     y: pillarTopY + tContinuation * beamUy
   };
 
-  const belowLineGap = 7; // perpendicular offset below the solid continuation
+  const halfThickness = beamStrokeWidth / 2;
+
+  // The thin line below the continuation: it must touch the UNDERSIDE of the
+  // roof/pillar junction (no gap) and rise as it travels right, closing back
+  // up to meet the roof's own thickness by the time it reaches the end of the
+  // continuation — a tapering sliver, not a parallel offset line.
   const belowLineStart = {
-    x: pillarX + belowLineGap * perpX,
-    y: pillarTopY + belowLineGap * perpY
+    x: pillarX + halfThickness * perpX,
+    y: pillarTopY + halfThickness * perpY
   };
-  const belowLineEndX = contentWidth - 5;
-  const tBelow = (belowLineEndX - belowLineStart.x) / beamUx;
   const belowLineEnd = {
-    x: belowLineEndX,
-    y: belowLineStart.y + tBelow * beamUy
+    x: continuationEnd.x - halfThickness * perpX,
+    y: continuationEnd.y - halfThickness * perpY
   };
 
   // Vertical zone (% of box) where each word/letters sits — same for all 4 words.
@@ -210,7 +213,7 @@ export const Home: React.FC<HomeProps> = ({
                 key={item.labelEn}
                 onClick={item.action}
                 aria-label={isFa ? item.labelFa : item.labelEn}
-                className="group absolute flex items-center justify-center cursor-pointer transition-opacity duration-500 hover:opacity-50"
+                className="group absolute flex items-start justify-center cursor-pointer transition-opacity duration-500 hover:opacity-50"
                 style={{
                   left: `${left}%`,
                   width: `${width}%`,
