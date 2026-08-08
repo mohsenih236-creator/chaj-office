@@ -27,7 +27,9 @@ export const Header: React.FC<HeaderProps> = ({
 
     window.addEventListener('scroll', handleScroll);
 
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
   const navItems: {
@@ -54,7 +56,7 @@ export const Header: React.FC<HeaderProps> = ({
       labelEn: 'Contact',
       labelFa: 'تماس',
       view: 'contact'
-    },
+    }
   ];
 
   const handleNavClick = (targetView: ViewMode | 'contact') => {
@@ -68,10 +70,6 @@ export const Header: React.FC<HeaderProps> = ({
   };
 
   const isFa = language === 'FA';
-
-  // فقط منوی Header در صفحه Home مخفی می‌شود
-  // خود Header، لوگو و زبان همچنان باقی می‌مانند.
-  const showNavigation = activeView !== 'home';
 
   return (
     <header
@@ -101,8 +99,10 @@ export const Header: React.FC<HeaderProps> = ({
         </span>
       </button>
 
-      {/* Desktop Navigation */}
-      {showNavigation && (
+
+      {/* Desktop Navigation
+          فقط در صفحات داخلی نمایش داده می‌شود */}
+      {activeView !== 'home' && (
         <nav
           id="desktop-nav"
           className="hidden md:flex items-center gap-8 lg:gap-10"
@@ -130,6 +130,7 @@ export const Header: React.FC<HeaderProps> = ({
         </nav>
       )}
 
+
       {/* Language Switcher & Controls */}
       <div className="flex items-center gap-4">
 
@@ -147,14 +148,15 @@ export const Header: React.FC<HeaderProps> = ({
           }
         >
           <Globe className="w-3.5 h-3.5" />
-
           <span>
             {language === 'EN' ? 'EN / FA' : 'FA / EN'}
           </span>
         </button>
 
-        {/* Mobile Menu Button */}
-        {showNavigation && (
+
+        {/* Mobile Menu Button
+            در Home مخفی می‌شود */}
+        {activeView !== 'home' && (
           <button
             id="mobile-menu-trigger"
             onClick={() =>
@@ -170,10 +172,12 @@ export const Header: React.FC<HeaderProps> = ({
             )}
           </button>
         )}
+
       </div>
 
+
       {/* Mobile Drawer Menu */}
-      {showNavigation && mobileMenuOpen && (
+      {activeView !== 'home' && mobileMenuOpen && (
         <div
           id="mobile-nav-drawer"
           className="md:hidden fixed inset-x-0 top-20 bg-[#F4F1EE] border-b border-black/10 shadow-xl px-6 py-8 flex flex-col gap-6 animate-fade-in"
@@ -181,11 +185,15 @@ export const Header: React.FC<HeaderProps> = ({
           {navItems.map((item) => (
             <button
               key={item.labelEn}
-              onClick={() => handleNavClick(item.view)}
+              onClick={() =>
+                handleNavClick(item.view)
+              }
               className="text-left text-lg font-serif italic text-[#1C1C1C] hover:text-black py-2 border-b border-black/10 flex justify-between items-center"
             >
               <span>
-                {isFa ? item.labelFa : item.labelEn}
+                {isFa
+                  ? item.labelFa
+                  : item.labelEn}
               </span>
 
               <ArrowUpRight className="w-4 h-4 text-[#8C8C8C]" />
@@ -205,6 +213,7 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
         </div>
       )}
+
     </header>
   );
 };
