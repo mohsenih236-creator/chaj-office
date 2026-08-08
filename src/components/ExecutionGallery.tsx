@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Project, Language, ExecutionMedia } from '../types';
+import React, { useEffect, useState } from 'react';
+import { Project, Language } from '../types';
 import {
   ChevronLeft,
   ChevronRight,
@@ -11,6 +11,10 @@ import {
 interface ExecutionGalleryProps {
   project: Project;
   language: Language;
+
+  // Kept for compatibility with the current parent component.
+  // The gallery is now handled internally.
+  onOpenImage?: (url: string, caption: string) => void;
 }
 
 export const ExecutionGallery: React.FC<ExecutionGalleryProps> = ({
@@ -23,9 +27,118 @@ export const ExecutionGallery: React.FC<ExecutionGalleryProps> = ({
   const [activeImage, setActiveImage] = useState<number>(0);
 
   /*
-   * If this project has no execution media,
-   * don't render the section.
+   * ------------------------------------------------------------
+   * GET ALL IMAGES OF ONE EXECUTION STAGE
+   * ------------------------------------------------------------
+   *
+   * imageUrl is always the first image.
+   * galleryImages are added after it.
    */
+  const getImages = (stage: NonNullable<Project['executionPhotos']>[number]) => {
+    return [
+      stage.imageUrl,
+      ...(stage.galleryImages || []),
+    ];
+  };
+
+  /*
+   * ------------------------------------------------------------
+   * OPEN / CLOSE GALLERY
+   * ------------------------------------------------------------
+   */
+
+  const openGallery = (stageIndex: number) => {
+    setActiveStage(stageIndex);
+    setActiveImage(0);
+  };
+
+  const closeGallery = () => {
+    setActiveStage(null);
+    setActiveImage(0);
+  };
+
+  /*
+   * ------------------------------------------------------------
+   * NEXT / PREVIOUS IMAGE
+   * ------------------------------------------------------------
+   */
+
+  const nextImage = () => {
+    if (
+      activeStage === null ||
+      !project.executionPhotos
+    ) {
+      return;
+    }
+
+    const images = getImages(
+      project.executionPhotos[activeStage]
+    );
+
+    setActiveImage((current) =>
+      current < images.length - 1 ? current + 1 : 0
+    );
+  };
+
+  const previousImage = () => {
+    if (
+      activeStage === null ||
+      !project.executionPhotos
+    ) {
+      return;
+    }
+
+    const images = getImages(
+      project.executionPhotos[activeStage]
+    );
+
+    setActiveImage((current) =>
+      current > 0 ? current - 1 : images.length - 1
+    );
+  };
+
+  /*
+   * ------------------------------------------------------------
+   * KEYBOARD CONTROLS
+   * ------------------------------------------------------------
+   */
+
+  useEffect(() => {
+    if (activeStage === null) {
+      return;
+    }
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        closeGallery();
+      }
+
+      if (event.key === 'ArrowRight') {
+        nextImage();
+      }
+
+      if (event.key === 'ArrowLeft') {
+        previousImage();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    // Prevent background page scrolling while gallery is open.
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = '';
+    };
+  }, [activeStage]);
+
+  /*
+   * ------------------------------------------------------------
+   * NO EXECUTION PHOTOS
+   * ------------------------------------------------------------
+   */
+
   if (
     !project.executionPhotos ||
     project.executionPhotos.length === 0
@@ -33,13 +146,29 @@ export const ExecutionGallery: React.FC<ExecutionGalleryProps> = ({
     return null;
   }
 
-  const executionPhotos = project.executionPhotos;
+  /*
+   * ------------------------------------------------------------
+   * ACTIVE STAGE
+   * ------------------------------------------------------------
+   */
+
+  const activeStageData =
+    activeStage !== null
+      ? project.executionPhotos[activeStage]
+      : null;
+
+  const activeImages =
+    activeStageData
+      ? getImages(activeStageData)
+      : [];
 
   const titleEn =
-    project.executionSectionTitleEn || 'Execution Phase';
+    project.executionSectionTitleEn ||
+    'Execution Phase';
 
   const titleFa =
-    project.executionSectionTitleFa || 'مراحل اجرا';
+    project.executionSectionTitleFa ||
+    'مراحل اجرا';
 
   const narrativeEn =
     project.executionNarrativeEn || '';
@@ -47,90 +176,11 @@ export const ExecutionGallery: React.FC<ExecutionGalleryProps> = ({
   const narrativeFa =
     project.executionNarrativeFa || '';
 
-  /*
-   * Returns all images belonging to one execution stage.
-   * imageUrl is always the first image.
-   */
-  const getImages = (media: ExecutionMedia): string[] => {
-    return [
-      media.imageUrl,
-      ...(media.galleryImages || []),
-    ];
-  };
-
-  /*
-   * Open gallery for a specific execution stage.
-   */
-  const openGallery = (stageIndex: number) => {
-    setActiveStage(stageIndex);
-    setActiveImage(0);
-    document.body.style.overflow = 'hidden';
-  };
-
-  /*
-   * Close fullscreen gallery.
-   */
-  const closeGallery = () => {
-    setActiveStage(null);
-    setActiveImage(0);
-    document.body.style.overflow = '';
-  };
-
-  /*
-   * Go to next image.
-   */
-  const nextImage = () => {
-    if (activeStage === null) return;
-
-    const images = getImages(
-      executionPhotos[activeStage]
-    );
-
-    setActiveImage((current) =>
-      current < images.length - 1
-        ? current + 1
-        : 0
-    );
-  };
-
-  /*
-   * Go to previous image.
-   */
-  const previousImage = () => {
-    if (activeStage === null) return;
-
-    const images = getImages(
-      executionPhotos[activeStage]
-    );
-
-    setActiveImage((current) =>
-      current > 0
-        ? current - 1
-        : images.length - 1
-    );
-  };
-
-  /*
-   * Current active stage.
-   */
-  const activeStageData =
-    activeStage !== null
-      ? executionPhotos[activeStage]
-      : null;
-
-  /*
-   * All images of current active stage.
-   */
-  const activeImages =
-    activeStageData
-      ? getImages(activeStageData)
-      : [];
-
   return (
     <>
-      {/* =========================================================
+      {/* ========================================================
           EXECUTION SECTION
-      ========================================================= */}
+      ======================================================== */}
 
       <section
         id="execution-gallery"
@@ -138,9 +188,9 @@ export const ExecutionGallery: React.FC<ExecutionGalleryProps> = ({
       >
         <div className="px-6 md:px-16">
 
-          {/* =====================================================
+          {/* ----------------------------------------------------
               HEADER
-          ===================================================== */}
+          ---------------------------------------------------- */}
 
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 mb-16">
 
@@ -159,57 +209,53 @@ export const ExecutionGallery: React.FC<ExecutionGalleryProps> = ({
               </h2>
 
               {(narrativeEn || narrativeFa) && (
-                <p className="mt-6 text-base md:text-lg leading-relaxed text-[#4A4A4A] max-w-3xl">
-                  {isFa
-                    ? narrativeFa
-                    : narrativeEn}
+                <p className="mt-6 max-w-3xl text-base md:text-lg leading-relaxed text-[#4A4A4A]">
+                  {isFa ? narrativeFa : narrativeEn}
                 </p>
               )}
 
             </div>
+
           </div>
 
 
-          {/* =====================================================
+          {/* ----------------------------------------------------
               EXECUTION MEDIA GRID
-          ===================================================== */}
+          ---------------------------------------------------- */}
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
 
-            {executionPhotos.map(
+            {project.executionPhotos.map(
               (media, stageIndex) => {
 
                 const images = getImages(media);
+
                 const isVideo =
                   media.type === 'video';
 
                 return (
                   <article
                     key={media.id}
-                    className="group cursor-pointer"
+                    className="group flex flex-col cursor-pointer"
                     onClick={() =>
                       openGallery(stageIndex)
                     }
                   >
 
-                    {/* =================================================
-                        IMAGE / VIDEO
-                    ================================================= */}
-
-                    <div className="relative w-full aspect-[4/3] overflow-hidden bg-[#E8E4E0]">
+                    {/* IMAGE / VIDEO */}
+                    <div className="relative w-full aspect-[4/3] overflow-hidden bg-[#E8E4E0] border border-black/5 shadow-xs">
 
                       {isVideo ? (
                         <div className="relative w-full h-full">
 
                           <video
                             src={media.imageUrl}
-                            className="w-full h-full object-cover"
                             muted
                             playsInline
                             preload="metadata"
+                            className="w-full h-full object-cover"
                           />
 
-                          {/* Video Play Icon */}
                           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
 
                             <div className="w-14 h-14 rounded-full bg-[#F4F1EE]/90 flex items-center justify-center">
@@ -236,12 +282,12 @@ export const ExecutionGallery: React.FC<ExecutionGalleryProps> = ({
                       )}
 
 
-                      {/* =================================================
+                      {/* ------------------------------------------------
                           IMAGE COUNT
-                      ================================================= */}
+                      ------------------------------------------------ */}
 
                       {images.length > 1 && (
-                        <div className="absolute top-4 right-4 bg-[#1C1C1C]/80 text-[#F4F1EE] px-3 py-1.5 text-[10px] tracking-[0.15em]">
+                        <div className="absolute top-3 right-3 bg-[#1C1C1C]/80 text-white px-3 py-1.5 text-[9px] uppercase tracking-[0.2em] backdrop-blur-md">
                           {images.length}{' '}
                           {isFa
                             ? 'تصویر'
@@ -250,18 +296,18 @@ export const ExecutionGallery: React.FC<ExecutionGalleryProps> = ({
                       )}
 
 
-                      {/* =================================================
-                          HOVER OVERLAY
-                      ================================================= */}
+                      {/* ------------------------------------------------
+                          HOVER VIEW
+                      ------------------------------------------------ */}
 
                       <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-500 flex items-center justify-center">
 
-                        <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-[#1C1C1C] text-[#F4F1EE] px-4 py-2 flex items-center gap-2 text-[10px] uppercase tracking-[0.2em]">
+                        <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-[#1C1C1C] text-[#F4F1EE] px-4 py-2 font-sans text-[10px] uppercase tracking-[0.2em] flex items-center gap-2">
 
                           <Maximize2 className="w-3.5 h-3.5" />
 
                           {isFa
-                            ? 'مشاهده تصاویر'
+                            ? 'مشاهده گالری'
                             : 'VIEW GALLERY'}
 
                         </div>
@@ -271,34 +317,29 @@ export const ExecutionGallery: React.FC<ExecutionGalleryProps> = ({
                     </div>
 
 
-                    {/* =================================================
+                    {/* ------------------------------------------------
                         STAGE INFORMATION
-                    ================================================= */}
+                    ------------------------------------------------ */}
 
-                    <div className="pt-5 flex justify-between gap-6">
+                    <div className="mt-4 flex justify-between gap-5">
 
                       <div>
 
-                        {/* Stage Number */}
                         <div className="text-[10px] uppercase tracking-[0.2em] text-[#8C8C8C] mb-2">
                           {String(
                             stageIndex + 1
                           ).padStart(2, '0')}
                         </div>
 
-
-                        {/* Title */}
-                        <h3 className="text-xl md:text-2xl font-serif text-[#1C1C1C]">
+                        <h3 className="font-sans text-[10px] font-bold tracking-[0.25em] text-[#1C1C1C] uppercase">
                           {isFa
                             ? media.titleFa
                             : media.title}
                         </h3>
 
-
-                        {/* Caption */}
                         {(media.caption ||
                           media.captionFa) && (
-                          <p className="mt-2 text-sm leading-relaxed text-[#6A6A6A]">
+                          <p className="text-xs text-[#4A4A4A] italic mt-2 leading-relaxed">
                             {isFa
                               ? media.captionFa
                               : media.caption}
@@ -308,7 +349,8 @@ export const ExecutionGallery: React.FC<ExecutionGalleryProps> = ({
                       </div>
 
 
-                      {/* Additional Image Count */}
+                      {/* Additional image count */}
+
                       {images.length > 1 && (
                         <div className="flex-shrink-0 text-[10px] uppercase tracking-[0.15em] text-[#8C8C8C] pt-1">
                           +{images.length - 1}
@@ -328,46 +370,45 @@ export const ExecutionGallery: React.FC<ExecutionGalleryProps> = ({
       </section>
 
 
-      {/* =========================================================
-          FULLSCREEN GALLERY
-      ========================================================= */}
+      {/* ========================================================
+          FULLSCREEN GALLERY MODAL
+      ======================================================== */}
 
-      {activeStageData && activeImages.length > 0 && (
-
+      {activeStageData && (
         <div
-          className="fixed inset-0 z-[9999] bg-[#111]/95 flex items-center justify-center p-4 md:p-10"
+          className="fixed inset-0 z-[9999] bg-[#111]/95 flex items-center justify-center p-4 md:p-8"
           onClick={closeGallery}
         >
 
-          {/* =====================================================
+          {/* ----------------------------------------------------
               CLOSE BUTTON
-          ===================================================== */}
+          ---------------------------------------------------- */}
 
           <button
             type="button"
-            onClick={(e) => {
-              e.stopPropagation();
+            onClick={(event) => {
+              event.stopPropagation();
               closeGallery();
             }}
-            className="absolute top-5 right-5 z-30 w-12 h-12 flex items-center justify-center text-white hover:bg-white/10 transition-colors"
+            className="absolute top-4 right-4 md:top-6 md:right-6 z-30 w-12 h-12 flex items-center justify-center text-white hover:bg-white/10 transition-colors"
             aria-label="Close gallery"
           >
-            <X className="w-6 h-6" />
+            <X className="w-7 h-7" />
           </button>
 
 
-          {/* =====================================================
+          {/* ----------------------------------------------------
               PREVIOUS BUTTON
-          ===================================================== */}
+          ---------------------------------------------------- */}
 
           {activeImages.length > 1 && (
             <button
               type="button"
-              onClick={(e) => {
-                e.stopPropagation();
+              onClick={(event) => {
+                event.stopPropagation();
                 previousImage();
               }}
-              className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-30 w-12 h-12 flex items-center justify-center text-white hover:bg-white/10 transition-colors"
+              className="absolute left-3 md:left-8 top-1/2 -translate-y-1/2 z-30 w-12 h-12 flex items-center justify-center text-white hover:bg-white/10 transition-colors"
               aria-label="Previous image"
             >
               <ChevronLeft className="w-8 h-8" />
@@ -375,37 +416,31 @@ export const ExecutionGallery: React.FC<ExecutionGalleryProps> = ({
           )}
 
 
-          {/* =====================================================
-              GALLERY CONTENT
-          ===================================================== */}
+          {/* ----------------------------------------------------
+              MAIN GALLERY CONTENT
+          ---------------------------------------------------- */}
 
           <div
             className="relative w-full max-w-7xl h-full flex flex-col items-center justify-center"
-            onClick={(e) =>
-              e.stopPropagation()
+            onClick={(event) =>
+              event.stopPropagation()
             }
           >
 
-            {/* ===================================================
-                MAIN IMAGE
-            =================================================== */}
+            {/* MAIN MEDIA */}
 
             <div className="flex-1 w-full min-h-0 flex items-center justify-center">
 
               {activeStageData.type === 'video' &&
               activeImage === 0 ? (
-
                 <video
                   key={activeImages[activeImage]}
                   src={activeImages[activeImage]}
                   controls
                   autoPlay
-                  playsInline
                   className="max-w-full max-h-[72vh] object-contain"
                 />
-
               ) : (
-
                 <img
                   key={activeImages[activeImage]}
                   src={activeImages[activeImage]}
@@ -416,21 +451,19 @@ export const ExecutionGallery: React.FC<ExecutionGalleryProps> = ({
                   }
                   className="max-w-full max-h-[72vh] object-contain select-none"
                 />
-
               )}
 
             </div>
 
 
-            {/* ===================================================
+            {/* --------------------------------------------------
                 INFORMATION
-            =================================================== */}
+            -------------------------------------------------- */}
 
             <div className="w-full max-w-5xl flex items-end justify-between gap-6 pt-5 text-white">
 
               <div>
 
-                {/* Stage Number */}
                 <div className="text-[10px] uppercase tracking-[0.2em] text-white/50 mb-2">
                   {String(
                     (activeStage ?? 0) + 1
@@ -439,20 +472,16 @@ export const ExecutionGallery: React.FC<ExecutionGalleryProps> = ({
                   {' / '}
 
                   {String(
-                    executionPhotos.length
+                    project.executionPhotos.length
                   ).padStart(2, '0')}
                 </div>
 
-
-                {/* Stage Title */}
                 <h3 className="text-xl md:text-2xl font-serif">
                   {isFa
                     ? activeStageData.titleFa
                     : activeStageData.title}
                 </h3>
 
-
-                {/* Stage Caption */}
                 {(activeStageData.caption ||
                   activeStageData.captionFa) && (
                   <p className="text-sm text-white/60 mt-2">
@@ -465,7 +494,8 @@ export const ExecutionGallery: React.FC<ExecutionGalleryProps> = ({
               </div>
 
 
-              {/* Image Counter */}
+              {/* CURRENT IMAGE NUMBER */}
+
               <div className="text-sm text-white/60 whitespace-nowrap">
                 {activeImage + 1}
                 {' / '}
@@ -475,86 +505,63 @@ export const ExecutionGallery: React.FC<ExecutionGalleryProps> = ({
             </div>
 
 
-            {/* ===================================================
+            {/* --------------------------------------------------
                 THUMBNAILS
-            =================================================== */}
+            -------------------------------------------------- */}
 
             {activeImages.length > 1 && (
-
               <div className="w-full max-w-5xl overflow-x-auto mt-5 pb-2">
 
                 <div className="flex gap-2">
 
                   {activeImages.map(
-                    (image, index) => {
+                    (image, imageIndex) => {
 
                       const isActive =
-                        activeImage === index;
+                        activeImage === imageIndex;
 
                       const isVideoThumbnail =
-                        activeStageData.type ===
-                          'video' &&
-                        index === 0;
+                        activeStageData.type === 'video' &&
+                        imageIndex === 0;
 
                       return (
-
                         <button
-                          key={`${image}-${index}`}
+                          key={`${image}-${imageIndex}`}
                           type="button"
                           onClick={() =>
-                            setActiveImage(index)
+                            setActiveImage(
+                              imageIndex
+                            )
                           }
-                          className={`
-                            relative
-                            flex-shrink-0
-                            w-20
-                            h-14
-                            md:w-24
-                            md:h-16
-                            overflow-hidden
-                            border
-                            transition-all
-                            duration-200
-                            ${
-                              isActive
-                                ? 'border-white opacity-100'
-                                : 'border-white/20 opacity-50 hover:opacity-100'
-                            }
-                          `}
+                          className={`relative flex-shrink-0 w-20 h-14 md:w-24 md:h-16 overflow-hidden border transition-all ${
+                            isActive
+                              ? 'border-white opacity-100'
+                              : 'border-white/20 opacity-50 hover:opacity-100'
+                          }`}
                         >
 
                           {isVideoThumbnail ? (
-
-                            <div className="relative w-full h-full bg-black">
-
-                              <video
-                                src={image}
-                                className="w-full h-full object-cover"
-                                muted
-                                playsInline
-                                preload="metadata"
-                              />
-
-                              <div className="absolute inset-0 flex items-center justify-center bg-black/20">
-
-                                <Play className="w-4 h-4 text-white fill-current" />
-
-                              </div>
-
-                            </div>
-
+                            <video
+                              src={image}
+                              muted
+                              preload="metadata"
+                              className="w-full h-full object-cover"
+                            />
                           ) : (
-
                             <img
                               src={image}
                               alt=""
                               className="w-full h-full object-cover"
                             />
+                          )}
 
+                          {/* Active thumbnail indicator */}
+
+                          {isActive && (
+                            <div className="absolute inset-0 border-2 border-white pointer-events-none" />
                           )}
 
                         </button>
-
                       );
                     }
                   )}
@@ -562,24 +569,23 @@ export const ExecutionGallery: React.FC<ExecutionGalleryProps> = ({
                 </div>
 
               </div>
-
             )}
 
           </div>
 
 
-          {/* =====================================================
+          {/* ----------------------------------------------------
               NEXT BUTTON
-          ===================================================== */}
+          ---------------------------------------------------- */}
 
           {activeImages.length > 1 && (
             <button
               type="button"
-              onClick={(e) => {
-                e.stopPropagation();
+              onClick={(event) => {
+                event.stopPropagation();
                 nextImage();
               }}
-              className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-30 w-12 h-12 flex items-center justify-center text-white hover:bg-white/10 transition-colors"
+              className="absolute right-3 md:right-8 top-1/2 -translate-y-1/2 z-30 w-12 h-12 flex items-center justify-center text-white hover:bg-white/10 transition-colors"
               aria-label="Next image"
             >
               <ChevronRight className="w-8 h-8" />
@@ -587,7 +593,6 @@ export const ExecutionGallery: React.FC<ExecutionGalleryProps> = ({
           )}
 
         </div>
-
       )}
     </>
   );
