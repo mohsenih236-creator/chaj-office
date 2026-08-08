@@ -88,18 +88,33 @@ export const Header: React.FC<HeaderProps> = ({
           CHAJ GROUP LOGO
           همیشه نمایش داده می‌شود
       ========================== */}
-      <button
-        id="header-brand-logo"
-        onClick={() => setActiveView('home')}
-        className="group flex items-center cursor-pointer focus:outline-none"
-        aria-label="CHAJ Group Home"
-      >
-        <img
-          src="/images/heder-sait-copy.jpg"
-          alt="CHAJ Group"
-          className="h-10 md:h-11 w-auto object-contain"
-        />
-      </button>
+      {/* CHAJ GROUP BRAND */}
+<button
+  id="header-brand-logo"
+  onClick={() => setActiveView('home')}
+  className="group flex items-center gap-2.5 cursor-pointer focus:outline-none"
+  aria-label="CHAJ Group Home"
+>
+  {/* Circular Logo */}
+  <div className="w-10 h-10 md:w-11 md:h-11 rounded-full overflow-hidden flex-shrink-0 bg-white">
+    <img
+      src="/images/heder-sait-copy.jpg"
+      alt="CHAJ Group Logo"
+      className="w-full h-full object-cover"
+    />
+  </div>
+
+  {/* Brand Name */}
+  <div className="flex items-end gap-2">
+    <span className="font-serif text-[24px] md:text-[27px] leading-none tracking-tight text-[#1C1C1C]">
+      CHAJ Group
+    </span>
+
+    <span className="hidden sm:block font-sans text-[8px] md:text-[9px] uppercase tracking-[0.2em] text-[#8C8C8C] border border-black/10 px-2 py-1 leading-none mb-[1px]">
+      ARCH &amp; RESEARCH
+    </span>
+  </div>
+</button>
 
 
       {/* =========================
