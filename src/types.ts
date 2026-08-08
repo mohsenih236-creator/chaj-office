@@ -16,27 +16,39 @@ export type ProjectCategory =
   | 'Medical'
   | 'Sports'
   | 'Educational'
-  // Kept for backward compatibility with older sample projects; not shown as filter chips.
+  // Kept for backward compatibility with older sample projects;
+  // not shown as filter chips.
   | 'Cultural'
   | 'Interior'
   | 'Concept';
 
 export interface MaterialDetail {
   id: string;
+
   title: string;
   titleFa: string;
+
   caption: string;
   captionFa: string;
+
+  // Main image
   imageUrl: string;
 
   aspectRatio: 'square' | 'video' | 'portrait';
 
-  // Optional: extra photos shown together
-  // when this item is clicked.
-  // imageUrl is always shown first.
+  // Optional: additional photos shown together
+  // when this detail item is clicked.
   galleryImages?: string[];
 }
 
+/**
+ * Media used in the Execution Phase.
+ *
+ * Each execution stage can contain:
+ * - one main image
+ * - multiple additional images
+ * - or a video
+ */
 export interface ExecutionMedia {
   id: string;
 
@@ -46,23 +58,16 @@ export interface ExecutionMedia {
   caption: string;
   captionFa: string;
 
-  // Main image of this execution stage.
-  // This image is always shown first.
+  // Main image of this execution stage
   imageUrl: string;
 
-  // Optional additional images for the same execution stage.
+  // Additional images belonging to the same execution stage
   // Example:
-  //
-  // imageUrl:
-  // "/images/foundation-01.jpg"
-  //
-  // galleryImages:
   // [
   //   "/images/foundation-02.jpg",
   //   "/images/foundation-03.jpg",
   //   "/images/foundation-04.jpg"
   // ]
-  //
   galleryImages?: string[];
 
   // "image" shows photos.
@@ -140,15 +145,16 @@ export interface Project {
 
   software: string;
 
+  // Main project image
   heroImage: string;
 
-  // Optional: additional hero images shown as a slider/carousel.
-  // heroImage is always shown first.
+  // Optional: additional hero images shown as a slider/carousel
   heroImages?: string[];
 
   narrativeEn: string;
   narrativeFa: string;
 
+  // Lighting / conceptual section
   lightSectionTitleEn: string;
   lightSectionTitleFa: string;
 
@@ -157,36 +163,43 @@ export interface Project {
 
   lightImage: string;
 
+  // Spatial section
   spatialSectionTitleEn: string;
   spatialSectionTitleFa: string;
 
   spatialNarrativeEn: string;
   spatialNarrativeFa: string;
 
+  // Material / detail sections
   details: MaterialDetail[];
 
+  // Architectural drawings
   drawings: BlueprintDrawing[];
 
-  // -----------------------------------------
-  // EXECUTION PHASE
-  // -----------------------------------------
-
-  // Optional "Execution Phase" section.
+  /**
+   * Execution Phase
+   *
+   * These fields are optional.
+   * If executionPhotos is not provided,
+   * the Execution Phase section will not be shown.
+   */
   executionSectionTitleEn?: string;
   executionSectionTitleFa?: string;
 
   executionNarrativeEn?: string;
   executionNarrativeFa?: string;
 
-  // Each execution stage can now contain:
-  //
-  // 1 main image
-  // +
-  // multiple additional images
-  //
-  // through the galleryImages array.
+  /**
+   * Each item represents one stage of construction.
+   *
+   * Every stage can have:
+   * - one main image
+   * - multiple additional images through galleryImages
+   * - or a video
+   */
   executionPhotos?: ExecutionMedia[];
 
+  // Previous / next project navigation
   prevProjectId: string;
   nextProjectId: string;
 }
@@ -234,8 +247,7 @@ export interface StudioInfo {
     phone: string;
     email: string;
 
-    // Optional: precise GPS coordinates
-    // for the map pin.
+    // Optional GPS coordinates for the map
     latitude?: number;
     longitude?: number;
   }[];
