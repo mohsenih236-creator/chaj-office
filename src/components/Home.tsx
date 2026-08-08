@@ -37,7 +37,7 @@ export const Home: React.FC<HomeProps> = ({
     { labelEn: 'Contact', labelFa: 'تماس با ما', action: onContact }
   ];
 
-  // --- Geometry, measured directly from the reference image. ---
+  // --- Geometry ---
 
   const ASPECT = 6 / 5;
 
@@ -46,13 +46,15 @@ export const Home: React.FC<HomeProps> = ({
   const contentWidth = 100 * ASPECT;
   const viewBoxWidth = contentWidth + MARGIN_X;
   const viewBoxHeight = 100 + MARGIN_Y;
+
   const viewBox = `${-MARGIN_X} ${-MARGIN_Y} ${viewBoxWidth} ${viewBoxHeight}`;
 
   const toSvgX = (percent: number) =>
     -MARGIN_X + (percent / 100) * viewBoxWidth;
 
-  // 5 thin lines create the 4 equal-width word gaps
+  // 5 thin staggered boundary lines
   const colPercent = [5, 18, 32, 45, 58];
+
   const thinLineX = colPercent.map(toSvgX);
   const thinLineTopY = [23, 27, 31, 34, 38];
   const thinLineBottomY = 91;
@@ -61,6 +63,7 @@ export const Home: React.FC<HomeProps> = ({
   const pillarX = 72 * ASPECT;
   const pillarTopY = 28;
   const pillarBottomY = 100;
+
   const beamStrokeWidth = 8;
 
   // Roof beam direction
@@ -92,26 +95,47 @@ export const Home: React.FC<HomeProps> = ({
   // THIN L-SHAPED ACCENT LINE
   // ------------------------------------------------------------
   //
-  // The diagonal part follows the exact same slope as the roof.
-  // It is positioned directly BELOW the lower edge of the roof.
+  // The diagonal accent stays directly below the roof.
+  // The vertical distance from the roof is controlled by
+  // belowLineOffset.
   //
-  // The vertical return rises back toward the roof and stops
-  // exactly at the upper edge of the roof thickness.
+  // At the right end, the L extends horizontally beyond the
+  // roof by EXACTLY the same visual distance as the vertical
+  // gap between the accent line and the roof.
   // ------------------------------------------------------------
 
   const belowLineOffset = halfThickness + 1.5;
 
+  // Vertical gap below the roof
+  const verticalGap =
+    belowLineOffset * perpY;
+
+  // Because the SVG has a non-square coordinate system,
+  // compensate the X coordinate so the rendered horizontal
+  // distance is visually equal to the vertical gap.
+  const horizontalGap =
+    verticalGap * (viewBoxWidth / viewBoxHeight);
+
+  // Start of the diagonal accent
   const belowLineStart = {
     x: pillarX,
-    y: pillarTopY + belowLineOffset * perpY
+    y: pillarTopY + verticalGap
   };
 
+  // End of diagonal accent.
+  // IMPORTANT:
+  // It extends to the RIGHT of the roof end by exactly
+  // the same visual distance as the gap below the roof.
   const belowLineEnd = {
-    x: continuationEnd.x,
-    y: continuationEnd.y + belowLineOffset * perpY
+    x: continuationEnd.x + horizontalGap,
+    y: continuationEnd.y + verticalGap
   };
 
-  // Roof centerline Y at the exact X position of the return
+  // ------------------------------------------------------------
+  // VERTICAL RETURN OF THE L
+  // ------------------------------------------------------------
+
+  // Roof centerline Y at the exact X position of the L return
   const roofCenterYAtReturn =
     pillarTopY +
     ((belowLineEnd.x - pillarX) / beamUx) * beamUy;
@@ -120,8 +144,8 @@ export const Home: React.FC<HomeProps> = ({
   const roofTopYAtReturn =
     roofCenterYAtReturn - halfThickness * beamUx;
 
-  // Final point of the vertical return.
-  // This keeps the L completely within the roof thickness.
+  // Vertical return goes upward from the accent line
+  // and stops inside the roof thickness.
   const belowLineTopEnd = {
     x: belowLineEnd.x,
     y: roofTopYAtReturn
@@ -197,7 +221,7 @@ export const Home: React.FC<HomeProps> = ({
               strokeLinecap="square"
             />
 
-            {/* Thin L-shaped line directly below the roof */}
+            {/* Thin L-shaped accent line directly below the roof */}
             <path
               d={`
                 M ${belowLineStart.x} ${belowLineStart.y}
