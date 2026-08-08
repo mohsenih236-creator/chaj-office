@@ -38,83 +38,56 @@ export const Home: React.FC<HomeProps> = ({
   ];
 
   // --- Geometry, measured directly from the reference image. ---
-  //
-  // The diagram box (aspect-[6/5], i.e. 1.2:1) is WIDER than it is tall, but the
-  // old viewBox was a plain square ("0 0 100 100") stretched with
-  // preserveAspectRatio="none". That stretch is NON-uniform (x gets scaled more
-  // than y), so a stroke of the same strokeWidth renders thinner or thicker
-  // depending on which direction the line runs — that's exactly why the pillar
-  // (a pure-vertical line, width along x) looked thicker than the sloped beam
-  // (width mostly along y). To fix it for real, the viewBox's own aspect ratio
-  // must match the box's aspect ratio (1.2:1) so the stretch is uniform.
-  //
-  // So: Y stays a plain 0-100 scale (100 = full height). X is expressed in the
-  // SAME physical units by multiplying "% of width" by ASPECT — i.e. 100% of
-  // width = 120 units, matching 100 units of height at a 1.2:1 ratio. Every
-  // x-coordinate below is written as `<percent-of-width> * ASPECT`.
   const ASPECT = 6 / 5;
 
-  // 5 thin lines create the 4 equal-width word gaps (Projects / About / Services / Contact).
-  // Column CSS positions (button left/width) stay plain 0-100 percentages — those
-  // are unrelated to the SVG's internal coordinate system and were already correct.
   const colPercent = [5, 18, 32, 45, 58];
-  const thinLineX = colPercent.map((p) => p * ASPECT); // same lines, in SVG units
-  const thinLineTopY = [23, 27, 31, 34, 38]; // staggered, tallest (smallest y) on the left
-  const thinLineBottomY = 91; // shared bottom for all 5 thin lines
+  const thinLineX = colPercent.map((p) => p * ASPECT);
+  const thinLineTopY = [23, 27, 31, 34, 38];
+  const thinLineBottomY = 91;
 
-  // The thick pillar sits separately, further right, with an empty unlabeled gap
-  // between it and the 5th thin line. It bends out of the diagonal roof beam at
-  // the top, and overhangs slightly LOWER than the thin lines at the bottom.
   const pillarX = 72 * ASPECT;
-  const pillarTopY = 28; // where the beam bends into the pillar
+  const pillarTopY = 28;
   const pillarBottomY = 100;
   const beamStrokeWidth = 8;
 
-  // Beam direction, computed once the coordinate system is uniform — this is
-  // the TRUE visual angle of the roofline (was previously skewed by the
-  // non-uniform stretch above).
   const beamLen = Math.sqrt(pillarX * pillarX + pillarTopY * pillarTopY);
   const beamUx = pillarX / beamLen;
   const beamUy = pillarTopY / beamLen;
   const perpX = -beamUy; // perpendicular unit vector, points "down" off the beam
   const perpY = beamUx;
 
-  // The beam's start cap at (0,0) extends ~halfThickness past the corner in
-  // every direction (it's a "square" linecap on a diagonal). With no margin,
-  // that overshoot fell into negative territory and got clipped by the SVG
-  // viewBox — that was the "cut roof tip" bug. Fix: give the viewBox a small
-  // margin on the top-left, sized (with a safety buffer) to fully contain that
-  // overshoot, and keep the margin proportional (MARGIN_X = MARGIN_Y * ASPECT)
-  // so the viewBox's aspect ratio — and therefore the uniform scale — is preserved.
   const MARGIN_Y = 6;
   const MARGIN_X = MARGIN_Y * ASPECT;
   const contentWidth = 100 * ASPECT;
   const viewBox = `${-MARGIN_X} ${-MARGIN_Y} ${contentWidth + MARGIN_X} ${100 + MARGIN_Y}`;
 
+  const halfThickness = beamStrokeWidth / 2;
+
   // --- Continuation of the roof beam PAST the pillar. ---
-  // In the reference this is a SOLID bar, same thickness as the main beam,
-  // running along the exact same slope — not a hollow outline. A separate,
-  // thin line sits just below it, also starting at the column.
-  const continuationEndX = contentWidth - 2; // near the right edge, matching the reference's whitespace after it
+  // Per reference: this is a THIN line (not a solid thick bar) that begins
+  // exactly at the TOP edge of the beam/pillar junction (i.e. offset "up"
+  // from the beam centerline by halfThickness along the perpendicular),
+  // and travels down-right along the SAME slope as the main beam, ending
+  // lower than it started — matching the hand-drawn red reference line.
+  const continuationEndX = contentWidth - 2;
   const tContinuation = (continuationEndX - pillarX) / beamUx;
-  const continuationEnd = {
+
+  // Start point: top edge of the beam at the pillar junction.
+  const continuationStart = {
+    x: pillarX - halfThickness * perpX,
+    y: pillarTopY - halfThickness * perpY
+  };
+  // End point: same slope, projected out to continuationEndX, then also
+  // pulled up by halfThickness so the whole thin line traces the beam's
+  // top edge (not its centerline) — this is what makes it read as a
+  // continuation of the roof's top surface rather than a parallel offset bar.
+  const rawEnd = {
     x: continuationEndX,
     y: pillarTopY + tContinuation * beamUy
   };
-
-  const halfThickness = beamStrokeWidth / 2;
-
-  // The thin line below the continuation: it must touch the UNDERSIDE of the
-  // roof/pillar junction (no gap) and rise as it travels right, closing back
-  // up to meet the roof's own thickness by the time it reaches the end of the
-  // continuation — a tapering sliver, not a parallel offset line.
-  const belowLineStart = {
-    x: pillarX + halfThickness * perpX,
-    y: pillarTopY + halfThickness * perpY
-  };
-  const belowLineEnd = {
-    x: continuationEnd.x - halfThickness * perpX,
-    y: continuationEnd.y - halfThickness * perpY
+  const continuationEnd = {
+    x: rawEnd.x - halfThickness * perpX,
+    y: rawEnd.y - halfThickness * perpY
   };
 
   // Vertical zone (% of box) where each word/letters sits — same for all 4 words.
@@ -168,24 +141,13 @@ export const Home: React.FC<HomeProps> = ({
               strokeWidth={beamStrokeWidth}
             />
 
-            {/* Continuation of the beam past the pillar: SOLID, same thickness
-               as the main beam, along the exact same slope. */}
+            {/* Thin continuation line tracing the TOP edge of the beam past
+               the pillar, matching the reference's red guide line. */}
             <line
-              x1={pillarX}
-              y1={pillarTopY}
+              x1={continuationStart.x}
+              y1={continuationStart.y}
               x2={continuationEnd.x}
               y2={continuationEnd.y}
-              stroke="#1C1C1C"
-              strokeWidth={beamStrokeWidth}
-              strokeLinecap="square"
-            />
-
-            {/* Thin accent line just below the continuation, starting at the column */}
-            <line
-              x1={belowLineStart.x}
-              y1={belowLineStart.y}
-              x2={belowLineEnd.x}
-              y2={belowLineEnd.y}
               stroke="#1C1C1C"
               strokeWidth="0.7"
             />
@@ -213,7 +175,7 @@ export const Home: React.FC<HomeProps> = ({
                 key={item.labelEn}
                 onClick={item.action}
                 aria-label={isFa ? item.labelFa : item.labelEn}
-                className="group absolute flex items-start justify-center cursor-pointer transition-opacity duration-500 hover:opacity-50"
+                className="group absolute flex items-center justify-center cursor-pointer transition-opacity duration-500 hover:opacity-50"
                 style={{
                   left: `${left}%`,
                   width: `${width}%`,
@@ -222,11 +184,11 @@ export const Home: React.FC<HomeProps> = ({
                 }}
               >
                 {isFa ? (
-                  <span className="font-serif text-lg sm:text-xl text-[#1C1C1C] tracking-tight">
+                  <span className="font-serif text-lg sm:text-xl text-[#1C1C1C] tracking-tight text-center">
                     {item.labelFa}
                   </span>
                 ) : (
-                  <span className="flex flex-col items-center leading-tight font-mono font-medium uppercase text-xs sm:text-sm tracking-[0.1em] text-[#1C1C1C]">
+                  <span className="flex flex-col items-center leading-tight font-mono font-medium uppercase text-xs sm:text-sm tracking-[0.1em] text-[#1C1C1C] text-center">
                     {item.labelEn
                       .toUpperCase()
                       .split('')
