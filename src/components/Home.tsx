@@ -101,14 +101,22 @@ export const Home: React.FC<HomeProps> = ({
 
   // Thin line below the roof continuation.
   const belowLineStart = {
-    x: pillarX + halfThickness * perpX,
-    y: pillarTopY + halfThickness * perpY
-  };
+  x: pillarX + halfThickness * perpX,
+  y: pillarTopY + halfThickness * perpY
+};
 
-  const belowLineEnd = {
-    x: continuationEnd.x - halfThickness * perpX,
-    y: continuationEnd.y - halfThickness * perpY
-  };
+const belowLineEnd = {
+  x: continuationEnd.x + halfThickness * perpX,
+  y: continuationEnd.y + halfThickness * perpY
+};
+
+// Top edge of the roof at the exact end of the continuation.
+// The vertical return stops exactly at the upper edge of the roof
+// and never protrudes beyond its thickness.
+const belowLineTopEnd = {
+  x: continuationEnd.x - halfThickness * perpX,
+  y: continuationEnd.y - halfThickness * perpY
+};
 
   // Vertical zone where each word/letter sits.
   const wordZoneTop = 41;
@@ -180,13 +188,17 @@ export const Home: React.FC<HomeProps> = ({
             />
 
             {/* Thin accent line below the roof continuation */}
-            <line
-              x1={belowLineStart.x}
-              y1={belowLineStart.y}
-              x2={belowLineEnd.x}
-              y2={belowLineEnd.y}
+            <path
+              d={`
+                M ${belowLineStart.x} ${belowLineStart.y}
+                L ${belowLineEnd.x} ${belowLineEnd.y}
+                L ${belowLineTopEnd.x} ${belowLineTopEnd.y}
+              `} 
+              fill="none"
               stroke="#000000"
               strokeWidth="0.7"
+              strokeLinecap="square"
+              strokeLinejoin="miter"
             />
 
             {/* The 5 thin staggered boundary lines */}
