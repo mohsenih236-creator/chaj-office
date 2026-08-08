@@ -38,16 +38,10 @@ export const Home: React.FC<HomeProps> = ({
     { labelEn: 'Contact', labelFa: 'تماس با ما', action: onContact }
   ];
 
-  // --- Geometry, measured directly from the reference image. ---
-  //
-  // The diagram box (aspect-[6/5], i.e. 1.2:1) is WIDER than it is tall.
-  // The SVG viewBox uses the same physical aspect ratio to prevent
-  // non-uniform stretching of the architectural geometry.
+  // --- Geometry ---
 
   const ASPECT = 6 / 5;
 
-  // The beam's start cap needs a small margin around the viewBox
-  // so it isn't clipped.
   const MARGIN_Y = 6;
   const MARGIN_X = MARGIN_Y * ASPECT;
 
@@ -57,25 +51,24 @@ export const Home: React.FC<HomeProps> = ({
 
   const viewBox = `${-MARGIN_X} ${-MARGIN_Y} ${viewBoxWidth} ${viewBoxHeight}`;
 
-  // Converts "% of the container's width" into the SVG x-coordinate.
   const toSvgX = (percent: number) =>
     -MARGIN_X + (percent / 100) * viewBoxWidth;
 
-  // 5 thin lines create the 4 equal-width word gaps.
+  // 5 thin staggered boundary lines
   const colPercent = [5, 18, 32, 45, 58];
 
   const thinLineX = colPercent.map(toSvgX);
   const thinLineTopY = [23, 27, 31, 34, 38];
   const thinLineBottomY = 91;
 
-  // Thick vertical pillar.
+  // Main pillar
   const pillarX = 72 * ASPECT;
   const pillarTopY = 28;
   const pillarBottomY = 100;
 
   const beamStrokeWidth = 8;
 
-  // Beam direction.
+  // Roof beam direction
   const beamLen = Math.sqrt(
     pillarX * pillarX + pillarTopY * pillarTopY
   );
@@ -83,10 +76,12 @@ export const Home: React.FC<HomeProps> = ({
   const beamUx = pillarX / beamLen;
   const beamUy = pillarTopY / beamLen;
 
+  // Perpendicular direction to the roof beam
   const perpX = -beamUy;
   const perpY = beamUx;
 
-  // Continuation of the roof beam past the pillar.
+  // --- Roof continuation ---
+
   const continuationEndX = contentWidth - 2;
 
   const tContinuation =
@@ -99,26 +94,44 @@ export const Home: React.FC<HomeProps> = ({
 
   const halfThickness = beamStrokeWidth / 2;
 
-  // Thin line below the roof continuation.
+  // ------------------------------------------------------------
+  // THIN L-SHAPED ACCENT LINE
+  // ------------------------------------------------------------
+  //
+  // The diagonal section follows the exact same slope as the roof.
+  // The vertical return is placed at the exact end of that diagonal
+  // and stops inside the roof thickness.
+  //
+
   const belowLineStart = {
-  x: pillarX + halfThickness * perpX,
-  y: pillarTopY + halfThickness * perpY
-};
+    x: pillarX + halfThickness * perpX,
+    y: pillarTopY + halfThickness * perpY
+  };
 
-const belowLineEnd = {
-  x: continuationEnd.x + halfThickness * perpX,
-  y: continuationEnd.y + halfThickness * perpY
-};
+  // End of the diagonal accent line.
+  // It follows the roof slope and sits just below the roof.
+  const belowLineEnd = {
+    x: continuationEnd.x + halfThickness * perpX,
+    y: continuationEnd.y + halfThickness * perpY
+  };
 
-// Top edge of the roof at the exact end of the continuation.
-// The vertical return stops exactly at the upper edge of the roof
-// and never protrudes beyond its thickness.
-const belowLineTopEnd = {
-  x: continuationEnd.x - halfThickness * perpX,
-  y: continuationEnd.y - halfThickness * perpY
-};
+  // Centerline Y at the exact X position of the vertical return.
+  const centerLineYAtReturn =
+    pillarTopY +
+    ((belowLineEnd.x - pillarX) / beamUx) * beamUy;
 
-  // Vertical zone where each word/letter sits.
+  // Top boundary of the roof thickness at the same X position.
+  // The vertical return ends here, so it cannot protrude above the roof.
+  const roofTopYAtReturn =
+    centerLineYAtReturn - halfThickness * beamUx;
+
+  // Vertical return keeps exactly the same X coordinate.
+  const belowLineTopEnd = {
+    x: belowLineEnd.x,
+    y: roofTopYAtReturn
+  };
+
+  // Vertical zone for the words
   const wordZoneTop = 41;
   const wordZoneBottom = 79;
 
@@ -148,16 +161,17 @@ const belowLineTopEnd = {
           introFinished ? 'opacity-100' : 'opacity-0'
         }`}
       >
-        {/* Desktop / tablet: architectural diagram layout */}
+        {/* Desktop / tablet */}
         <div className="hidden md:block relative w-full max-w-2xl aspect-[6/5] mx-auto px-6">
-          {/* Decorative beam + divider lines */}
+
+          {/* Decorative architectural diagram */}
           <svg
             viewBox={viewBox}
             preserveAspectRatio="none"
             className="absolute inset-0 w-full h-full pointer-events-none"
             aria-hidden="true"
           >
-            {/* Diagonal roof beam bending into the vertical pillar */}
+            {/* Diagonal roof beam */}
             <polyline
               points={`0,0 ${pillarX},${pillarTopY}`}
               fill="none"
@@ -176,7 +190,7 @@ const belowLineTopEnd = {
               strokeWidth={beamStrokeWidth}
             />
 
-            {/* Continuation of the beam past the pillar */}
+            {/* Roof continuation */}
             <line
               x1={pillarX}
               y1={pillarTopY}
@@ -187,13 +201,13 @@ const belowLineTopEnd = {
               strokeLinecap="square"
             />
 
-            {/* Thin accent line below the roof continuation */}
+            {/* Thin L-shaped black accent line */}
             <path
               d={`
                 M ${belowLineStart.x} ${belowLineStart.y}
                 L ${belowLineEnd.x} ${belowLineEnd.y}
                 L ${belowLineTopEnd.x} ${belowLineTopEnd.y}
-              `} 
+              `}
               fill="none"
               stroke="#000000"
               strokeWidth="0.7"
@@ -201,7 +215,7 @@ const belowLineTopEnd = {
               strokeLinejoin="miter"
             />
 
-            {/* The 5 thin staggered boundary lines */}
+            {/* 5 thin staggered boundary lines */}
             {thinLineX.map((x, i) => (
               <line
                 key={x}
@@ -257,7 +271,7 @@ const belowLineTopEnd = {
           })}
         </div>
 
-        {/* Mobile: simple stacked full-width rows */}
+        {/* Mobile */}
         <div className="flex md:hidden flex-col w-full">
           {items.map((item, idx) => (
             <button
