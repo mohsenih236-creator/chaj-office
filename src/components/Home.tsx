@@ -23,7 +23,6 @@ export const Home: React.FC<HomeProps> = ({
     const timer = setTimeout(() => {
       setIntroFinished(true);
     }, 2800);
-
     return () => clearTimeout(timer);
   }, []);
 
@@ -38,25 +37,22 @@ export const Home: React.FC<HomeProps> = ({
     { labelEn: 'Contact', labelFa: 'تماس با ما', action: onContact }
   ];
 
-  // --- Geometry ---
+  // --- Geometry, measured directly from the reference image. ---
 
   const ASPECT = 6 / 5;
 
   const MARGIN_Y = 6;
   const MARGIN_X = MARGIN_Y * ASPECT;
-
   const contentWidth = 100 * ASPECT;
   const viewBoxWidth = contentWidth + MARGIN_X;
   const viewBoxHeight = 100 + MARGIN_Y;
-
   const viewBox = `${-MARGIN_X} ${-MARGIN_Y} ${viewBoxWidth} ${viewBoxHeight}`;
 
   const toSvgX = (percent: number) =>
     -MARGIN_X + (percent / 100) * viewBoxWidth;
 
-  // 5 thin staggered boundary lines
+  // 5 thin lines create the 4 equal-width word gaps
   const colPercent = [5, 18, 32, 45, 58];
-
   const thinLineX = colPercent.map(toSvgX);
   const thinLineTopY = [23, 27, 31, 34, 38];
   const thinLineBottomY = 91;
@@ -65,7 +61,6 @@ export const Home: React.FC<HomeProps> = ({
   const pillarX = 72 * ASPECT;
   const pillarTopY = 28;
   const pillarBottomY = 100;
-
   const beamStrokeWidth = 8;
 
   // Roof beam direction
@@ -80,8 +75,7 @@ export const Home: React.FC<HomeProps> = ({
   const perpX = -beamUy;
   const perpY = beamUx;
 
-  // --- Roof continuation ---
-
+  // Roof continuation
   const continuationEndX = contentWidth - 2;
 
   const tContinuation =
@@ -98,40 +92,42 @@ export const Home: React.FC<HomeProps> = ({
   // THIN L-SHAPED ACCENT LINE
   // ------------------------------------------------------------
   //
-  // The diagonal section follows the exact same slope as the roof.
-  // The vertical return is placed at the exact end of that diagonal
-  // and stops inside the roof thickness.
+  // The diagonal part follows the exact same slope as the roof.
+  // It is positioned directly BELOW the lower edge of the roof.
   //
+  // The vertical return rises back toward the roof and stops
+  // exactly at the upper edge of the roof thickness.
+  // ------------------------------------------------------------
+
+  const belowLineOffset = halfThickness + 1.5;
 
   const belowLineStart = {
-    x: pillarX + halfThickness * perpX,
-    y: pillarTopY + halfThickness * perpY
+    x: pillarX,
+    y: pillarTopY + belowLineOffset * perpY
   };
 
-  // End of the diagonal accent line.
-  // It follows the roof slope and sits just below the roof.
   const belowLineEnd = {
-    x: continuationEnd.x + halfThickness * perpX,
-    y: continuationEnd.y + halfThickness * perpY
+    x: continuationEnd.x,
+    y: continuationEnd.y + belowLineOffset * perpY
   };
 
-  // Centerline Y at the exact X position of the vertical return.
-  const centerLineYAtReturn =
+  // Roof centerline Y at the exact X position of the return
+  const roofCenterYAtReturn =
     pillarTopY +
     ((belowLineEnd.x - pillarX) / beamUx) * beamUy;
 
-  // Top boundary of the roof thickness at the same X position.
-  // The vertical return ends here, so it cannot protrude above the roof.
+  // Upper edge of the roof thickness
   const roofTopYAtReturn =
-    centerLineYAtReturn - halfThickness * beamUx;
+    roofCenterYAtReturn - halfThickness * beamUx;
 
-  // Vertical return keeps exactly the same X coordinate.
+  // Final point of the vertical return.
+  // This keeps the L completely within the roof thickness.
   const belowLineTopEnd = {
     x: belowLineEnd.x,
     y: roofTopYAtReturn
   };
 
-  // Vertical zone for the words
+  // Vertical zone where each word/letter sits
   const wordZoneTop = 41;
   const wordZoneBottom = 79;
 
@@ -161,17 +157,17 @@ export const Home: React.FC<HomeProps> = ({
           introFinished ? 'opacity-100' : 'opacity-0'
         }`}
       >
-        {/* Desktop / tablet */}
+        {/* Desktop / tablet: architectural diagram layout */}
         <div className="hidden md:block relative w-full max-w-2xl aspect-[6/5] mx-auto px-6">
 
-          {/* Decorative architectural diagram */}
+          {/* Decorative beam + divider lines */}
           <svg
             viewBox={viewBox}
             preserveAspectRatio="none"
             className="absolute inset-0 w-full h-full pointer-events-none"
             aria-hidden="true"
           >
-            {/* Diagonal roof beam */}
+            {/* Diagonal roof beam bending into the vertical pillar */}
             <polyline
               points={`0,0 ${pillarX},${pillarTopY}`}
               fill="none"
@@ -190,7 +186,7 @@ export const Home: React.FC<HomeProps> = ({
               strokeWidth={beamStrokeWidth}
             />
 
-            {/* Roof continuation */}
+            {/* Continuation of the beam past the pillar */}
             <line
               x1={pillarX}
               y1={pillarTopY}
@@ -201,7 +197,7 @@ export const Home: React.FC<HomeProps> = ({
               strokeLinecap="square"
             />
 
-            {/* Thin L-shaped black accent line */}
+            {/* Thin L-shaped line directly below the roof */}
             <path
               d={`
                 M ${belowLineStart.x} ${belowLineStart.y}
@@ -215,7 +211,7 @@ export const Home: React.FC<HomeProps> = ({
               strokeLinejoin="miter"
             />
 
-            {/* 5 thin staggered boundary lines */}
+            {/* The 5 thin staggered boundary lines */}
             {thinLineX.map((x, i) => (
               <line
                 key={x}
@@ -239,9 +235,7 @@ export const Home: React.FC<HomeProps> = ({
               <button
                 key={item.labelEn}
                 onClick={item.action}
-                aria-label={
-                  isFa ? item.labelFa : item.labelEn
-                }
+                aria-label={isFa ? item.labelFa : item.labelEn}
                 className="group absolute flex items-start justify-center cursor-pointer transition-opacity duration-500 hover:opacity-50"
                 style={{
                   left: `${left}%`,
@@ -260,9 +254,7 @@ export const Home: React.FC<HomeProps> = ({
                       .toUpperCase()
                       .split('')
                       .map((ch, chIdx) => (
-                        <span key={chIdx}>
-                          {ch}
-                        </span>
+                        <span key={chIdx}>{ch}</span>
                       ))}
                   </span>
                 )}
@@ -271,7 +263,7 @@ export const Home: React.FC<HomeProps> = ({
           })}
         </div>
 
-        {/* Mobile */}
+        {/* Mobile: simple stacked full-width rows */}
         <div className="flex md:hidden flex-col w-full">
           {items.map((item, idx) => (
             <button
