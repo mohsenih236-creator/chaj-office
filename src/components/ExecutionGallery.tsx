@@ -412,180 +412,269 @@ export const ExecutionGallery: React.FC<ExecutionGalleryProps> = ({
             </button>
           )}
 
-          {/* ----------------------------------------------------
-              MAIN GALLERY CONTENT
-          ---------------------------------------------------- */}
+{/* ========================================================
+    FULLSCREEN GALLERY MODAL
+======================================================== */}
 
-          <div
-            className="relative w-full max-w-7xl h-[calc(100vh-2rem)] md:h-[calc(100vh-4rem)] flex flex-col items-center justify-center"
-            onClick={(event) =>
-              event.stopPropagation()
+{activeStageData && (
+  <div
+    className="fixed inset-0 z-[9999] bg-[#111]/95 overflow-hidden"
+    onClick={closeGallery}
+  >
+
+    {/* ----------------------------------------------------
+        CLOSE BUTTON
+    ---------------------------------------------------- */}
+
+    <button
+      type="button"
+      onClick={(event) => {
+        event.stopPropagation();
+        closeGallery();
+      }}
+      className="absolute top-4 right-4 md:top-6 md:right-6 z-50 w-12 h-12 flex items-center justify-center text-white hover:bg-white/10 transition-colors"
+      aria-label="Close gallery"
+    >
+      <X className="w-7 h-7" />
+    </button>
+
+
+    {/* ----------------------------------------------------
+        PREVIOUS BUTTON
+    ---------------------------------------------------- */}
+
+    {activeImages.length > 1 && (
+      <button
+        type="button"
+        onClick={(event) => {
+          event.stopPropagation();
+          previousImage();
+        }}
+        className="absolute left-3 md:left-8 top-1/2 -translate-y-1/2 z-50 w-12 h-12 flex items-center justify-center text-white hover:bg-white/10 transition-colors"
+        aria-label="Previous image"
+      >
+        <ChevronLeft className="w-8 h-8" />
+      </button>
+    )}
+
+
+    {/* ----------------------------------------------------
+        MAIN CONTENT
+    ---------------------------------------------------- */}
+
+    <div
+      className="absolute inset-0 w-full h-full flex flex-col"
+      onClick={(event) => event.stopPropagation()}
+    >
+
+      {/* --------------------------------------------------
+          IMAGE AREA
+      -------------------------------------------------- */}
+
+      <div className="flex-1 min-h-0 w-full flex items-center justify-center px-16 md:px-24 pt-16 pb-4">
+
+        {activeStageData.type === 'video' &&
+        activeImage === 0 ? (
+
+          <video
+            key={activeImages[activeImage]}
+            src={activeImages[activeImage]}
+            controls
+            autoPlay
+            playsInline
+            className="block max-w-full max-h-full w-auto h-auto object-contain"
+          />
+
+        ) : (
+
+          <img
+            key={activeImages[activeImage]}
+            src={activeImages[activeImage]}
+            alt={
+              isFa
+                ? activeStageData.titleFa
+                : activeStageData.title
             }
-          >
+            className="block max-w-full max-h-full w-auto h-auto object-contain select-none"
+            draggable={false}
+          />
 
-            {/* MAIN MEDIA */}
+        )}
 
-            <div className="w-full flex-1 min-h-0 flex items-center justify-center">
+      </div>
 
-              {activeStageData.type === 'video' &&
-              activeImage === 0 ? (
-                <video
-                  key={activeImages[activeImage]}
-                  src={activeImages[activeImage]}
-                  controls
-                  autoPlay
-                  className="max-w-full max-h-[70vh] object-contain"
-                />
-              ) : (
-                <img
-                  key={activeImages[activeImage]}
-                  src={activeImages[activeImage]}
-                  alt={
-                    isFa
-                      ? activeStageData.titleFa
-                      : activeStageData.title
-                  }
-                  className="block max-w-full max-h-[70vh] w-auto h-auto object-contain select-none"
-                />
-              )}
 
-            </div>
+      {/* --------------------------------------------------
+          INFORMATION
+      -------------------------------------------------- */}
 
-            {/* --------------------------------------------------
-                INFORMATION
-            -------------------------------------------------- */}
+      <div className="flex-shrink-0 w-full px-6 md:px-16 pb-3 md:pb-4">
 
-            <div className="w-full max-w-5xl flex items-end justify-between gap-6 pt-4 text-white flex-shrink-0">
+        <div className="w-full max-w-5xl mx-auto flex items-end justify-between gap-6 text-white">
 
-              <div>
+          <div>
 
-                <div className="text-[10px] uppercase tracking-[0.2em] text-white/50 mb-2">
-                  {String(
-                    (activeStage ?? 0) + 1
-                  ).padStart(2, '0')}
+            <div className="text-[10px] uppercase tracking-[0.2em] text-white/50 mb-2">
 
-                  {' / '}
+              {String(
+                (activeStage ?? 0) + 1
+              ).padStart(2, '0')}
 
-                  {String(
-                    project.executionPhotos.length
-                  ).padStart(2, '0')}
-                </div>
+              {' / '}
 
-                <h3 className="text-xl md:text-2xl font-serif">
-                  {isFa
-                    ? activeStageData.titleFa
-                    : activeStageData.title}
-                </h3>
-
-                {(activeStageData.caption ||
-                  activeStageData.captionFa) && (
-                  <p className="text-sm text-white/60 mt-2">
-                    {isFa
-                      ? activeStageData.captionFa
-                      : activeStageData.caption}
-                  </p>
-                )}
-
-              </div>
-
-              {/* CURRENT IMAGE NUMBER */}
-
-              <div className="text-sm text-white/60 whitespace-nowrap">
-                {activeImage + 1}
-                {' / '}
-                {activeImages.length}
-              </div>
+              {String(
+                project.executionPhotos.length
+              ).padStart(2, '0')}
 
             </div>
 
-            {/* --------------------------------------------------
-                THUMBNAILS
-            -------------------------------------------------- */}
 
-            {activeImages.length > 1 && (
-              <div className="w-full max-w-5xl overflow-x-auto mt-4 pb-1 flex-shrink-0">
+            <h3 className="text-xl md:text-2xl font-serif">
 
-                <div className="flex gap-2">
+              {isFa
+                ? activeStageData.titleFa
+                : activeStageData.title}
 
-                  {activeImages.map(
-                    (image, imageIndex) => {
+            </h3>
 
-                      const isActive =
-                        activeImage === imageIndex;
 
-                      const isVideoThumbnail =
-                        activeStageData.type === 'video' &&
-                        imageIndex === 0;
+            {(activeStageData.caption ||
+              activeStageData.captionFa) && (
 
-                      return (
-                        <button
-                          key={`${image}-${imageIndex}`}
-                          type="button"
-                          onClick={() =>
-                            setActiveImage(
-                              imageIndex
-                            )
-                          }
-                          className={`relative flex-shrink-0 w-20 h-14 md:w-24 md:h-16 overflow-hidden border transition-all ${
-                            isActive
-                              ? 'border-white opacity-100'
-                              : 'border-white/20 opacity-50 hover:opacity-100'
-                          }`}
-                        >
+              <p className="text-sm text-white/60 mt-2">
 
-                          {isVideoThumbnail ? (
-                            <video
-                              src={image}
-                              muted
-                              preload="metadata"
-                              className="w-full h-full object-cover"
-                            />
-                          ) : (
-                            <img
-                              src={image}
-                              alt=""
-                              className="w-full h-full object-cover"
-                            />
-                          )}
+                {isFa
+                  ? activeStageData.captionFa
+                  : activeStageData.caption}
 
-                          {/* Active thumbnail indicator */}
+              </p>
 
-                          {isActive && (
-                            <div className="absolute inset-0 border-2 border-white pointer-events-none" />
-                          )}
-
-                        </button>
-                      );
-                    }
-                  )}
-
-                </div>
-
-              </div>
             )}
 
           </div>
 
-          {/* ----------------------------------------------------
-              NEXT BUTTON
-          ---------------------------------------------------- */}
 
-          {activeImages.length > 1 && (
-            <button
-              type="button"
-              onClick={(event) => {
-                event.stopPropagation();
-                nextImage();
-              }}
-              className="absolute right-3 md:right-8 top-1/2 -translate-y-1/2 z-30 w-12 h-12 flex items-center justify-center text-white hover:bg-white/10 transition-colors"
-              aria-label="Next image"
-            >
-              <ChevronRight className="w-8 h-8" />
-            </button>
-          )}
+          {/* CURRENT IMAGE NUMBER */}
+
+          <div className="text-sm text-white/60 whitespace-nowrap">
+
+            {activeImage + 1}
+            {' / '}
+            {activeImages.length}
+
+          </div>
 
         </div>
+
+      </div>
+
+
+      {/* --------------------------------------------------
+          THUMBNAILS
+      -------------------------------------------------- */}
+
+      {activeImages.length > 1 && (
+
+        <div className="flex-shrink-0 w-full px-6 md:px-16 pb-5 md:pb-7">
+
+          <div className="w-full max-w-5xl mx-auto overflow-x-auto">
+
+            <div className="flex gap-2">
+
+              {activeImages.map(
+                (image, imageIndex) => {
+
+                  const isActive =
+                    activeImage === imageIndex;
+
+                  const isVideoThumbnail =
+                    activeStageData.type === 'video' &&
+                    imageIndex === 0;
+
+                  return (
+
+                    <button
+                      key={`${image}-${imageIndex}`}
+                      type="button"
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        setActiveImage(imageIndex);
+                      }}
+                      className={`relative flex-shrink-0 w-20 h-14 md:w-24 md:h-16 overflow-hidden border transition-all ${
+                        isActive
+                          ? 'border-white opacity-100'
+                          : 'border-white/20 opacity-50 hover:opacity-100'
+                      }`}
+                    >
+
+                      {isVideoThumbnail ? (
+
+                        <video
+                          src={image}
+                          muted
+                          preload="metadata"
+                          className="w-full h-full object-cover"
+                        />
+
+                      ) : (
+
+                        <img
+                          src={image}
+                          alt=""
+                          className="w-full h-full object-cover"
+                        />
+
+                      )}
+
+
+                      {isActive && (
+
+                        <div className="absolute inset-0 border-2 border-white pointer-events-none" />
+
+                      )}
+
+                    </button>
+
+                  );
+
+                }
+              )}
+
+            </div>
+
+          </div>
+
+        </div>
+
       )}
+
+    </div>
+
+
+    {/* ----------------------------------------------------
+        NEXT BUTTON
+    ---------------------------------------------------- */}
+
+    {activeImages.length > 1 && (
+
+      <button
+        type="button"
+        onClick={(event) => {
+          event.stopPropagation();
+          nextImage();
+        }}
+        className="absolute right-3 md:right-8 top-1/2 -translate-y-1/2 z-50 w-12 h-12 flex items-center justify-center text-white hover:bg-white/10 transition-colors"
+        aria-label="Next image"
+      >
+
+        <ChevronRight className="w-8 h-8" />
+
+      </button>
+
+    )}
+
+  </div>
+)}
     </>
   );
 };
