@@ -275,7 +275,7 @@ export const Home: React.FC<HomeProps> = ({
         `}
       >
         <img
-          src="/images/chaj-logo.png"
+          src="/images/chaj-logo-group.png"
           alt="CHAJ Architecture Group"
           className="
             w-[220px]
