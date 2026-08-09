@@ -550,7 +550,7 @@ export const projects: Project[] = [
         galleryImages: [
           "/images/shirvani-EX-fram-roof-01.JPG",
           "/images/shirvani-EX-fram-roof-02.JPG",
-          "/images/shirvani-EX-03-04.jpg",
+          "/images/shirvani-EX-fram-roof-03.JPG",
           "/images/shirvani-EX-03-05.jpg"
         ]
       },
