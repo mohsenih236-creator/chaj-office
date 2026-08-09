@@ -27,11 +27,7 @@ export const Home: React.FC<HomeProps> = ({
     return () => clearTimeout(timer);
   }, []);
 
-  const items: {
-    labelEn: string;
-    labelFa: string;
-    action: () => void;
-  }[] = [
+  const items = [
     {
       labelEn: 'Projects',
       labelFa: 'پروژه‌ها',
@@ -54,9 +50,11 @@ export const Home: React.FC<HomeProps> = ({
     }
   ];
 
-  // =========================================================
-  // SVG GEOMETRY
-  // =========================================================
+  /*
+   * ============================================================
+   * ARCHITECTURAL DIAGRAM
+   * ============================================================
+   */
 
   const ASPECT = 6 / 5;
 
@@ -65,11 +63,8 @@ export const Home: React.FC<HomeProps> = ({
 
   const contentWidth = 100 * ASPECT;
 
-  const viewBoxWidth =
-    contentWidth + MARGIN_X;
-
-  const viewBoxHeight =
-    100 + MARGIN_Y;
+  const viewBoxWidth = contentWidth + MARGIN_X;
+  const viewBoxHeight = 100 + MARGIN_Y;
 
   const viewBox = `
     ${-MARGIN_X}
@@ -78,130 +73,200 @@ export const Home: React.FC<HomeProps> = ({
     ${viewBoxHeight}
   `;
 
-  // تبدیل درصد عرض کانتینر به مختصات SVG
+  /*
+   * Convert percentage of visual container width
+   * into SVG coordinates.
+   */
   const toSvgX = (percent: number) => {
-    return (
-      -MARGIN_X +
-      (percent / 100) * viewBoxWidth
-    );
+    return -MARGIN_X + (percent / 100) * viewBoxWidth;
   };
 
-  // =========================================================
-  // FIVE THIN VERTICAL LINES
-  // =========================================================
+  /*
+   * ------------------------------------------------------------
+   * FIVE VERTICAL LINES
+   * ------------------------------------------------------------
+   */
 
-  const colPercent = [
-    5,
-    18,
-    32,
-    45,
-    58
-  ];
+  const colPercent = [5, 18, 32, 45, 58];
 
-  const thinLineX =
-    colPercent.map(toSvgX);
+  const thinLineX = colPercent.map(toSvgX);
 
-  const thinLineTopY = [
-    23,
-    27,
-    31,
-    34,
-    38
-  ];
+  const thinLineTopY = [23, 27, 31, 34, 38];
 
   const thinLineBottomY = 91;
 
-  // =========================================================
-  // MAIN ROOF + PILLAR
-  // =========================================================
+  /*
+   * ------------------------------------------------------------
+   * MAIN ROOF + COLUMN
+   * ------------------------------------------------------------
+   */
 
-  const pillarX =
-    72 * ASPECT;
+  const pillarX = 72 * ASPECT;
 
   const pillarTopY = 28;
 
   const pillarBottomY = 100;
 
-  // ضخامت سقف و ستون
-  const beamStrokeWidth = 8;
-
-  // =========================================================
-  // ROOF DIRECTION
-  // =========================================================
-
-  const beamLen = Math.sqrt(
-    pillarX * pillarX +
-      pillarTopY * pillarTopY
-  );
-
-  const beamUx =
-    pillarX / beamLen;
-
-  const beamUy =
-    pillarTopY / beamLen;
-
-  // =========================================================
-  // ROOF CONTINUATION
-  // =========================================================
+  const roofStrokeWidth = 8;
 
   /*
-   * سقف از ستون عبور کرده و به سمت راست ادامه پیدا می‌کند.
-   * این همان بخش ضخیم سقف است.
+   * ------------------------------------------------------------
+   * ROOF GEOMETRY
+   * ------------------------------------------------------------
    */
 
-  const continuationEndX =
-    contentWidth - 2;
+  const roofStartX = 0;
+  const roofStartY = 0;
 
+  /*
+   * Main roof ends exactly at the column.
+   */
+  const roofEndX = pillarX;
+  const roofEndY = pillarTopY;
+
+  /*
+   * ------------------------------------------------------------
+   * RIGHT SIDE OF ROOF
+   * ------------------------------------------------------------
+   *
+   * The roof continues past the column.
+   */
+
+  const continuationEndX = contentWidth - 2;
+
+  const beamLength = Math.sqrt(
+    pillarX * pillarX + pillarTopY * pillarTopY
+  );
+
+  const beamUx = pillarX / beamLength;
+  const beamUy = pillarTopY / beamLength;
+
+  /*
+   * Continue the roof using the EXACT SAME slope.
+   */
   const tContinuation =
-    (continuationEndX - pillarX) /
-    beamUx;
+    (continuationEndX - pillarX) / beamUx;
 
-  const continuationEnd = {
-    x: continuationEndX,
+  const continuationEndY =
+    pillarTopY + tContinuation * beamUy;
 
-    y:
-      pillarTopY +
-      tContinuation * beamUy
+  /*
+   * ------------------------------------------------------------
+   * THIN LINE UNDER THE ROOF
+   * ------------------------------------------------------------
+   *
+   * IMPORTANT:
+   *
+   * This is NOT a <path>.
+   *
+   * It is made from two simple SVG lines:
+   *
+   * 1. diagonal line under the roof
+   * 2. vertical line at the right end
+   *
+   * This creates the L-shaped detail from the reference image.
+   */
+
+  /*
+   * Horizontal distance between the pillar and
+   * the beginning of the thin diagonal line.
+   *
+   * This is intentionally separated from the pillar.
+   */
+  const thinLineStartGap = 7;
+
+  /*
+   * Perpendicular direction from the roof.
+   */
+  const perpX = -beamUy;
+  const perpY = beamUx;
+
+  /*
+   * Start of the thin line.
+   *
+   * It begins to the RIGHT of the pillar,
+   * while also being below the roof.
+   */
+  const thinRoofStart = {
+    x: pillarX + thinLineStartGap,
+    y: pillarTopY + thinLineStartGap * (beamUy / beamUx)
   };
 
-  // =========================================================
-  // WORD POSITIONS
-  // =========================================================
+  /*
+   * End of the diagonal thin line.
+   *
+   * It stops before the end of the thick roof.
+   */
+  const thinRoofEndX = continuationEndX - 3;
+
+  const thinRoofT =
+    (thinRoofEndX - pillarX) / beamUx;
+
+  const thinRoofCenterEnd = {
+    x: thinRoofEndX,
+    y: pillarTopY + thinRoofT * beamUy
+  };
+
+  /*
+   * Move the line downward from the roof.
+   *
+   * This controls the visible gap between
+   * the thick roof and thin line.
+   */
+  const thinRoofOffset = 7;
+
+  const thinRoofEnd = {
+    x:
+      thinRoofCenterEnd.x +
+      thinRoofOffset * perpX,
+
+    y:
+      thinRoofCenterEnd.y +
+      thinRoofOffset * perpY
+  };
+
+  /*
+   * The vertical end of the L.
+   *
+   * It rises upward until it reaches
+   * the LOWER edge of the thick roof.
+   */
+  const roofHalfThickness = roofStrokeWidth / 2;
+
+  const lVerticalTopY =
+    continuationEndY + roofHalfThickness;
+
+  /*
+   * Small correction so the vertical stroke visually
+   * touches the bottom edge of the thick roof.
+   */
+  const lVerticalBottomY = thinRoofEnd.y;
+
+  /*
+   * ------------------------------------------------------------
+   * WORD POSITION
+   * ------------------------------------------------------------
+   */
 
   const wordZoneTop = 41;
-
   const wordZoneBottom = 79;
-
-  // =========================================================
-  // PAGE
-  // =========================================================
 
   return (
     <div
       id="home-landing"
-      className="
-        relative
-        min-h-screen
-        overflow-hidden
-        bg-[#F4F1EE]
-      "
+      className="relative min-h-screen overflow-hidden bg-[#F4F1EE]"
     >
 
-      {/* =====================================================
+      {/* ======================================================
           CHAJ LOGO INTRO
-      ====================================================== */}
+          ====================================================== */}
 
       <div
         className={`
-          absolute
-          inset-0
-          z-50
-          flex
-          items-center
-          justify-center
+          absolute inset-0 z-50
+          flex items-center justify-center
           bg-[#F4F1EE]
-          transition-opacity
-          duration-1000
+          transition-opacity duration-1000
           ${
             introFinished
               ? 'pointer-events-none opacity-0'
@@ -221,9 +286,9 @@ export const Home: React.FC<HomeProps> = ({
         />
       </div>
 
-      {/* =====================================================
-          MAIN NAVIGATION
-      ====================================================== */}
+      {/* ======================================================
+          MAIN CONTENT
+          ====================================================== */}
 
       <div
         className={`
@@ -242,26 +307,24 @@ export const Home: React.FC<HomeProps> = ({
         `}
       >
 
-        {/* ===================================================
-            DESKTOP / TABLET
-        ==================================================== */}
+        {/* ====================================================
+            ARCHITECTURAL DIAGRAM
+            DESKTOP + MOBILE
+            ==================================================== */}
 
         <div
           className="
-            hidden
-            md:block
             relative
-            w-full
+            w-[88vw]
             max-w-2xl
             aspect-[6/5]
             mx-auto
-            px-6
           "
         >
 
-          {/* =================================================
-              ARCHITECTURAL DIAGRAM
-          ================================================== */}
+          {/* ==================================================
+              SVG ARCHITECTURAL DRAWING
+              ================================================== */}
 
           <svg
             viewBox={viewBox}
@@ -276,24 +339,23 @@ export const Home: React.FC<HomeProps> = ({
             aria-hidden="true"
           >
 
-            {/* =================================================
-                DIAGONAL ROOF
-            ================================================== */}
+            {/* ================================================
+                MAIN DIAGONAL ROOF
+                ================================================ */}
 
-            <polyline
-              points={`
-                0,0
-                ${pillarX},${pillarTopY}
-              `}
-              fill="none"
+            <line
+              x1={roofStartX}
+              y1={roofStartY}
+              x2={roofEndX}
+              y2={roofEndY}
               stroke="#1C1C1C"
-              strokeWidth={beamStrokeWidth}
+              strokeWidth={roofStrokeWidth}
               strokeLinecap="square"
             />
 
-            {/* =================================================
-                VERTICAL PILLAR
-            ================================================== */}
+            {/* ================================================
+                VERTICAL COLUMN
+                ================================================ */}
 
             <line
               x1={pillarX}
@@ -301,30 +363,67 @@ export const Home: React.FC<HomeProps> = ({
               x2={pillarX}
               y2={pillarBottomY}
               stroke="#1C1C1C"
-              strokeWidth={beamStrokeWidth}
+              strokeWidth={roofStrokeWidth}
+              strokeLinecap="butt"
             />
 
-            {/* =================================================
-                ROOF CONTINUATION
-            ================================================== */}
+            {/* ================================================
+                ROOF CONTINUATION AFTER COLUMN
+                ================================================ */}
 
             <line
               x1={pillarX}
               y1={pillarTopY}
-              x2={continuationEnd.x}
-              y2={continuationEnd.y}
+              x2={continuationEndX}
+              y2={continuationEndY}
               stroke="#1C1C1C"
-              strokeWidth={beamStrokeWidth}
+              strokeWidth={roofStrokeWidth}
               strokeLinecap="square"
             />
 
-            {/* =================================================
+            {/* ================================================
+                THIN DIAGONAL LINE UNDER ROOF
+
+                IMPORTANT:
+                This is a normal <line>, NOT a path.
+
+                It starts with a gap from the column.
+                ================================================ */}
+
+            <line
+              x1={thinRoofStart.x}
+              y1={thinRoofStart.y}
+              x2={thinRoofEnd.x}
+              y2={thinRoofEnd.y}
+              stroke="#1C1C1C"
+              strokeWidth="0.7"
+              strokeLinecap="butt"
+            />
+
+            {/* ================================================
+                VERTICAL END OF THIN LINE
+
+                This creates the L shape and rises
+                into the thickness of the roof.
+                ================================================ */}
+
+            <line
+              x1={thinRoofEnd.x}
+              y1={lVerticalBottomY}
+              x2={thinRoofEnd.x}
+              y2={lVerticalTopY}
+              stroke="#1C1C1C"
+              strokeWidth="0.7"
+              strokeLinecap="butt"
+            />
+
+            {/* ================================================
                 FIVE THIN VERTICAL LINES
-            ================================================== */}
+                ================================================ */}
 
             {thinLineX.map((x, i) => (
               <line
-                key={x}
+                key={`thin-line-${i}`}
                 x1={x}
                 y1={thinLineTopY[i]}
                 x2={x}
@@ -336,13 +435,13 @@ export const Home: React.FC<HomeProps> = ({
 
           </svg>
 
-          {/* =================================================
+          {/* ==================================================
               CLICKABLE WORD ZONES
-          ================================================== */}
+              ================================================== */}
 
           {items.map((item, idx) => {
-            const left =
-              colPercent[idx];
+
+            const left = colPercent[idx];
 
             const width =
               colPercent[idx + 1] -
@@ -372,26 +471,28 @@ export const Home: React.FC<HomeProps> = ({
                   left: `${left}%`,
                   width: `${width}%`,
                   top: `${wordZoneTop}%`,
-                  height: `${
-                    wordZoneBottom -
-                    wordZoneTop
-                  }%`
+                  height:
+                    `${wordZoneBottom - wordZoneTop}%`
                 }}
               >
 
                 {isFa ? (
+
                   <span
                     className="
                       font-serif
-                      text-lg
-                      sm:text-xl
+                      text-[11px]
+                      sm:text-lg
+                      md:text-xl
                       text-[#1C1C1C]
                       tracking-tight
                     "
                   >
                     {item.labelFa}
                   </span>
+
                 ) : (
+
                   <span
                     className="
                       flex
@@ -401,8 +502,9 @@ export const Home: React.FC<HomeProps> = ({
                       font-mono
                       font-medium
                       uppercase
-                      text-xs
-                      sm:text-sm
+                      text-[8px]
+                      sm:text-xs
+                      md:text-sm
                       tracking-[0.1em]
                       text-[#1C1C1C]
                     "
@@ -410,16 +512,13 @@ export const Home: React.FC<HomeProps> = ({
                     {item.labelEn
                       .toUpperCase()
                       .split('')
-                      .map(
-                        (ch, chIdx) => (
-                          <span
-                            key={chIdx}
-                          >
-                            {ch}
-                          </span>
-                        )
-                      )}
+                      .map((ch, chIdx) => (
+                        <span key={chIdx}>
+                          {ch}
+                        </span>
+                      ))}
                   </span>
+
                 )}
 
               </button>
@@ -428,63 +527,7 @@ export const Home: React.FC<HomeProps> = ({
 
         </div>
 
-        {/* ===================================================
-            MOBILE
-        ==================================================== */}
-
-        <div
-          className="
-            flex
-            md:hidden
-            flex-col
-            w-full
-          "
-        >
-
-          {items.map((item, idx) => (
-            <button
-              key={item.labelEn}
-              onClick={item.action}
-              className={`
-                w-full
-                py-10
-                flex
-                items-center
-                justify-center
-                cursor-pointer
-                transition-colors
-                duration-300
-                hover:bg-black/[0.025]
-                ${
-                  idx !==
-                  items.length - 1
-                    ? 'border-b border-black/10'
-                    : ''
-                }
-              `}
-            >
-              <span
-                className="
-                  font-serif
-                  italic
-                  text-xl
-                  text-[#1C1C1C]
-                  tracking-tight
-                "
-              >
-                {
-                  isFa
-                    ? item.labelFa
-                    : item.labelEn
-                }
-              </span>
-            </button>
-          ))}
-
-        </div>
-
       </div>
-
     </div>
   );
 };
