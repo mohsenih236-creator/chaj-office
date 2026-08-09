@@ -99,37 +99,53 @@ export const Home: React.FC<HomeProps> = ({
 
   // Distance between the centerline of the solid roof and the thin line.
   // This keeps the thin line visibly separated from the roof.
-  const belowLineGap = 10;
+  // فاصله افقی شروع خط نازک از ستون
+const gutterHorizontalGap = 10.5;
 
-  // Start of the thin line: to the RIGHT of the pillar, not on the pillar.
-  const belowLineStart = {
-    x: pillarX + gutterHorizontalGap,
-    y:
-      pillarTopY +
-      ((pillarX + gutterHorizontalGap - pillarX) / beamUx) * beamUy +
-      belowLineGap * perpY
-  };
+// فاصله عمودی/عمود بر سقف بین سقف ضخیم و خط نازک
+const belowLineGap = 10;
 
-  // End of the diagonal thin line.
-  const belowLineEnd = {
-    x: continuationEnd.x + belowLineGap * perpX,
-    y: continuationEnd.y + belowLineGap * perpY
-  };
+// ----------------------------------------------------
+// خط نازک را مستقیماً از هندسه خود سقف محاسبه می‌کنیم.
+// ----------------------------------------------------
 
-  /*
-   * The final vertical segment of the L.
-   *
-   * It rises from the end of the thin diagonal line to the underside
-   * of the solid roof at exactly the same X position.
-   */
-  const roofUndersideAtEndY =
-    continuationEnd.y + (beamStrokeWidth / 2) * perpY;
+// نقطه شروع خط نازک:
+// 1.5cm تقریبی سمت راست ستون
+const gutterStartX = pillarX + gutterHorizontalGap;
 
-  const gutterPath = [
-    `M ${belowLineStart.x} ${belowLineStart.y}`,
-    `L ${belowLineEnd.x} ${belowLineEnd.y}`,
-    `L ${belowLineEnd.x} ${roofUndersideAtEndY}`
-  ].join(' ');
+// Y خط مرکزی سقف در این X
+const roofCenterYAtStart =
+  pillarTopY +
+  ((gutterStartX - pillarX) / beamUx) * beamUy;
+
+// زیرِ ضخامت سقف در این نقطه
+const roofUndersideYAtStart =
+  roofCenterYAtStart + (beamStrokeWidth / 2) * perpY;
+
+// شروع خط نازک، با فاصله مشخص زیر سقف
+const belowLineStart = {
+  x: gutterStartX,
+  y: roofUndersideYAtStart + belowLineGap * perpY
+};
+
+// انتهای خط نازک، موازی دقیق با سقف
+const belowLineEnd = {
+  x: continuationEnd.x + belowLineGap * perpX,
+  y: continuationEnd.y + belowLineGap * perpY
+};
+
+// نقطه‌ای که خط عمودی باید به زیر سقف برسد.
+// این Y مستقیماً از خود سقف محاسبه می‌شود.
+const roofUndersideAtEndY =
+  continuationEnd.y + (beamStrokeWidth / 2) * perpY;
+
+// مسیر نهایی:
+// شروع → خط مورب موازی سقف → خط عمودی تا زیر سقف
+const gutterPath = [
+  `M ${belowLineStart.x} ${belowLineStart.y}`,
+  `L ${belowLineEnd.x} ${belowLineEnd.y}`,
+  `L ${belowLineEnd.x} ${roofUndersideAtEndY}`
+].join(' ');
 
   // Vertical zone where each navigation word sits.
   const wordZoneTop = 41;
