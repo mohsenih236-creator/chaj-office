@@ -190,112 +190,50 @@ export const Home: React.FC<HomeProps> = ({
    * فاصله‌ی خط نازک از زیر سقف.
    */
 
-  const belowLineGap = 7;
+  const gutterHorizontalGap = 10.5;
+const belowLineGap = 7;
 
-  // =========================================================
-  // START OF THIN DIAGONAL LINE
-  // =========================================================
+const gutterStartX =
+  pillarX + gutterHorizontalGap;
 
-  /*
-   * خط نازک از سمت راست ستون شروع می‌شود.
-   */
+const gutterStartRoofY =
+  pillarTopY +
+  ((gutterStartX - pillarX) / beamUx) *
+    beamUy;
 
-  const gutterStartX =
-    pillarX +
-    gutterHorizontalGap;
+const gutterStartUndersideY =
+  gutterStartRoofY +
+  (beamStrokeWidth / 2) * perpY;
 
-  /*
-   * محاسبه‌ی Y سقف در همین X
-   */
+const belowLineStart = {
+  x:
+    gutterStartX +
+    belowLineGap * perpX,
 
-  const roofCenterYAtStart =
-    pillarTopY +
-    (
-      (gutterStartX - pillarX) /
-      beamUx
-    ) *
-      beamUy;
+  y:
+    gutterStartUndersideY +
+    belowLineGap * perpY
+};
 
-  /*
-   * پایین‌ترین سطح سقف ضخیم
-   */
+const belowLineEnd = {
+  x:
+    continuationEnd.x +
+    belowLineGap * perpX,
 
-  const roofUndersideYAtStart =
-    roofCenterYAtStart +
-    (beamStrokeWidth / 2) *
-      perpY;
-
-  /*
-   * نقطه‌ی واقعی شروع خط نازک
-   *
-   * خط هم از ستون فاصله دارد
-   * و هم از زیر سقف فاصله دارد.
-   */
-
-  const belowLineStart = {
-    x:
-      gutterStartX +
-      belowLineGap * perpX,
-
-    y:
-      roofUndersideYAtStart +
-      belowLineGap * perpY
-  };
-
-  // =========================================================
-  // END OF THIN DIAGONAL LINE
-  // =========================================================
-
-  /*
-   * خط نازک دقیقاً موازی سقف ادامه پیدا می‌کند.
-   */
-
-  const belowLineEnd = {
-    x:
-      continuationEnd.x +
-      belowLineGap * perpX,
-
-    y:
-      continuationEnd.y +
-      belowLineGap * perpY
-  };
-
-  // =========================================================
-  // VERTICAL PART OF L
-  // =========================================================
-
-  /*
-   * این نقطه دقیقاً روی زیر ضخامت سقف قرار می‌گیرد.
-   *
-   * بنابراین قسمت عمودی L تا خود سقف بالا می‌رود.
-   */
-
-  const roofUndersideAtEndY =
+  y:
     continuationEnd.y +
-    (beamStrokeWidth / 2) *
-      perpY;
+    belowLineGap * perpY
+};
 
-  // =========================================================
-  // FINAL L-SHAPED PATH
-  // =========================================================
+// نقطه‌ی اتصال عمودی به زیر سقف
+const gutterRoofEndY =
+  continuationEnd.y +
+  (beamStrokeWidth / 2) * perpY;
 
-  /*
-   * مسیر دقیقاً سه نقطه دارد:
-   *
-   * 1. شروع خط مورب
-   * 2. انتهای خط مورب
-   * 3. حرکت عمودی به سمت ضخامت سقف
-   *
-   * نتیجه همان فرم L شکل رفرنس است.
-   */
-
-  const gutterPath = [
-    `M ${belowLineStart.x} ${belowLineStart.y}`,
-
-    `L ${belowLineEnd.x} ${belowLineEnd.y}`,
-
-    `L ${belowLineEnd.x} ${roofUndersideAtEndY}`
-  ].join(' ');
+const gutterPath =
+  `M ${belowLineStart.x} ${belowLineStart.y} ` +
+  `L ${belowLineEnd.x} ${belowLineEnd.y} ` +
+  `L ${belowLineEnd.x} ${gutterRoofEndY}`;
 
   // =========================================================
   // WORD POSITIONS
