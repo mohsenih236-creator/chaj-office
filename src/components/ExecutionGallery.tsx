@@ -674,7 +674,8 @@ export const ExecutionGallery: React.FC<ExecutionGalleryProps> = ({
     )}
 
   </div>
-)}
+     )}
+      </div>
     </>
   );
 };
