@@ -65,12 +65,20 @@ export const Home: React.FC<HomeProps> = ({
 
   const contentWidth = 100 * ASPECT;
 
-  const viewBoxWidth = contentWidth + MARGIN_X;
-  const viewBoxHeight = 100 + MARGIN_Y;
+  const viewBoxWidth =
+    contentWidth + MARGIN_X;
 
-  const viewBox = `${-MARGIN_X} ${-MARGIN_Y} ${viewBoxWidth} ${viewBoxHeight}`;
+  const viewBoxHeight =
+    100 + MARGIN_Y;
 
-  // تبدیل درصد عرض کانتینر به مختصات واقعی SVG
+  const viewBox = `
+    ${-MARGIN_X}
+    ${-MARGIN_Y}
+    ${viewBoxWidth}
+    ${viewBoxHeight}
+  `;
+
+  // تبدیل درصد عرض کانتینر به مختصات SVG
   const toSvgX = (percent: number) => {
     return (
       -MARGIN_X +
@@ -90,7 +98,8 @@ export const Home: React.FC<HomeProps> = ({
     58
   ];
 
-  const thinLineX = colPercent.map(toSvgX);
+  const thinLineX =
+    colPercent.map(toSvgX);
 
   const thinLineTopY = [
     23,
@@ -103,10 +112,11 @@ export const Home: React.FC<HomeProps> = ({
   const thinLineBottomY = 91;
 
   // =========================================================
-  // MAIN ROOF + VERTICAL PILLAR
+  // MAIN ROOF + PILLAR
   // =========================================================
 
-  const pillarX = 72 * ASPECT;
+  const pillarX =
+    72 * ASPECT;
 
   const pillarTopY = 28;
 
@@ -116,46 +126,27 @@ export const Home: React.FC<HomeProps> = ({
   const beamStrokeWidth = 8;
 
   // =========================================================
-  // ROOF VECTOR
+  // ROOF DIRECTION
   // =========================================================
-
-  /*
-   * سقف از نقطه‌ی 0,0 شروع می‌شود
-   * و در نقطه‌ی ستون به:
-   *
-   * pillarX , pillarTopY
-   *
-   * می‌رسد.
-   */
 
   const beamLen = Math.sqrt(
     pillarX * pillarX +
       pillarTopY * pillarTopY
   );
 
-  // بردار واحد در راستای سقف
   const beamUx =
     pillarX / beamLen;
 
   const beamUy =
     pillarTopY / beamLen;
 
-  /*
-   * بردار عمود بر سقف
-   *
-   * این بردار برای ایجاد خط نازک زیر سقف
-   * استفاده می‌شود تا خط دقیقاً موازی سقف باشد.
-   */
-
-  const perpX = -beamUy;
-  const perpY = beamUx;
-
   // =========================================================
   // ROOF CONTINUATION
   // =========================================================
 
   /*
-   * سقف بعد از ستون نیز ادامه دارد.
+   * سقف از ستون عبور کرده و به سمت راست ادامه پیدا می‌کند.
+   * این همان بخش ضخیم سقف است.
    */
 
   const continuationEndX =
@@ -172,66 +163,6 @@ export const Home: React.FC<HomeProps> = ({
       pillarTopY +
       tContinuation * beamUy
   };
-
-  // =========================================================
-  // THIN L-SHAPED LINE UNDER ROOF
-  // =========================================================
-
-  /*
-   * فاصله‌ی شروع خط نازک از ستون.
-   *
-   * این همان بخشی است که در رفرنس حدود
-   * 1.5 سانتی‌متر فاصله دارد.
-   */
-
-  const gutterHorizontalGap = 10.5;
-
-  /*
-   * فاصله‌ی خط نازک از زیر سقف.
-   */
-const belowLineGap = 7;
-
-const gutterStartX =
-  pillarX + gutterHorizontalGap;
-
-const gutterStartRoofY =
-  pillarTopY +
-  ((gutterStartX - pillarX) / beamUx) *
-    beamUy;
-
-const gutterStartUndersideY =
-  gutterStartRoofY +
-  (beamStrokeWidth / 2) * perpY;
-
-const belowLineStart = {
-  x:
-    gutterStartX +
-    belowLineGap * perpX,
-
-  y:
-    gutterStartUndersideY +
-    belowLineGap * perpY
-};
-
-const belowLineEnd = {
-  x:
-    continuationEnd.x +
-    belowLineGap * perpX,
-
-  y:
-    continuationEnd.y +
-    belowLineGap * perpY
-};
-
-// نقطه‌ی اتصال عمودی به زیر سقف
-const gutterRoofEndY =
-  continuationEnd.y +
-  (beamStrokeWidth / 2) * perpY;
-
-const gutterPath =
-  `M ${belowLineStart.x} ${belowLineStart.y} ` +
-  `L ${belowLineEnd.x} ${belowLineEnd.y} ` +
-  `L ${belowLineEnd.x} ${gutterRoofEndY}`;
 
   // =========================================================
   // WORD POSITIONS
@@ -271,7 +202,6 @@ const gutterPath =
           bg-[#F4F1EE]
           transition-opacity
           duration-1000
-
           ${
             introFinished
               ? 'pointer-events-none opacity-0'
@@ -279,7 +209,6 @@ const gutterPath =
           }
         `}
       >
-
         <img
           src="/images/chaj-logo.png"
           alt="CHAJ Architecture Group"
@@ -290,7 +219,6 @@ const gutterPath =
             animate-chaj-logo
           "
         />
-
       </div>
 
       {/* =====================================================
@@ -306,7 +234,6 @@ const gutterPath =
           justify-center
           transition-opacity
           duration-1000
-
           ${
             introFinished
               ? 'opacity-100'
@@ -333,7 +260,7 @@ const gutterPath =
         >
 
           {/* =================================================
-              ARCHITECTURAL SVG
+              ARCHITECTURAL DIAGRAM
           ================================================== */}
 
           <svg
@@ -350,7 +277,7 @@ const gutterPath =
           >
 
             {/* =================================================
-                MAIN DIAGONAL ROOF
+                DIAGONAL ROOF
             ================================================== */}
 
             <polyline
@@ -378,7 +305,7 @@ const gutterPath =
             />
 
             {/* =================================================
-                ROOF CONTINUATION AFTER PILLAR
+                ROOF CONTINUATION
             ================================================== */}
 
             <line
@@ -389,19 +316,6 @@ const gutterPath =
               stroke="#1C1C1C"
               strokeWidth={beamStrokeWidth}
               strokeLinecap="square"
-            />
-
-            {/* =================================================
-                THIN L-SHAPED LINE
-            ================================================== */}
-
-            <path
-              d={gutterPath}
-              fill="none"
-              stroke="#1C1C1C"
-              strokeWidth="0.7"
-              strokeLinecap="square"
-              strokeLinejoin="miter"
             />
 
             {/* =================================================
@@ -427,7 +341,6 @@ const gutterPath =
           ================================================== */}
 
           {items.map((item, idx) => {
-
             const left =
               colPercent[idx];
 
@@ -467,7 +380,6 @@ const gutterPath =
               >
 
                 {isFa ? (
-
                   <span
                     className="
                       font-serif
@@ -479,9 +391,7 @@ const gutterPath =
                   >
                     {item.labelFa}
                   </span>
-
                 ) : (
-
                   <span
                     className="
                       flex
@@ -497,15 +407,11 @@ const gutterPath =
                       text-[#1C1C1C]
                     "
                   >
-
                     {item.labelEn
                       .toUpperCase()
                       .split('')
                       .map(
-                        (
-                          ch,
-                          chIdx
-                        ) => (
+                        (ch, chIdx) => (
                           <span
                             key={chIdx}
                           >
@@ -513,9 +419,7 @@ const gutterPath =
                           </span>
                         )
                       )}
-
                   </span>
-
                 )}
 
               </button>
@@ -537,52 +441,45 @@ const gutterPath =
           "
         >
 
-          {items.map(
-            (item, idx) => (
-
-              <button
-                key={item.labelEn}
-                onClick={item.action}
-                className={`
-                  w-full
-                  py-10
-                  flex
-                  items-center
-                  justify-center
-                  cursor-pointer
-                  transition-colors
-                  duration-300
-                  hover:bg-black/[0.025]
-
-                  ${
-                    idx !==
-                    items.length - 1
-                      ? 'border-b border-black/10'
-                      : ''
-                  }
-                `}
+          {items.map((item, idx) => (
+            <button
+              key={item.labelEn}
+              onClick={item.action}
+              className={`
+                w-full
+                py-10
+                flex
+                items-center
+                justify-center
+                cursor-pointer
+                transition-colors
+                duration-300
+                hover:bg-black/[0.025]
+                ${
+                  idx !==
+                  items.length - 1
+                    ? 'border-b border-black/10'
+                    : ''
+                }
+              `}
+            >
+              <span
+                className="
+                  font-serif
+                  italic
+                  text-xl
+                  text-[#1C1C1C]
+                  tracking-tight
+                "
               >
-
-                <span
-                  className="
-                    font-serif
-                    italic
-                    text-xl
-                    text-[#1C1C1C]
-                    tracking-tight
-                  "
-                >
-                  {
-                    isFa
-                      ? item.labelFa
-                      : item.labelEn
-                  }
-                </span>
-
-              </button>
-
-            )
-          )}
+                {
+                  isFa
+                    ? item.labelFa
+                    : item.labelEn
+                }
+              </span>
+            </button>
+          ))}
 
         </div>
 
