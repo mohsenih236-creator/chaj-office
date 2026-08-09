@@ -70,16 +70,25 @@ export const Home: React.FC<HomeProps> = ({
 
   const viewBox = `${-MARGIN_X} ${-MARGIN_Y} ${viewBoxWidth} ${viewBoxHeight}`;
 
-  // تبدیل درصد عرض صفحه به مختصات SVG
+  // تبدیل درصد عرض کانتینر به مختصات واقعی SVG
   const toSvgX = (percent: number) => {
-    return -MARGIN_X + (percent / 100) * viewBoxWidth;
+    return (
+      -MARGIN_X +
+      (percent / 100) * viewBoxWidth
+    );
   };
 
   // =========================================================
-  // NAVIGATION VERTICAL LINES
+  // FIVE THIN VERTICAL LINES
   // =========================================================
 
-  const colPercent = [5, 18, 32, 45, 58];
+  const colPercent = [
+    5,
+    18,
+    32,
+    45,
+    58
+  ];
 
   const thinLineX = colPercent.map(toSvgX);
 
@@ -94,7 +103,7 @@ export const Home: React.FC<HomeProps> = ({
   const thinLineBottomY = 91;
 
   // =========================================================
-  // MAIN ROOF + COLUMN
+  // MAIN ROOF + VERTICAL PILLAR
   // =========================================================
 
   const pillarX = 72 * ASPECT;
@@ -107,20 +116,37 @@ export const Home: React.FC<HomeProps> = ({
   const beamStrokeWidth = 8;
 
   // =========================================================
-  // ROOF DIRECTION
+  // ROOF VECTOR
   // =========================================================
+
+  /*
+   * سقف از نقطه‌ی 0,0 شروع می‌شود
+   * و در نقطه‌ی ستون به:
+   *
+   * pillarX , pillarTopY
+   *
+   * می‌رسد.
+   */
 
   const beamLen = Math.sqrt(
     pillarX * pillarX +
-    pillarTopY * pillarTopY
+      pillarTopY * pillarTopY
   );
 
   // بردار واحد در راستای سقف
-  const beamUx = pillarX / beamLen;
-  const beamUy = pillarTopY / beamLen;
+  const beamUx =
+    pillarX / beamLen;
 
-  // بردار عمود بر سقف
-  // جهت آن به سمت پایین سقف است
+  const beamUy =
+    pillarTopY / beamLen;
+
+  /*
+   * بردار عمود بر سقف
+   *
+   * این بردار برای ایجاد خط نازک زیر سقف
+   * استفاده می‌شود تا خط دقیقاً موازی سقف باشد.
+   */
+
   const perpX = -beamUy;
   const perpY = beamUx;
 
@@ -128,70 +154,84 @@ export const Home: React.FC<HomeProps> = ({
   // ROOF CONTINUATION
   // =========================================================
 
-  // انتهای سقف در سمت راست
-  const continuationEndX = contentWidth - 2;
+  /*
+   * سقف بعد از ستون نیز ادامه دارد.
+   */
+
+  const continuationEndX =
+    contentWidth - 2;
 
   const tContinuation =
-    (continuationEndX - pillarX) / beamUx;
+    (continuationEndX - pillarX) /
+    beamUx;
 
   const continuationEnd = {
     x: continuationEndX,
-    y: pillarTopY + tContinuation * beamUy
+
+    y:
+      pillarTopY +
+      tContinuation * beamUy
   };
 
   // =========================================================
-  // THIN L-SHAPED LINE UNDER THE ROOF
+  // THIN L-SHAPED LINE UNDER ROOF
   // =========================================================
 
   /*
-   * فاصله‌ی افقی شروع خط نازک از ستون.
+   * فاصله‌ی شروع خط نازک از ستون.
    *
-   * این مقدار تقریباً معادل 1.5cm در اندازه‌ی فعلی
-   * دیاگرام است.
+   * این همان بخشی است که در رفرنس حدود
+   * 1.5 سانتی‌متر فاصله دارد.
    */
+
   const gutterHorizontalGap = 10.5;
 
   /*
    * فاصله‌ی خط نازک از زیر سقف.
-   *
-   * این فاصله بر اساس جهت عمود بر سقف محاسبه می‌شود،
-   * بنابراین خط نازک همیشه موازی سقف باقی می‌ماند.
    */
+
   const belowLineGap = 7;
 
-  // ---------------------------------------------------------
-  // START POINT
-  // ---------------------------------------------------------
+  // =========================================================
+  // START OF THIN DIAGONAL LINE
+  // =========================================================
 
   /*
-   * شروع خط نازک باید کمی بعد از ستون باشد.
+   * خط نازک از سمت راست ستون شروع می‌شود.
    */
+
   const gutterStartX =
-    pillarX + gutterHorizontalGap;
+    pillarX +
+    gutterHorizontalGap;
 
   /*
-   * Y مرکز سقف در نقطه‌ی شروع.
-   *
-   * این مقدار مستقیماً از شیب واقعی سقف محاسبه می‌شود.
+   * محاسبه‌ی Y سقف در همین X
    */
+
   const roofCenterYAtStart =
     pillarTopY +
-    ((gutterStartX - pillarX) / beamUx) *
+    (
+      (gutterStartX - pillarX) /
+      beamUx
+    ) *
       beamUy;
 
   /*
-   * رسیدن به زیر ضخامت سقف.
+   * پایین‌ترین سطح سقف ضخیم
    */
+
   const roofUndersideYAtStart =
     roofCenterYAtStart +
-    (beamStrokeWidth / 2) * perpY;
+    (beamStrokeWidth / 2) *
+      perpY;
 
   /*
-   * نقطه شروع خط نازک.
+   * نقطه‌ی واقعی شروع خط نازک
    *
-   * ابتدا زیر سقف قرار می‌گیرد و سپس به اندازه‌ی
-   * belowLineGap از آن فاصله می‌گیرد.
+   * خط هم از ستون فاصله دارد
+   * و هم از زیر سقف فاصله دارد.
    */
+
   const belowLineStart = {
     x:
       gutterStartX +
@@ -202,13 +242,14 @@ export const Home: React.FC<HomeProps> = ({
       belowLineGap * perpY
   };
 
-  // ---------------------------------------------------------
-  // END POINT OF DIAGONAL THIN LINE
-  // ---------------------------------------------------------
+  // =========================================================
+  // END OF THIN DIAGONAL LINE
+  // =========================================================
 
   /*
    * خط نازک دقیقاً موازی سقف ادامه پیدا می‌کند.
    */
+
   const belowLineEnd = {
     x:
       continuationEnd.x +
@@ -219,33 +260,35 @@ export const Home: React.FC<HomeProps> = ({
       belowLineGap * perpY
   };
 
-  // ---------------------------------------------------------
-  // TOP OF THE VERTICAL L
-  // ---------------------------------------------------------
+  // =========================================================
+  // VERTICAL PART OF L
+  // =========================================================
 
   /*
-   * این نقطه باید دقیقاً روی زیر ضخامت سقف قرار بگیرد.
+   * این نقطه دقیقاً روی زیر ضخامت سقف قرار می‌گیرد.
    *
-   * بنابراین Y آن را از هندسه‌ی خود سقف می‌گیریم،
-   * نه از یک مقدار دستی.
+   * بنابراین قسمت عمودی L تا خود سقف بالا می‌رود.
    */
+
   const roofUndersideAtEndY =
     continuationEnd.y +
-    (beamStrokeWidth / 2) * perpY;
+    (beamStrokeWidth / 2) *
+      perpY;
 
-  // ---------------------------------------------------------
+  // =========================================================
   // FINAL L-SHAPED PATH
-  // ---------------------------------------------------------
+  // =========================================================
 
   /*
-   * مسیر:
+   * مسیر دقیقاً سه نقطه دارد:
    *
-   * M = شروع
+   * 1. شروع خط مورب
+   * 2. انتهای خط مورب
+   * 3. حرکت عمودی به سمت ضخامت سقف
    *
-   * L = خط مورب موازی سقف
-   *
-   * L = خط عمودی که به زیر سقف برمی‌گردد
+   * نتیجه همان فرم L شکل رفرنس است.
    */
+
   const gutterPath = [
     `M ${belowLineStart.x} ${belowLineStart.y}`,
 
@@ -255,7 +298,7 @@ export const Home: React.FC<HomeProps> = ({
   ].join(' ');
 
   // =========================================================
-  // WORD POSITION
+  // WORD POSITIONS
   // =========================================================
 
   const wordZoneTop = 41;
@@ -263,13 +306,18 @@ export const Home: React.FC<HomeProps> = ({
   const wordZoneBottom = 79;
 
   // =========================================================
-  // RENDER
+  // PAGE
   // =========================================================
 
   return (
     <div
       id="home-landing"
-      className="relative min-h-screen overflow-hidden bg-[#F4F1EE]"
+      className="
+        relative
+        min-h-screen
+        overflow-hidden
+        bg-[#F4F1EE]
+      "
     >
 
       {/* =====================================================
@@ -278,12 +326,16 @@ export const Home: React.FC<HomeProps> = ({
 
       <div
         className={`
-          absolute inset-0
+          absolute
+          inset-0
           z-50
-          flex items-center justify-center
+          flex
+          items-center
+          justify-center
           bg-[#F4F1EE]
           transition-opacity
           duration-1000
+
           ${
             introFinished
               ? 'pointer-events-none opacity-0'
@@ -291,6 +343,7 @@ export const Home: React.FC<HomeProps> = ({
           }
         `}
       >
+
         <img
           src="/images/chaj-logo.png"
           alt="CHAJ Architecture Group"
@@ -301,6 +354,7 @@ export const Home: React.FC<HomeProps> = ({
             animate-chaj-logo
           "
         />
+
       </div>
 
       {/* =====================================================
@@ -311,9 +365,12 @@ export const Home: React.FC<HomeProps> = ({
         className={`
           min-h-screen
           pt-20
-          flex items-center justify-center
+          flex
+          items-center
+          justify-center
           transition-opacity
           duration-1000
+
           ${
             introFinished
               ? 'opacity-100'
@@ -361,7 +418,10 @@ export const Home: React.FC<HomeProps> = ({
             ================================================== */}
 
             <polyline
-              points={`0,0 ${pillarX},${pillarTopY}`}
+              points={`
+                0,0
+                ${pillarX},${pillarTopY}
+              `}
               fill="none"
               stroke="#1C1C1C"
               strokeWidth={beamStrokeWidth}
@@ -369,7 +429,7 @@ export const Home: React.FC<HomeProps> = ({
             />
 
             {/* =================================================
-                VERTICAL COLUMN
+                VERTICAL PILLAR
             ================================================== */}
 
             <line
@@ -382,7 +442,7 @@ export const Home: React.FC<HomeProps> = ({
             />
 
             {/* =================================================
-                ROOF CONTINUATION
+                ROOF CONTINUATION AFTER PILLAR
             ================================================== */}
 
             <line
@@ -396,7 +456,7 @@ export const Home: React.FC<HomeProps> = ({
             />
 
             {/* =================================================
-                THIN L-SHAPED LINE UNDER THE ROOF
+                THIN L-SHAPED LINE
             ================================================== */}
 
             <path
@@ -409,7 +469,7 @@ export const Home: React.FC<HomeProps> = ({
             />
 
             {/* =================================================
-                FIVE THIN VERTICAL NAVIGATION LINES
+                FIVE THIN VERTICAL LINES
             ================================================== */}
 
             {thinLineX.map((x, i) => (
@@ -427,7 +487,7 @@ export const Home: React.FC<HomeProps> = ({
           </svg>
 
           {/* =================================================
-              NAVIGATION WORDS
+              CLICKABLE WORD ZONES
           ================================================== */}
 
           {items.map((item, idx) => {
@@ -501,11 +561,15 @@ export const Home: React.FC<HomeProps> = ({
                       text-[#1C1C1C]
                     "
                   >
+
                     {item.labelEn
                       .toUpperCase()
                       .split('')
                       .map(
-                        (ch, chIdx) => (
+                        (
+                          ch,
+                          chIdx
+                        ) => (
                           <span
                             key={chIdx}
                           >
@@ -513,6 +577,7 @@ export const Home: React.FC<HomeProps> = ({
                           </span>
                         )
                       )}
+
                   </span>
 
                 )}
@@ -536,50 +601,57 @@ export const Home: React.FC<HomeProps> = ({
           "
         >
 
-          {items.map((item, idx) => (
+          {items.map(
+            (item, idx) => (
 
-            <button
-              key={item.labelEn}
-              onClick={item.action}
-              className={`
-                w-full
-                py-10
-                flex
-                items-center
-                justify-center
-                cursor-pointer
-                transition-colors
-                duration-300
-                hover:bg-black/[0.025]
-                ${
-                  idx !== items.length - 1
-                    ? 'border-b border-black/10'
-                    : ''
-                }
-              `}
-            >
+              <button
+                key={item.labelEn}
+                onClick={item.action}
+                className={`
+                  w-full
+                  py-10
+                  flex
+                  items-center
+                  justify-center
+                  cursor-pointer
+                  transition-colors
+                  duration-300
+                  hover:bg-black/[0.025]
 
-              <span
-                className="
-                  font-serif
-                  italic
-                  text-xl
-                  text-[#1C1C1C]
-                  tracking-tight
-                "
+                  ${
+                    idx !==
+                    items.length - 1
+                      ? 'border-b border-black/10'
+                      : ''
+                  }
+                `}
               >
-                {isFa
-                  ? item.labelFa
-                  : item.labelEn}
-              </span>
 
-            </button>
+                <span
+                  className="
+                    font-serif
+                    italic
+                    text-xl
+                    text-[#1C1C1C]
+                    tracking-tight
+                  "
+                >
+                  {
+                    isFa
+                      ? item.labelFa
+                      : item.labelEn
+                  }
+                </span>
 
-          ))}
+              </button>
+
+            )
+          )}
 
         </div>
 
       </div>
+
     </div>
   );
 };
