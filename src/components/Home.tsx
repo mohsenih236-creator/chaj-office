@@ -32,161 +32,334 @@ export const Home: React.FC<HomeProps> = ({
     labelFa: string;
     action: () => void;
   }[] = [
-    { labelEn: 'Projects', labelFa: 'پروژه‌ها', action: onProjects },
-    { labelEn: 'About', labelFa: 'درباره ما', action: onAbout },
-    { labelEn: 'Services', labelFa: 'خدمات', action: onServices },
-    { labelEn: 'Contact', labelFa: 'تماس با ما', action: onContact }
+    {
+      labelEn: 'Projects',
+      labelFa: 'پروژه‌ها',
+      action: onProjects
+    },
+    {
+      labelEn: 'About',
+      labelFa: 'درباره ما',
+      action: onAbout
+    },
+    {
+      labelEn: 'Services',
+      labelFa: 'خدمات',
+      action: onServices
+    },
+    {
+      labelEn: 'Contact',
+      labelFa: 'تماس با ما',
+      action: onContact
+    }
   ];
 
-  // SVG aspect ratio is matched to the 6:5 container so the geometry
-  // keeps the same visual proportions on desktop/tablet.
+  // =========================================================
+  // SVG GEOMETRY
+  // =========================================================
+
   const ASPECT = 6 / 5;
 
   const MARGIN_Y = 6;
   const MARGIN_X = MARGIN_Y * ASPECT;
+
   const contentWidth = 100 * ASPECT;
+
   const viewBoxWidth = contentWidth + MARGIN_X;
   const viewBoxHeight = 100 + MARGIN_Y;
+
   const viewBox = `${-MARGIN_X} ${-MARGIN_Y} ${viewBoxWidth} ${viewBoxHeight}`;
 
-  // Convert a percentage of the actual container width into SVG coordinates.
-  const toSvgX = (percent: number) =>
-    -MARGIN_X + (percent / 100) * viewBoxWidth;
+  // تبدیل درصد عرض صفحه به مختصات SVG
+  const toSvgX = (percent: number) => {
+    return -MARGIN_X + (percent / 100) * viewBoxWidth;
+  };
 
-  // Five thin vertical lines create the four navigation columns.
+  // =========================================================
+  // NAVIGATION VERTICAL LINES
+  // =========================================================
+
   const colPercent = [5, 18, 32, 45, 58];
+
   const thinLineX = colPercent.map(toSvgX);
-  const thinLineTopY = [23, 27, 31, 34, 38];
+
+  const thinLineTopY = [
+    23,
+    27,
+    31,
+    34,
+    38
+  ];
+
   const thinLineBottomY = 91;
 
-  // Main roof + right column.
+  // =========================================================
+  // MAIN ROOF + COLUMN
+  // =========================================================
+
   const pillarX = 72 * ASPECT;
+
   const pillarTopY = 28;
+
   const pillarBottomY = 100;
+
+  // ضخامت سقف و ستون
   const beamStrokeWidth = 8;
 
-  // Roof direction.
-  const beamLen = Math.sqrt(pillarX * pillarX + pillarTopY * pillarTopY);
+  // =========================================================
+  // ROOF DIRECTION
+  // =========================================================
+
+  const beamLen = Math.sqrt(
+    pillarX * pillarX +
+    pillarTopY * pillarTopY
+  );
+
+  // بردار واحد در راستای سقف
   const beamUx = pillarX / beamLen;
   const beamUy = pillarTopY / beamLen;
 
-  // Perpendicular unit vector, pointing below the roof.
+  // بردار عمود بر سقف
+  // جهت آن به سمت پایین سقف است
   const perpX = -beamUy;
   const perpY = beamUx;
 
-  // Continue the solid roof beyond the column.
+  // =========================================================
+  // ROOF CONTINUATION
+  // =========================================================
+
+  // انتهای سقف در سمت راست
   const continuationEndX = contentWidth - 2;
-  const tContinuation = (continuationEndX - pillarX) / beamUx;
+
+  const tContinuation =
+    (continuationEndX - pillarX) / beamUx;
 
   const continuationEnd = {
     x: continuationEndX,
     y: pillarTopY + tContinuation * beamUy
   };
 
+  // =========================================================
+  // THIN L-SHAPED LINE UNDER THE ROOF
+  // =========================================================
+
   /*
-   * REFERENCE DETAIL:
+   * فاصله‌ی افقی شروع خط نازک از ستون.
    *
-   * The thin line under the roof must NOT touch the vertical pillar.
-   * It starts approximately 1.5 cm to the right of the pillar, then
-   * follows the same roof slope, and finally turns upward in an L-shape
-   * until it reaches the underside of the thick roof.
-   *
-   * Because the SVG uses its own coordinate system, 1.5 cm is represented
-   * here by ~10.5 SVG units at the current max-w-2xl desktop scale.
-   * This keeps the visual gap matching the supplied reference.
+   * این مقدار تقریباً معادل 1.5cm در اندازه‌ی فعلی
+   * دیاگرام است.
    */
   const gutterHorizontalGap = 10.5;
 
-  // Distance between the centerline of the solid roof and the thin line.
-  // This keeps the thin line visibly separated from the roof.
-  // فاصله افقی شروع خط نازک از ستون
-const gutterHorizontalGap = 10.5;
+  /*
+   * فاصله‌ی خط نازک از زیر سقف.
+   *
+   * این فاصله بر اساس جهت عمود بر سقف محاسبه می‌شود،
+   * بنابراین خط نازک همیشه موازی سقف باقی می‌ماند.
+   */
+  const belowLineGap = 7;
 
-// فاصله عمودی/عمود بر سقف بین سقف ضخیم و خط نازک
-const belowLineGap = 10;
+  // ---------------------------------------------------------
+  // START POINT
+  // ---------------------------------------------------------
 
-// ----------------------------------------------------
-// خط نازک را مستقیماً از هندسه خود سقف محاسبه می‌کنیم.
-// ----------------------------------------------------
+  /*
+   * شروع خط نازک باید کمی بعد از ستون باشد.
+   */
+  const gutterStartX =
+    pillarX + gutterHorizontalGap;
 
-// نقطه شروع خط نازک:
-// 1.5cm تقریبی سمت راست ستون
-const gutterStartX = pillarX + gutterHorizontalGap;
+  /*
+   * Y مرکز سقف در نقطه‌ی شروع.
+   *
+   * این مقدار مستقیماً از شیب واقعی سقف محاسبه می‌شود.
+   */
+  const roofCenterYAtStart =
+    pillarTopY +
+    ((gutterStartX - pillarX) / beamUx) *
+      beamUy;
 
-// Y خط مرکزی سقف در این X
-const roofCenterYAtStart =
-  pillarTopY +
-  ((gutterStartX - pillarX) / beamUx) * beamUy;
+  /*
+   * رسیدن به زیر ضخامت سقف.
+   */
+  const roofUndersideYAtStart =
+    roofCenterYAtStart +
+    (beamStrokeWidth / 2) * perpY;
 
-// زیرِ ضخامت سقف در این نقطه
-const roofUndersideYAtStart =
-  roofCenterYAtStart + (beamStrokeWidth / 2) * perpY;
+  /*
+   * نقطه شروع خط نازک.
+   *
+   * ابتدا زیر سقف قرار می‌گیرد و سپس به اندازه‌ی
+   * belowLineGap از آن فاصله می‌گیرد.
+   */
+  const belowLineStart = {
+    x:
+      gutterStartX +
+      belowLineGap * perpX,
 
-// شروع خط نازک، با فاصله مشخص زیر سقف
-const belowLineStart = {
-  x: gutterStartX,
-  y: roofUndersideYAtStart + belowLineGap * perpY
-};
+    y:
+      roofUndersideYAtStart +
+      belowLineGap * perpY
+  };
 
-// انتهای خط نازک، موازی دقیق با سقف
-const belowLineEnd = {
-  x: continuationEnd.x + belowLineGap * perpX,
-  y: continuationEnd.y + belowLineGap * perpY
-};
+  // ---------------------------------------------------------
+  // END POINT OF DIAGONAL THIN LINE
+  // ---------------------------------------------------------
 
-// نقطه‌ای که خط عمودی باید به زیر سقف برسد.
-// این Y مستقیماً از خود سقف محاسبه می‌شود.
-const roofUndersideAtEndY =
-  continuationEnd.y + (beamStrokeWidth / 2) * perpY;
+  /*
+   * خط نازک دقیقاً موازی سقف ادامه پیدا می‌کند.
+   */
+  const belowLineEnd = {
+    x:
+      continuationEnd.x +
+      belowLineGap * perpX,
 
-// مسیر نهایی:
-// شروع → خط مورب موازی سقف → خط عمودی تا زیر سقف
-const gutterPath = [
-  `M ${belowLineStart.x} ${belowLineStart.y}`,
-  `L ${belowLineEnd.x} ${belowLineEnd.y}`,
-  `L ${belowLineEnd.x} ${roofUndersideAtEndY}`
-].join(' ');
+    y:
+      continuationEnd.y +
+      belowLineGap * perpY
+  };
 
-  // Vertical zone where each navigation word sits.
+  // ---------------------------------------------------------
+  // TOP OF THE VERTICAL L
+  // ---------------------------------------------------------
+
+  /*
+   * این نقطه باید دقیقاً روی زیر ضخامت سقف قرار بگیرد.
+   *
+   * بنابراین Y آن را از هندسه‌ی خود سقف می‌گیریم،
+   * نه از یک مقدار دستی.
+   */
+  const roofUndersideAtEndY =
+    continuationEnd.y +
+    (beamStrokeWidth / 2) * perpY;
+
+  // ---------------------------------------------------------
+  // FINAL L-SHAPED PATH
+  // ---------------------------------------------------------
+
+  /*
+   * مسیر:
+   *
+   * M = شروع
+   *
+   * L = خط مورب موازی سقف
+   *
+   * L = خط عمودی که به زیر سقف برمی‌گردد
+   */
+  const gutterPath = [
+    `M ${belowLineStart.x} ${belowLineStart.y}`,
+
+    `L ${belowLineEnd.x} ${belowLineEnd.y}`,
+
+    `L ${belowLineEnd.x} ${roofUndersideAtEndY}`
+  ].join(' ');
+
+  // =========================================================
+  // WORD POSITION
+  // =========================================================
+
   const wordZoneTop = 41;
+
   const wordZoneBottom = 79;
+
+  // =========================================================
+  // RENDER
+  // =========================================================
 
   return (
     <div
       id="home-landing"
       className="relative min-h-screen overflow-hidden bg-[#F4F1EE]"
     >
-      {/* CHAJ LOGO INTRO */}
+
+      {/* =====================================================
+          CHAJ LOGO INTRO
+      ====================================================== */}
+
       <div
-        className={`absolute inset-0 z-50 flex items-center justify-center bg-[#F4F1EE] transition-opacity duration-1000 ${
-          introFinished
-            ? 'pointer-events-none opacity-0'
-            : 'opacity-100'
-        }`}
+        className={`
+          absolute inset-0
+          z-50
+          flex items-center justify-center
+          bg-[#F4F1EE]
+          transition-opacity
+          duration-1000
+          ${
+            introFinished
+              ? 'pointer-events-none opacity-0'
+              : 'opacity-100'
+          }
+        `}
       >
         <img
           src="/images/chaj-logo.png"
           alt="CHAJ Architecture Group"
-          className="w-[220px] sm:w-[270px] md:w-[320px] animate-chaj-logo"
+          className="
+            w-[220px]
+            sm:w-[270px]
+            md:w-[320px]
+            animate-chaj-logo
+          "
         />
       </div>
 
-      {/* MAIN NAVIGATION */}
+      {/* =====================================================
+          MAIN NAVIGATION
+      ====================================================== */}
+
       <div
-        className={`min-h-screen pt-20 flex items-center justify-center transition-opacity duration-1000 ${
-          introFinished ? 'opacity-100' : 'opacity-0'
-        }`}
+        className={`
+          min-h-screen
+          pt-20
+          flex items-center justify-center
+          transition-opacity
+          duration-1000
+          ${
+            introFinished
+              ? 'opacity-100'
+              : 'opacity-0'
+          }
+        `}
       >
-        {/* Desktop / tablet: architectural diagram layout */}
-        <div className="hidden md:block relative w-full max-w-2xl aspect-[6/5] mx-auto px-6">
-          {/* Architectural roof + divider lines */}
+
+        {/* ===================================================
+            DESKTOP / TABLET
+        ==================================================== */}
+
+        <div
+          className="
+            hidden
+            md:block
+            relative
+            w-full
+            max-w-2xl
+            aspect-[6/5]
+            mx-auto
+            px-6
+          "
+        >
+
+          {/* =================================================
+              ARCHITECTURAL SVG
+          ================================================== */}
+
           <svg
             viewBox={viewBox}
             preserveAspectRatio="none"
-            className="absolute inset-0 w-full h-full pointer-events-none"
+            className="
+              absolute
+              inset-0
+              w-full
+              h-full
+              pointer-events-none
+            "
             aria-hidden="true"
           >
-            {/* Main diagonal roof beam */}
+
+            {/* =================================================
+                MAIN DIAGONAL ROOF
+            ================================================== */}
+
             <polyline
               points={`0,0 ${pillarX},${pillarTopY}`}
               fill="none"
@@ -195,7 +368,10 @@ const gutterPath = [
               strokeLinecap="square"
             />
 
-            {/* Main vertical pillar */}
+            {/* =================================================
+                VERTICAL COLUMN
+            ================================================== */}
+
             <line
               x1={pillarX}
               y1={pillarTopY}
@@ -205,7 +381,10 @@ const gutterPath = [
               strokeWidth={beamStrokeWidth}
             />
 
-            {/* Solid roof continuation past the pillar */}
+            {/* =================================================
+                ROOF CONTINUATION
+            ================================================== */}
+
             <line
               x1={pillarX}
               y1={pillarTopY}
@@ -216,14 +395,10 @@ const gutterPath = [
               strokeLinecap="square"
             />
 
-            {/* 
-              Thin L-shaped detail under the roof.
+            {/* =================================================
+                THIN L-SHAPED LINE UNDER THE ROOF
+            ================================================== */}
 
-              1) Starts with a clear gap from the pillar.
-              2) Runs parallel to the roof.
-              3) Turns upward at the end and reaches the underside
-                 of the thick roof, matching the supplied reference.
-            */}
             <path
               d={gutterPath}
               fill="none"
@@ -233,7 +408,10 @@ const gutterPath = [
               strokeLinejoin="miter"
             />
 
-            {/* Five thin staggered vertical boundary lines */}
+            {/* =================================================
+                FIVE THIN VERTICAL NAVIGATION LINES
+            ================================================== */}
+
             {thinLineX.map((x, i) => (
               <line
                 key={x}
@@ -245,65 +423,163 @@ const gutterPath = [
                 strokeWidth="0.7"
               />
             ))}
+
           </svg>
 
-          {/* Clickable word zones */}
+          {/* =================================================
+              NAVIGATION WORDS
+          ================================================== */}
+
           {items.map((item, idx) => {
-            const left = colPercent[idx];
-            const width = colPercent[idx + 1] - colPercent[idx];
+
+            const left =
+              colPercent[idx];
+
+            const width =
+              colPercent[idx + 1] -
+              colPercent[idx];
 
             return (
               <button
                 key={item.labelEn}
                 onClick={item.action}
-                aria-label={isFa ? item.labelFa : item.labelEn}
-                className="group absolute flex items-start justify-center cursor-pointer transition-opacity duration-500 hover:opacity-50"
+                aria-label={
+                  isFa
+                    ? item.labelFa
+                    : item.labelEn
+                }
+                className="
+                  group
+                  absolute
+                  flex
+                  items-start
+                  justify-center
+                  cursor-pointer
+                  transition-opacity
+                  duration-500
+                  hover:opacity-50
+                "
                 style={{
                   left: `${left}%`,
                   width: `${width}%`,
                   top: `${wordZoneTop}%`,
-                  height: `${wordZoneBottom - wordZoneTop}%`
+                  height: `${
+                    wordZoneBottom -
+                    wordZoneTop
+                  }%`
                 }}
               >
+
                 {isFa ? (
-                  <span className="font-serif text-lg sm:text-xl text-[#1C1C1C] tracking-tight">
+
+                  <span
+                    className="
+                      font-serif
+                      text-lg
+                      sm:text-xl
+                      text-[#1C1C1C]
+                      tracking-tight
+                    "
+                  >
                     {item.labelFa}
                   </span>
+
                 ) : (
-                  <span className="flex flex-col items-center leading-tight font-mono font-medium uppercase text-xs sm:text-sm tracking-[0.1em] text-[#1C1C1C]">
+
+                  <span
+                    className="
+                      flex
+                      flex-col
+                      items-center
+                      leading-tight
+                      font-mono
+                      font-medium
+                      uppercase
+                      text-xs
+                      sm:text-sm
+                      tracking-[0.1em]
+                      text-[#1C1C1C]
+                    "
+                  >
                     {item.labelEn
                       .toUpperCase()
                       .split('')
-                      .map((ch, chIdx) => (
-                        <span key={chIdx}>{ch}</span>
-                      ))}
+                      .map(
+                        (ch, chIdx) => (
+                          <span
+                            key={chIdx}
+                          >
+                            {ch}
+                          </span>
+                        )
+                      )}
                   </span>
+
                 )}
+
               </button>
             );
           })}
+
         </div>
 
-        {/* Mobile: simple stacked rows */}
-        <div className="flex md:hidden flex-col w-full">
+        {/* ===================================================
+            MOBILE
+        ==================================================== */}
+
+        <div
+          className="
+            flex
+            md:hidden
+            flex-col
+            w-full
+          "
+        >
+
           {items.map((item, idx) => (
+
             <button
               key={item.labelEn}
               onClick={item.action}
-              className={`w-full py-10 flex items-center justify-center cursor-pointer transition-colors duration-300 hover:bg-black/[0.025] ${
-                idx !== items.length - 1
-                  ? 'border-b border-black/10'
-                  : ''
-              }`}
+              className={`
+                w-full
+                py-10
+                flex
+                items-center
+                justify-center
+                cursor-pointer
+                transition-colors
+                duration-300
+                hover:bg-black/[0.025]
+                ${
+                  idx !== items.length - 1
+                    ? 'border-b border-black/10'
+                    : ''
+                }
+              `}
             >
-              <span className="font-serif italic text-xl text-[#1C1C1C] tracking-tight">
-                {isFa ? item.labelFa : item.labelEn}
+
+              <span
+                className="
+                  font-serif
+                  italic
+                  text-xl
+                  text-[#1C1C1C]
+                  tracking-tight
+                "
+              >
+                {isFa
+                  ? item.labelFa
+                  : item.labelEn}
               </span>
+
             </button>
+
           ))}
+
         </div>
+
       </div>
     </div>
   );
 };
-
