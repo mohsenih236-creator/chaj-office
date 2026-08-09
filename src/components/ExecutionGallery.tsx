@@ -122,6 +122,9 @@ export const ExecutionGallery: React.FC<ExecutionGalleryProps> = ({
     activeStageData
       ? getImages(activeStageData)
       : [];
+  
+  console.log('EXECUTION STAGE:', activeStageData);
+  console.log('EXECUTION IMAGES:', activeImages);
 
   const titleEn =
     project.executionSectionTitleEn ||
