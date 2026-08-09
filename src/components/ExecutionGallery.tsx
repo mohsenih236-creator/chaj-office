@@ -24,17 +24,20 @@ export const ExecutionGallery: React.FC<ExecutionGalleryProps> = ({
   const isFa = language === 'FA';
 
   const [activeStage, setActiveStage] = useState<number | null>(null);
-  const [activeImage, setActiveImage] = useState<number>(0);
+  const [activeImage, setActiveImage] = useState(0);
 
   /*
-   * ------------------------------------------------------------
+   * ---------------------------------------------------------
    * GET ALL IMAGES OF ONE EXECUTION STAGE
-   * ------------------------------------------------------------
+   * ---------------------------------------------------------
    *
    * imageUrl is always the first image.
    * galleryImages are added after it.
    */
-  const getImages = (stage: NonNullable<Project['executionPhotos']>[number]) => {
+
+  const getImages = (
+    stage: NonNullable<Project['executionPhotos']>[number]
+  ) => {
     return [
       stage.imageUrl,
       ...(stage.galleryImages || []),
@@ -42,9 +45,9 @@ export const ExecutionGallery: React.FC<ExecutionGalleryProps> = ({
   };
 
   /*
-   * ------------------------------------------------------------
+   * ---------------------------------------------------------
    * OPEN / CLOSE GALLERY
-   * ------------------------------------------------------------
+   * ---------------------------------------------------------
    */
 
   const openGallery = (stageIndex: number) => {
@@ -58,9 +61,9 @@ export const ExecutionGallery: React.FC<ExecutionGalleryProps> = ({
   };
 
   /*
-   * ------------------------------------------------------------
+   * ---------------------------------------------------------
    * NEXT / PREVIOUS IMAGE
-   * ------------------------------------------------------------
+   * ---------------------------------------------------------
    */
 
   const nextImage = () => {
@@ -98,9 +101,9 @@ export const ExecutionGallery: React.FC<ExecutionGalleryProps> = ({
   };
 
   /*
-   * ------------------------------------------------------------
+   * ---------------------------------------------------------
    * KEYBOARD CONTROLS
-   * ------------------------------------------------------------
+   * ---------------------------------------------------------
    */
 
   useEffect(() => {
@@ -134,9 +137,9 @@ export const ExecutionGallery: React.FC<ExecutionGalleryProps> = ({
   }, [activeStage]);
 
   /*
-   * ------------------------------------------------------------
+   * ---------------------------------------------------------
    * NO EXECUTION PHOTOS
-   * ------------------------------------------------------------
+   * ---------------------------------------------------------
    */
 
   if (
@@ -147,9 +150,9 @@ export const ExecutionGallery: React.FC<ExecutionGalleryProps> = ({
   }
 
   /*
-   * ------------------------------------------------------------
+   * ---------------------------------------------------------
    * ACTIVE STAGE
-   * ------------------------------------------------------------
+   * ---------------------------------------------------------
    */
 
   const activeStageData =
@@ -218,7 +221,6 @@ export const ExecutionGallery: React.FC<ExecutionGalleryProps> = ({
 
           </div>
 
-
           {/* ----------------------------------------------------
               EXECUTION MEDIA GRID
           ---------------------------------------------------- */}
@@ -243,6 +245,7 @@ export const ExecutionGallery: React.FC<ExecutionGalleryProps> = ({
                   >
 
                     {/* IMAGE / VIDEO */}
+
                     <div className="relative w-full aspect-[4/3] overflow-hidden bg-[#E8E4E0] border border-black/5 shadow-xs">
 
                       {isVideo ? (
@@ -281,7 +284,6 @@ export const ExecutionGallery: React.FC<ExecutionGalleryProps> = ({
                         />
                       )}
 
-
                       {/* ------------------------------------------------
                           IMAGE COUNT
                       ------------------------------------------------ */}
@@ -294,7 +296,6 @@ export const ExecutionGallery: React.FC<ExecutionGalleryProps> = ({
                             : 'IMAGES'}
                         </div>
                       )}
-
 
                       {/* ------------------------------------------------
                           HOVER VIEW
@@ -315,7 +316,6 @@ export const ExecutionGallery: React.FC<ExecutionGalleryProps> = ({
                       </div>
 
                     </div>
-
 
                     {/* ------------------------------------------------
                         STAGE INFORMATION
@@ -348,7 +348,6 @@ export const ExecutionGallery: React.FC<ExecutionGalleryProps> = ({
 
                       </div>
 
-
                       {/* Additional image count */}
 
                       {images.length > 1 && (
@@ -368,7 +367,6 @@ export const ExecutionGallery: React.FC<ExecutionGalleryProps> = ({
 
         </div>
       </section>
-
 
       {/* ========================================================
           FULLSCREEN GALLERY MODAL
@@ -396,7 +394,6 @@ export const ExecutionGallery: React.FC<ExecutionGalleryProps> = ({
             <X className="w-7 h-7" />
           </button>
 
-
           {/* ----------------------------------------------------
               PREVIOUS BUTTON
           ---------------------------------------------------- */}
@@ -415,13 +412,12 @@ export const ExecutionGallery: React.FC<ExecutionGalleryProps> = ({
             </button>
           )}
 
-
           {/* ----------------------------------------------------
               MAIN GALLERY CONTENT
           ---------------------------------------------------- */}
 
           <div
-            className="relative w-full max-w-7xl h-full flex flex-col items-center justify-center"
+            className="relative w-full max-w-7xl h-[calc(100vh-2rem)] md:h-[calc(100vh-4rem)] flex flex-col items-center justify-center"
             onClick={(event) =>
               event.stopPropagation()
             }
@@ -429,7 +425,7 @@ export const ExecutionGallery: React.FC<ExecutionGalleryProps> = ({
 
             {/* MAIN MEDIA */}
 
-            <div className="flex-1 w-full min-h-0 flex items-center justify-center">
+            <div className="w-full flex-1 min-h-0 flex items-center justify-center">
 
               {activeStageData.type === 'video' &&
               activeImage === 0 ? (
@@ -438,7 +434,7 @@ export const ExecutionGallery: React.FC<ExecutionGalleryProps> = ({
                   src={activeImages[activeImage]}
                   controls
                   autoPlay
-                  className="max-w-full max-h-[72vh] object-contain"
+                  className="max-w-full max-h-[70vh] object-contain"
                 />
               ) : (
                 <img
@@ -449,18 +445,17 @@ export const ExecutionGallery: React.FC<ExecutionGalleryProps> = ({
                       ? activeStageData.titleFa
                       : activeStageData.title
                   }
-                  className="max-w-full max-h-[72vh] object-contain select-none"
+                  className="block max-w-full max-h-[70vh] w-auto h-auto object-contain select-none"
                 />
               )}
 
             </div>
 
-
             {/* --------------------------------------------------
                 INFORMATION
             -------------------------------------------------- */}
 
-            <div className="w-full max-w-5xl flex items-end justify-between gap-6 pt-5 text-white">
+            <div className="w-full max-w-5xl flex items-end justify-between gap-6 pt-4 text-white flex-shrink-0">
 
               <div>
 
@@ -493,7 +488,6 @@ export const ExecutionGallery: React.FC<ExecutionGalleryProps> = ({
 
               </div>
 
-
               {/* CURRENT IMAGE NUMBER */}
 
               <div className="text-sm text-white/60 whitespace-nowrap">
@@ -504,13 +498,12 @@ export const ExecutionGallery: React.FC<ExecutionGalleryProps> = ({
 
             </div>
 
-
             {/* --------------------------------------------------
                 THUMBNAILS
             -------------------------------------------------- */}
 
             {activeImages.length > 1 && (
-              <div className="w-full max-w-5xl overflow-x-auto mt-5 pb-2">
+              <div className="w-full max-w-5xl overflow-x-auto mt-4 pb-1 flex-shrink-0">
 
                 <div className="flex gap-2">
 
@@ -572,7 +565,6 @@ export const ExecutionGallery: React.FC<ExecutionGalleryProps> = ({
             )}
 
           </div>
-
 
           {/* ----------------------------------------------------
               NEXT BUTTON
