@@ -390,15 +390,7 @@ export const Home: React.FC<HomeProps> = ({
                 It starts with a gap from the column.
                 ================================================ */}
 
-            <line
-              x1={thinRoofStart.x}
-              y1={thinRoofStart.y}
-              x2={thinRoofEnd.x}
-              y2={thinRoofEnd.y}
-              stroke="#1C1C1C"
-              strokeWidth="0.7"
-              strokeLinecap="butt"
-            />
+            
 
             {/* ================================================
                 VERTICAL END OF THIN LINE
@@ -407,15 +399,7 @@ export const Home: React.FC<HomeProps> = ({
                 into the thickness of the roof.
                 ================================================ */}
 
-            <line
-              x1={thinRoofEnd.x}
-              y1={lVerticalBottomY}
-              x2={thinRoofEnd.x}
-              y2={lVerticalTopY}
-              stroke="#1C1C1C"
-              strokeWidth="0.7"
-              strokeLinecap="butt"
-            />
+            
 
             {/* ================================================
                 FIVE THIN VERTICAL LINES
