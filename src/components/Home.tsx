@@ -189,8 +189,6 @@ export const Home: React.FC<HomeProps> = ({
   /*
    * فاصله‌ی خط نازک از زیر سقف.
    */
-
-  const gutterHorizontalGap = 10.5;
 const belowLineGap = 7;
 
 const gutterStartX =
