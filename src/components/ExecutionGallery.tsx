@@ -651,12 +651,11 @@ export const ExecutionGallery: React.FC<ExecutionGalleryProps> = ({
     </div>
 
 
-    {/* ----------------------------------------------------
+        {/* ----------------------------------------------------
         NEXT BUTTON
     ---------------------------------------------------- */}
 
     {activeImages.length > 1 && (
-
       <button
         type="button"
         onClick={(event) => {
@@ -666,18 +665,15 @@ export const ExecutionGallery: React.FC<ExecutionGalleryProps> = ({
         className="absolute right-3 md:right-8 top-1/2 -translate-y-1/2 z-50 w-12 h-12 flex items-center justify-center text-white hover:bg-white/10 transition-colors"
         aria-label="Next image"
       >
-
         <ChevronRight className="w-8 h-8" />
-
       </button>
-
     )}
 
   </div>
-     )}
-      </div>
-    </>
-  );
+)}
+
+</>
+);
 };
 
 export default ExecutionGallery;
