@@ -1044,6 +1044,39 @@ export const projects: Project[] = [
           "/images/MDF-EX-Excavation05.jpg"
         ]
       },
+       // --------------------------------------------------------
+      // STEP 01 Excavation
+      // --------------------------------------------------------
+
+      {
+        id:
+          "exec1",
+
+        title:
+          "Lean Concrete",
+
+        titleFa:
+          "بتن مگر",
+
+        caption:
+          "Phase 02 — Lean Concrete Works",
+
+        captionFa:
+          "مرحله دوم اجرای بتن مگر",
+
+        imageUrl:
+          "/images/MDF-EX-Excavation01.jpg",
+
+        type:
+          "image",
+
+        galleryImages: [
+          "/images/MDF-EX-Excavation02.jpg",
+          "/images/MDF-EX-Excavation03.jpg",
+          "/images/MDF-EX-Excavation04.jpg",
+          "/images/MDF-EX-Excavation05.jpg"
+        ]
+      },
 
 
       // --------------------------------------------------------
