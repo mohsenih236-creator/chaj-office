@@ -1074,7 +1074,7 @@ export const projects: Project[] = [
           "/images/MDF-EX-LeanConcrete02.jpg",
           "/images/MDF-EX-LeanConcrete03.jpg",
           "/images/MDF-EX-LeanConcrete04.jpg",
-          "/images/MDF-EX-Excavation05.jpg"
+          "/images/MDF-EX-LeanConcrete05.jpg"
         ]
       },
 
