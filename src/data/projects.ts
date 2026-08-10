@@ -1040,7 +1040,7 @@ export const projects: Project[] = [
         galleryImages: [
           "/images/MDF-EX-Excavation02.jpg",
           "/images/MDF-EX-Excavation03.jpg",
-          "/images/MDF-EX-Excavation04",
+          "/images/MDF-EX-Excavation04.jpg",
           "/images/MDF-EX-Excavation05"
         ]
       },
