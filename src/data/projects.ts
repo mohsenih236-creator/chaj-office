@@ -1032,16 +1032,16 @@ export const projects: Project[] = [
           "مرحله اول خاکبرداری و ریختن مخلوط خاک کوهی است.",
 
         imageUrl:
-          "/images/04.jpg",
+          "/images/MDF-EX-Excavation01.jpg",
 
         type:
           "image",
 
         galleryImages: [
-          "/images/04-02.jpg",
-          "/images/04-03.jpg",
-          "/images/04-04.jpg",
-          "/images/04-05.jpg"
+          "/images/MDF-EX-Excavation02",
+          "/images/MDF-EX-Excavation03",
+          "/images/MDF-EX-Excavation04",
+          "/images/MDF-EX-Excavation05"
         ]
       },
 
