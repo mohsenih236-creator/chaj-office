@@ -1112,7 +1112,7 @@ export const projects: Project[] = [
           "/images/MDF-EX-foundation07.png",
           "/images/MDF-EX-foundation08.png",
           "/images/MDF-EX-foundation09.jpg",
-          "/images/MDF-EX-LeanConcrete05.jpg"
+          "/images/MDF-EX-foundation10.png"
         ]
       },
 
