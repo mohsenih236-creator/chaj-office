@@ -1,19 +1,17 @@
 @import "tailwindcss";
 
 /* =========================================================
-   CHAJ GROUP - GLOBAL FONTS
+   FONTS
    ========================================================= */
 
-/* Persian - Tehran */
 @font-face {
   font-family: "Tehran";
-  src: url("/fonts/Mj_Tehran_0.ttf") format("truetype");
+  src: url("/fonts/Tehran.woff2") format("woff2");
   font-style: normal;
-  font-weight: 400;
+  font-weight: 100 900;
   font-display: swap;
 }
 
-/* English / Latin - Neue Montreal */
 @font-face {
   font-family: "Neue Montreal";
   src: url("/fonts/NeueMontreal-Regular.otf") format("opentype");
@@ -22,20 +20,17 @@
   font-display: swap;
 }
 
-@font-face {
-  font-family: "Neue Montreal";
-  src: url("/fonts/NeueMontreal-Medium.otf") format("opentype");
-  font-style: normal;
-  font-weight: 500;
-  font-display: swap;
-}
 
-@font-face {
-  font-family: "Neue Montreal";
-  src: url("/fonts/NeueMontreal-Bold.otf") format("opentype");
-  font-style: normal;
-  font-weight: 700;
-  font-display: swap;
+/* =========================================================
+   ROOT
+   ========================================================= */
+
+:root {
+  --font-fa: "Tehran", sans-serif;
+  --font-en: "Neue Montreal", sans-serif;
+
+  --bg: #F4F1EE;
+  --text: #1C1C1C;
 }
 
 
@@ -43,47 +38,43 @@
    BASE
    ========================================================= */
 
-@layer base {
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
 
-  html {
-    font-family: "Neue Montreal", "Tehran", sans-serif;
-  }
+html {
+  margin: 0;
+  padding: 0;
+  scroll-behavior: smooth;
+}
 
-  body {
-    margin: 0;
-    font-family: "Neue Montreal", "Tehran", sans-serif;
-    background-color: #F4F1EE;
-    color: #1C1C1C;
-    -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
-  }
+body {
+  margin: 0;
+  padding: 0;
 
-  /*
-   Persian text:
-   اگر Neue Montreal برای یک کاراکتر فارسی گلیف نداشته باشد،
-   مرورگر به Tehran می‌رود.
-  */
+  background-color: var(--bg);
+  color: var(--text);
 
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    font-family: "Playfair Display", "Tehran", serif;
-  }
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 
-  button,
-  input,
-  textarea,
-  select {
-    font-family: inherit;
-  }
+  text-rendering: optimizeLegibility;
+}
 
-  ::selection {
-    background-color: #1C1C1C;
-    color: #F4F1EE;
-  }
+
+/* =========================================================
+   DEFAULT ENGLISH
+   ========================================================= */
+
+/*
+   زبان پیش‌فرض سایت انگلیسی است.
+   بنابراین انگلیسی = Neue Montreal
+*/
+
+body {
+  font-family: var(--font-en);
 }
 
 
@@ -91,52 +82,295 @@
    PERSIAN / RTL
    ========================================================= */
 
+/*
+   هر بخشی که dir="rtl" داشته باشد:
+   فارسی = Tehran
+*/
+
 [dir="rtl"] {
-  font-family: "Tehran", "Neue Montreal", sans-serif;
+  font-family: var(--font-fa);
+  direction: rtl;
 }
 
-[dir="rtl"] body {
-  font-family: "Tehran", "Neue Montreal", sans-serif;
-}
-
+[dir="rtl"] *,
 [dir="rtl"] h1,
 [dir="rtl"] h2,
 [dir="rtl"] h3,
 [dir="rtl"] h4,
 [dir="rtl"] h5,
-[dir="rtl"] h6 {
-  font-family: "Tehran", sans-serif;
+[dir="rtl"] h6,
+[dir="rtl"] p,
+[dir="rtl"] span,
+[dir="rtl"] button,
+[dir="rtl"] a,
+[dir="rtl"] input,
+[dir="rtl"] textarea,
+[dir="rtl"] select {
+  font-family: var(--font-fa);
 }
 
 
 /* =========================================================
-   EXPLICIT FONT CLASSES
+   ENGLISH / LTR
    ========================================================= */
 
-.font-tehran {
-  font-family: "Tehran", sans-serif !important;
+/*
+   هر بخشی که dir="ltr" داشته باشد:
+   انگلیسی = Neue Montreal
+*/
+
+[dir="ltr"] {
+  font-family: var(--font-en);
+  direction: ltr;
 }
 
-.font-neue {
-  font-family: "Neue Montreal", sans-serif !important;
+[dir="ltr"] *,
+[dir="ltr"] h1,
+[dir="ltr"] h2,
+[dir="ltr"] h3,
+[dir="ltr"] h4,
+[dir="ltr"] h5,
+[dir="ltr"] h6,
+[dir="ltr"] p,
+[dir="ltr"] span,
+[dir="ltr"] button,
+[dir="ltr"] a,
+[dir="ltr"] input,
+[dir="ltr"] textarea,
+[dir="ltr"] select {
+  font-family: var(--font-en);
 }
 
 
-/* Persian content */
-[lang="fa"],
-[lang="fa-IR"],
-.persian,
-.font-persian {
-  font-family: "Tehran", sans-serif;
+/* =========================================================
+   HEADINGS
+   ========================================================= */
+
+/*
+   قبلاً این قسمت باعث می‌شد انگلیسی برود روی Playfair Display.
+   حذفش کردیم.
+*/
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-top: 0;
 }
 
 
-/* English content */
-[lang="en"],
-[lang="en-US"],
-.english,
-.font-english {
-  font-family: "Neue Montreal", sans-serif;
+/* =========================================================
+   GENERAL ELEMENTS
+   ========================================================= */
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+
+/* =========================================================
+   RTL TEXT
+   ========================================================= */
+
+html[dir="rtl"],
+body[dir="rtl"] {
+  font-family: var(--font-fa);
+}
+
+
+/* =========================================================
+   LTR TEXT
+   ========================================================= */
+
+html[dir="ltr"],
+body[dir="ltr"] {
+  font-family: var(--font-en);
+}
+
+
+/* =========================================================
+   OPTIONAL LANGUAGE CLASSES
+   ========================================================= */
+
+/*
+   اگر جایی dir تنظیم نشده باشد، می‌توانی
+   مستقیماً این کلاس‌ها را روی element بگذاری.
+*/
+
+.font-fa {
+  font-family: var(--font-fa) !important;
+}
+
+.font-en {
+  font-family: var(--font-en) !important;
+}
+
+
+/* =========================================================
+   CHAJ HEADER
+   ========================================================= */
+
+header,
+nav {
+  font-family: var(--font-en);
+}
+
+
+/*
+   وقتی Header فارسی باشد
+*/
+
+[dir="rtl"] header,
+[dir="rtl"] nav,
+[dir="rtl"] header *,
+[dir="rtl"] nav * {
+  font-family: var(--font-fa);
+}
+
+
+/*
+   وقتی Header انگلیسی باشد
+*/
+
+[dir="ltr"] header,
+[dir="ltr"] nav,
+[dir="ltr"] header *,
+[dir="ltr"] nav * {
+  font-family: var(--font-en);
+}
+
+
+/* =========================================================
+   HERO
+   ========================================================= */
+
+[dir="ltr"] .hero,
+[dir="ltr"] .hero *,
+[dir="ltr"] .hero h1,
+[dir="ltr"] .hero h2,
+[dir="ltr"] .hero h3,
+[dir="ltr"] .hero p,
+[dir="ltr"] .hero span,
+[dir="ltr"] .hero button {
+  font-family: var(--font-en);
+}
+
+[dir="rtl"] .hero,
+[dir="rtl"] .hero *,
+[dir="rtl"] .hero h1,
+[dir="rtl"] .hero h2,
+[dir="rtl"] .hero h3,
+[dir="rtl"] .hero p,
+[dir="rtl"] .hero span,
+[dir="rtl"] .hero button {
+  font-family: var(--font-fa);
+}
+
+
+/* =========================================================
+   PROJECT PAGE
+   ========================================================= */
+
+[dir="ltr"] .project-page,
+[dir="ltr"] .project-page *,
+[dir="ltr"] .project-page h1,
+[dir="ltr"] .project-page h2,
+[dir="ltr"] .project-page h3,
+[dir="ltr"] .project-page p {
+  font-family: var(--font-en);
+}
+
+[dir="rtl"] .project-page,
+[dir="rtl"] .project-page *,
+[dir="rtl"] .project-page h1,
+[dir="rtl"] .project-page h2,
+[dir="rtl"] .project-page h3,
+[dir="rtl"] .project-page p {
+  font-family: var(--font-fa);
+}
+
+
+/* =========================================================
+   REMOVE OLD SERIF FONT
+   ========================================================= */
+
+/*
+   Playfair Display دیگر نباید در سایت استفاده شود.
+*/
+
+.font-serif-heading {
+  font-family: var(--font-en);
+}
+
+[dir="rtl"] .font-serif-heading {
+  font-family: var(--font-fa);
+}
+
+
+/* =========================================================
+   LOGO / BRAND
+   ========================================================= */
+
+.chaj-logo,
+.chaj-logo * {
+  font-family: var(--font-en);
+}
+
+
+/* =========================================================
+   SMALL LABELS
+   ========================================================= */
+
+[dir="ltr"] .text-xs,
+[dir="ltr"] .text-sm,
+[dir="ltr"] .uppercase,
+[dir="ltr"] .tracking-wide,
+[dir="ltr"] .tracking-wider {
+  font-family: var(--font-en);
+}
+
+[dir="rtl"] .text-xs,
+[dir="rtl"] .text-sm,
+[dir="rtl"] .uppercase,
+[dir="rtl"] .tracking-wide,
+[dir="rtl"] .tracking-wider {
+  font-family: var(--font-fa);
+}
+
+
+/* =========================================================
+   FORM ELEMENTS
+   ========================================================= */
+
+[dir="rtl"] input,
+[dir="rtl"] textarea,
+[dir="rtl"] select,
+[dir="rtl"] input::placeholder,
+[dir="rtl"] textarea::placeholder {
+  font-family: var(--font-fa);
+}
+
+[dir="ltr"] input,
+[dir="ltr"] textarea,
+[dir="ltr"] select,
+[dir="ltr"] input::placeholder,
+[dir="ltr"] textarea::placeholder {
+  font-family: var(--font-en);
 }
 
 
@@ -171,7 +405,11 @@
 }
 
 .animate-fade-in {
-  animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation:
+    fadeIn
+    0.6s
+    cubic-bezier(0.16, 1, 0.3, 1)
+    forwards;
 }
 
 
@@ -202,5 +440,29 @@
 }
 
 .animate-chaj-logo {
-  animation: chajLogoReveal 2.8s ease-in-out forwards;
+  animation:
+    chajLogoReveal
+    2.8s
+    ease-in-out
+    forwards;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+  body {
+    font-family: var(--font-en);
+  }
+
+  [dir="rtl"] {
+    font-family: var(--font-fa);
+  }
+
+  [dir="ltr"] {
+    font-family: var(--font-en);
+  }
 }
