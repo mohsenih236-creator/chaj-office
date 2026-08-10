@@ -1,16 +1,111 @@
 @import "tailwindcss";
 
+/* =========================================================
+   CHAJ FONTS
+   Persian  → Mj Tehran
+   English  → Neue Montreal
+========================================================= */
+
+@font-face {
+  font-family: 'Tehran';
+  src: url('/fonts/Mj_Tehran_0.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Neue Montreal';
+  src: url('/fonts/NeueMontreal-Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Neue Montreal';
+  src: url('/fonts/NeueMontreal-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Neue Montreal';
+  src: url('/fonts/NeueMontreal-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Neue Montreal';
+  src: url('/fonts/NeueMontreal-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+/* =========================================================
+   BASE
+========================================================= */
+
 @layer base {
+
   body {
-    font-family: 'Inter', 'Vazirmatn', sans-serif;
+    font-family: 'Neue Montreal', sans-serif;
     background-color: #F4F1EE;
     color: #1C1C1C;
   }
 
-  h1, h2, h3, .font-serif-heading {
-    font-family: 'Playfair Display', 'Vazirmatn', serif;
+  /*
+    فارسی
+    هر عنصری که dir="rtl" داشته باشد
+    از فونت تهران استفاده می‌کند.
+  */
+
+  [dir="rtl"] {
+    font-family: 'Tehran', sans-serif;
+  }
+
+  /*
+    انگلیسی
+    هر عنصری که dir="ltr" داشته باشد
+    از Neue Montreal استفاده می‌کند.
+  */
+
+  [dir="ltr"] {
+    font-family: 'Neue Montreal', sans-serif;
+  }
+
+  /*
+    جلوگیری از برگشت ناخواسته به Playfair / Inter / Vazirmatn
+  */
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: 'Neue Montreal', sans-serif;
+  }
+
+  [dir="rtl"] h1,
+  [dir="rtl"] h2,
+  [dir="rtl"] h3,
+  [dir="rtl"] h4,
+  [dir="rtl"] h5,
+  [dir="rtl"] h6 {
+    font-family: 'Tehran', sans-serif;
   }
 }
+
+
+/* =========================================================
+   SCROLLBAR
+========================================================= */
 
 .no-scrollbar::-webkit-scrollbar {
   display: none;
@@ -20,6 +115,11 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+
+/* =========================================================
+   FADE IN
+========================================================= */
 
 @keyframes fadeIn {
   from {
@@ -37,7 +137,10 @@
   animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* CHAJ Logo Intro Animation */
+
+/* =========================================================
+   CHAJ LOGO INTRO ANIMATION
+========================================================= */
 
 @keyframes chajLogoReveal {
   0% {
