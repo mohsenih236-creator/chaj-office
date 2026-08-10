@@ -1045,7 +1045,7 @@ export const projects: Project[] = [
         ]
       },
        // --------------------------------------------------------
-      // STEP 01 Excavation
+      // STEP 02 Lean Concrete
       // --------------------------------------------------------
 
       {
@@ -1065,7 +1065,7 @@ export const projects: Project[] = [
           "مرحله دوم اجرای بتن مگر",
 
         imageUrl:
-          "/images/MDF-EX-Excavation01.jpg",
+          "/images/MDF-EX-LeanConcrete01.jpg",
 
         type:
           "image",
@@ -1080,7 +1080,7 @@ export const projects: Project[] = [
 
 
       // --------------------------------------------------------
-      // STEP 02
+      // STEP 03
       // --------------------------------------------------------
 
       {
