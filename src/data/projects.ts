@@ -1012,7 +1012,7 @@ export const projects: Project[] = [
     executionPhotos: [
 
       // --------------------------------------------------------
-      // STEP 01
+      // STEP 01 Excavation
       // --------------------------------------------------------
 
       {
@@ -1020,16 +1020,16 @@ export const projects: Project[] = [
           "exec1",
 
         title:
-          "Construction Progress",
+          "Excavation",
 
         titleFa:
-          "روند اجرای پروژه",
+          "خاکبرداری",
 
         caption:
-          "On-site construction phase.",
+          "The first stage is excavation and pouring of the mountain mixture.",
 
         captionFa:
-          "مرحله اجرای پروژه در محل.",
+          "مرحله اول خاکبرداری و ریختن مخلوط خاک کوهی است.",
 
         imageUrl:
           "/images/04.jpg",
