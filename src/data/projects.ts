@@ -1050,7 +1050,7 @@ export const projects: Project[] = [
 
       {
         id:
-          "exec1",
+          "exec2",
 
         title:
           "Lean Concrete",
@@ -1077,15 +1077,48 @@ export const projects: Project[] = [
           "/images/MDF-EX-LeanConcrete05.jpg"
         ]
       },
-
-
       // --------------------------------------------------------
-      // STEP 03
+      // STEP 03 Foundation
       // --------------------------------------------------------
 
       {
         id:
-          "exec2",
+          "exec3",
+
+        title:
+          "Foundation",
+
+        titleFa:
+          "فنداسیون",
+
+        caption:
+          "Phase 03 — Foundation Construction",
+
+        captionFa:
+          "مرحله سوم اجرای فنداسیون",
+
+        imageUrl:
+          "/images/MDF-EX-LeanConcrete01.jpg",
+
+        type:
+          "image",
+
+        galleryImages: [
+          "/images/MDF-EX-LeanConcrete02.jpg",
+          "/images/MDF-EX-LeanConcrete03.jpg",
+          "/images/MDF-EX-LeanConcrete04.jpg",
+          "/images/MDF-EX-LeanConcrete05.jpg"
+        ]
+      },
+
+
+      // --------------------------------------------------------
+      // STEP 04
+      // --------------------------------------------------------
+
+      {
+        id:
+          "exec4",
 
         title:
           "Construction Progress",
