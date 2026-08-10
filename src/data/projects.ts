@@ -1111,7 +1111,7 @@ export const projects: Project[] = [
           "/images/MDF-EX-foundation06.png",
           "/images/MDF-EX-foundation07.png",
           "/images/MDF-EX-foundation08.png",
-          "/images/MDF-EX-LeanConcrete04.jpg",
+          "/images/MDF-EX-foundation09.jpg",
           "/images/MDF-EX-LeanConcrete05.jpg"
         ]
       },
