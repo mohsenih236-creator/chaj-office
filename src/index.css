@@ -1,42 +1,94 @@
 @import "tailwindcss";
 
-/* =========================================================
+/* ================================
    CHAJ FONTS
-   ========================================================= */
+   ================================ */
 
 /* Persian Font - Tehran */
 @font-face {
   font-family: "Tehran";
   src: url("/fonts/Mj_Tehran_0.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* English Font - Neue Montreal */
+@font-face {
+  font-family: "Neue Montreal";
+  src: url("/fonts/NeueMontreal-Light.otf") format("opentype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Neue Montreal";
+  src: url("/fonts/NeueMontreal-Regular.otf") format("opentype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
+@font-face {
+  font-family: "Neue Montreal";
+  src: url("/fonts/NeueMontreal-Medium.otf") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
 
-/* =========================================================
+@font-face {
+  font-family: "Neue Montreal";
+  src: url("/fonts/NeueMontreal-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+/* ================================
    BASE
-   ========================================================= */
+   ================================ */
 
 @layer base {
+  html {
+    font-family: "Neue Montreal", "Tehran", sans-serif;
+  }
+
   body {
-    font-family: "Tehran", sans-serif;
+    font-family: "Neue Montreal", "Tehran", sans-serif;
     background-color: #F4F1EE;
     color: #1C1C1C;
   }
+
+  /*
+   * Persian text
+   * When an element contains Persian characters,
+   * Tehran should be used.
+   */
+
+  [lang="fa"],
+  .font-persian {
+    font-family: "Tehran", sans-serif;
+  }
+
+  /*
+   * English headings
+   */
 
   h1,
   h2,
   h3,
   .font-serif-heading {
-    font-family: "Tehran", sans-serif;
+    font-family: "Neue Montreal", sans-serif;
   }
 }
 
 
-/* =========================================================
+/* ================================
    SCROLLBAR
-   ========================================================= */
+   ================================ */
 
 .no-scrollbar::-webkit-scrollbar {
   display: none;
@@ -48,9 +100,9 @@
 }
 
 
-/* =========================================================
-   FADE IN ANIMATION
-   ========================================================= */
+/* ================================
+   FADE IN
+   ================================ */
 
 @keyframes fadeIn {
   from {
@@ -69,9 +121,9 @@
 }
 
 
-/* =========================================================
-   CHAJ LOGO INTRO ANIMATION
-   ========================================================= */
+/* ================================
+   CHAJ LOGO INTRO
+   ================================ */
 
 @keyframes chajLogoReveal {
   0% {
