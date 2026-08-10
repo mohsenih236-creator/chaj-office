@@ -1105,7 +1105,7 @@ export const projects: Project[] = [
 
         galleryImages: [
           "/images/MDF-EX-foundation02.jpg",
-          "/images/MDF-EX-LeanConcrete03.jpg",
+          "/images/MDF-EX-foundation03.jpg",
           "/images/MDF-EX-LeanConcrete04.jpg",
           "/images/MDF-EX-LeanConcrete04.jpg",
           "/images/MDF-EX-LeanConcrete04.jpg",
