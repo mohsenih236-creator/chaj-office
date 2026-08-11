@@ -42,7 +42,7 @@ export const Footer: React.FC<FooterProps> = ({ language, openContact }) => {
 
             {/* Instagram */}
             <a
-              href="https://instagram.com/chajoffice"
+              href="https://instagram.com/chajgroup"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Instagram"
