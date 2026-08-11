@@ -12,17 +12,12 @@
 
   public/
   ├── fonts/
-  │   ├── Tehran-Regular.woff2
-  │   ├── Tehran-Medium.woff2
-  │   ├── Tehran-Bold.woff2
-  │   ├── NeueMontreal-Regular.woff2
-  │   ├── NeueMontreal-Medium.woff2
-  │   └── NeueMontreal-Bold.woff2
+  │   ├── Mj_Tehran_0.ttf
 */
 
 @font-face {
   font-family: "Tehran";
-  src: url("/fonts/Tehran-Regular.woff2") format("woff2");
+  src: url(/fonts/Mj_Tehran_0.ttf") format("ttf");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -30,7 +25,7 @@
 
 @font-face {
   font-family: "Tehran";
-  src: url("/fonts/Tehran-Medium.woff2") format("woff2");
+  src: url(/fonts/Mj_Tehran_0.ttf") format("ttf");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -38,7 +33,7 @@
 
 @font-face {
   font-family: "Tehran";
-  src: url("/fonts/Tehran-Bold.woff2") format("woff2");
+  src: url(/fonts/Mj_Tehran_0.ttf") format("ttf");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -51,7 +46,7 @@
 
 @font-face {
   font-family: "Neue Montreal";
-  src: url("/fonts/NeueMontreal-Regular.woff2") format("woff2");
+  src: url("/fonts/NeueMontreal-Regular.otf") format("otf");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -59,7 +54,7 @@
 
 @font-face {
   font-family: "Neue Montreal";
-  src: url("/fonts/NeueMontreal-Medium.woff2") format("woff2");
+  src: url("/fonts/NeueMontreal-Medium.otf") format("otf");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -67,7 +62,7 @@
 
 @font-face {
   font-family: "Neue Montreal";
-  src: url("/fonts/NeueMontreal-Bold.woff2") format("woff2");
+  src: url("/fonts/NeueMontreal-Bold.otf") format("otf");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
