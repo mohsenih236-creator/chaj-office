@@ -1185,6 +1185,43 @@ export const projects: Project[] = [
           "/images/MDF-EX-G-F-structure-slab07.jpg"
         ]
       },
+      // --------------------------------------------------------
+      // STEP 06 Gutter
+      // --------------------------------------------------------
+
+      {
+        id:
+          "exec6",
+
+        title:
+          "Gutter",
+
+        titleFa:
+          "آبراه مجموعه",
+
+        caption:
+          "Gutter & Gutter Cover Installation",
+
+        captionFa:
+          "اجرای گاتر و درپوش گاتر",
+
+        imageUrl:
+          "/images/MDF-EX-gutter-01.jpg",
+
+        type:
+          "image",
+
+        galleryImages: [
+          "/images/MDF-EX-gutter-02.jpg",
+          "/images/MDF-EX-gutter-03.jpg",
+          "/images/MDF-EX-gutter-04.jpg",
+          "/images/MDF-EX-gutter-05.jpg",
+          "/images/MDF-EX-gutter-06.jpg",
+          "/images/MDF-EX-gutter-07.jpg",
+          "/images/MDF-EX-gutter-08.jpg"
+        ]
+      },
+
 
 
       // --------------------------------------------------------
