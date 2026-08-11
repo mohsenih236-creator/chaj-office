@@ -1092,6 +1092,41 @@ export const projects: Project[] = [
           "فنداسیون",
 
         caption:
+          "Phase 04 — First-Floor Columns & Beams",
+
+        captionFa:
+          "مرحله چهارم اجرای تیرها و ستون‌های طبقه اول",
+
+        imageUrl:
+          "/images/MDF-EX-foundation01.jpg",
+
+        type:
+          "image",
+
+        galleryImages: [
+          "/images/MDF-EX-foundation02.jpg",
+          "/images/MDF-EX-foundation03.jpg",
+          "/images/MDF-EX-foundation04.jpg",
+          "/images/MDF-EX-foundation05.jpg",
+          "/images/MDF-EX-foundation06.png",
+          "/images/MDF-EX-foundation10.png"
+        ]
+      },
+      // --------------------------------------------------------
+      // STEP 04 Beam and column
+      // --------------------------------------------------------
+
+      {
+        id:
+          "exec4",
+
+        title:
+          "Beam and column",
+
+        titleFa:
+          "تیر و ستون",
+
+        caption:
           "Phase 03 — Foundation Construction",
 
         captionFa:
