@@ -1133,7 +1133,7 @@ export const projects: Project[] = [
           "مرحله سوم اجرای فنداسیون",
 
         imageUrl:
-          "/images/MDF-EX-foundation01.jpg",
+          "/images/MDF-EX-Beam-and-column01.jpg",
 
         type:
           "image",
