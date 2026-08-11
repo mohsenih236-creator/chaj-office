@@ -1,110 +1,341 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+@import "tailwindcss";
 
-    <!-- Primary SEO -->
-    <title>CHAJ Group | گروه معماری چاج | Architecture & Design</title>
+/* =========================================================
+   FONT FACES
+   ========================================================= */
 
-    <meta
-      name="description"
-      content="CHAJ Group is an architecture and design practice based in Babolsar, Iran. گروه معماری چاج، فعال در زمینه طراحی معماری، معماری داخلی، توسعه و اجرای پروژه‌های معماری."
-    />
+/*
+  IMPORTANT:
+  Make sure these files actually exist in your public folder.
 
-    <meta
-      name="keywords"
-      content="CHAJ Group, CHAJ Architecture, Chaj Office, گروه معماری چاج, چاج گروپ, چاج, معماری چاج, دفتر معماری چاج, گروه معماری, معماری در مازندران, معماری بابلسر"
-    />
+  Example:
 
-    <meta name="author" content="CHAJ Group" />
+  public/
+  ├── fonts/
+  │   ├── BNazanin.ttf
+  │   ├── BNaznnBd.ttf
+*/
 
-    <!-- Canonical -->
-    <link rel="canonical" href="https://chajgroup.com/" />
+@font-face {
+  font-family: "BNazanin";
+  src: url("/fonts/BNazanin.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="/favicon.png" />
+@font-face {
+  font-family: "BNazanin";
+  src: url("/fonts/BNazanin.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
 
-    <!-- Open Graph -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://chajgroup.com/" />
-    <meta
-      property="og:title"
-      content="CHAJ Group | گروه معماری چاج"
-    />
-    <meta
-      property="og:description"
-      content="گروه معماری چاج؛ طراحی، توسعه و اجرای پروژه‌های معماری."
-    />
-    <meta
-      property="og:image"
-      content="https://chajgroup.com/favicon.png"
-    />
-    <meta property="og:site_name" content="CHAJ Group" />
-    <meta property="og:locale" content="fa_IR" />
-    <meta property="og:locale:alternate" content="en_US" />
+@font-face {
+  font-family: "BNazanin";
+  src: url("/fonts/BNaznnBd.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
 
-    <!-- Twitter / X -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta
-      name="twitter:title"
-      content="CHAJ Group | گروه معماری چاج"
-    />
-    <meta
-      name="twitter:description"
-      content="گروه معماری چاج؛ طراحی، توسعه و اجرای پروژه‌های معماری."
-    />
-    <meta
-      name="twitter:image"
-      content="https://chajgroup.com/favicon.png"
-    />
 
-    <!-- Google / Search Engine -->
-    <meta
-      name="robots"
-      content="index, follow, max-image-preview:large"
-    />
+/* =========================================================
+   NEUE MONTREAL
+   ========================================================= */
 
-    <!-- Structured Data -->
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "ArchitectureFirm",
-        "@id": "https://chajgroup.com/#organization",
-        "name": "CHAJ Group",
-        "alternateName": [
-          "CHAJ Architecture Group",
-          "CHAJ Office",
-          "گروه معماری چاج",
-          "چاج گروپ",
-          "چاج"
-        ],
-        "url": "https://chajgroup.com/",
-        "logo": "https://chajgroup.com/favicon.png",
-        "description": "CHAJ Group is an architecture and design practice based in Babolsar, Iran.",
-        "foundingDate": "2016",
-        "address": {
-          "@type": "PostalAddress",
-          "addressLocality": "Babolsar",
-          "addressRegion": "Mazandaran",
-          "addressCountry": "IR"
-        },
-        "email": "sadeghlagharei@gmail.com",
-        "telephone": "+989001112478",
-        "sameAs": []
-      }
-    </script>
+@font-face {
+  font-family: "Neue Montreal";
+  src: url("/fonts/NeueMontreal-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
 
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+@font-face {
+  font-family: "Neue Montreal";
+  src: url("/fonts/NeueMontreal-Medium.otf") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
 
-    <script type="module" src="/src/main.tsx"></script>
-  </head>
+@font-face {
+  font-family: "Neue Montreal";
+  src: url("/fonts/NeueMontreal-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
 
-  <body
-    class="bg-[#F4F1EE] text-[#1C1C1C] antialiased selection:bg-[#1C1C1C] selection:text-[#F4F1EE]"
-  >
-    <div id="root"></div>
-  </body>
-</html>
+
+/* =========================================================
+   GLOBAL BASE
+   ========================================================= */
+
+@layer base {
+
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+  }
+
+  body {
+    background-color: #F4F1EE;
+    color: #1C1C1C;
+
+    /*
+      Default = English
+      We override Persian below using html[lang="fa"].
+    */
+    font-family: "Neue Montreal", sans-serif;
+
+    font-style: normal;
+    font-synthesis: none;
+  }
+
+
+  /* =======================================================
+     ENGLISH
+     ======================================================= */
+
+  html[lang="en"] body,
+  html[lang="en"] button,
+  html[lang="en"] input,
+  html[lang="en"] textarea,
+  html[lang="en"] select {
+    font-family: "Neue Montreal", sans-serif;
+    font-style: normal;
+  }
+
+
+  /* =======================================================
+     PERSIAN
+     ======================================================= */
+
+  html[lang="fa"] body,
+  html[lang="fa"] button,
+  html[lang="fa"] input,
+  html[lang="fa"] textarea,
+  html[lang="fa"] select {
+    font-family: "BNazanin", sans-serif;
+    font-style: normal;
+  }
+
+
+  /* =======================================================
+     FALLBACK FOR RTL
+     ======================================================= */
+
+  html[dir="rtl"] body,
+  html[dir="rtl"] button,
+  html[dir="rtl"] input,
+  html[dir="rtl"] textarea,
+  html[dir="rtl"] select {
+    font-family: "BNazanin", sans-serif;
+    font-style: normal;
+  }
+
+
+  /* =======================================================
+     HEADINGS
+     ======================================================= */
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-style: normal;
+    font-synthesis: none;
+  }
+
+
+  html[lang="en"] h1,
+  html[lang="en"] h2,
+  html[lang="en"] h3,
+  html[lang="en"] h4,
+  html[lang="en"] h5,
+  html[lang="en"] h6 {
+    font-family: "Neue Montreal", sans-serif;
+  }
+
+
+  html[lang="fa"] h1,
+  html[lang="fa"] h2,
+  html[lang="fa"] h3,
+  html[lang="fa"] h4,
+  html[lang="fa"] h5,
+  html[lang="fa"] h6 {
+    font-family: "BNazanin", sans-serif;
+  }
+
+
+  /* =======================================================
+     LINKS / BUTTONS / FORM ELEMENTS
+     ======================================================= */
+
+  a,
+  button,
+  input,
+  textarea,
+  select {
+    font-style: normal;
+    font-synthesis: none;
+  }
+
+
+  /* =======================================================
+     REMOVE ITALIC EVERYWHERE
+     ======================================================= */
+
+  i,
+  em,
+  .italic {
+    font-style: normal !important;
+  }
+
+
+  /* =======================================================
+     TAILWIND FONT CLASSES OVERRIDE
+     ======================================================= */
+
+  .font-serif,
+  .font-sans,
+  .font-serif-heading {
+    font-style: normal;
+    font-synthesis: none;
+  }
+
+
+  html[lang="en"] .font-serif,
+  html[lang="en"] .font-sans,
+  html[lang="en"] .font-serif-heading {
+    font-family: "Neue Montreal", sans-serif;
+  }
+
+
+  html[lang="fa"] .font-serif,
+  html[lang="fa"] .font-sans,
+  html[lang="fa"] .font-serif-heading {
+    font-family: "BNazanin", sans-serif;
+  }
+
+
+  html[dir="rtl"] .font-serif,
+  html[dir="rtl"] .font-sans,
+  html[dir="rtl"] .font-serif-heading {
+    font-family: "BNazanin", sans-serif;
+  }
+}
+
+
+/* =========================================================
+   SCROLLBAR
+   ========================================================= */
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+
+/* =========================================================
+   FADE IN ANIMATION
+   ========================================================= */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+
+/* =========================================================
+   CHAJ LOGO INTRO ANIMATION
+   ========================================================= */
+
+@keyframes chajLogoReveal {
+  0% {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+
+  45% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  75% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1.015);
+  }
+}
+
+.animate-chaj-logo {
+  animation: chajLogoReveal 2.8s ease-in-out forwards;
+}
+
+
+/* =========================================================
+   GLOBAL ITALIC PROTECTION
+   ========================================================= */
+
+/*
+  حتی اگر جایی در JSX از className="italic"
+  استفاده شده باشد، متن italic نمی‌شود.
+*/
+
+* {
+  font-synthesis: none;
+}
+
+
+/* =========================================================
+   LANGUAGE-SPECIFIC FONT OVERRIDE
+   ========================================================= */
+
+/*
+  این قسمت مهم است چون بعضی کامپوننت‌ها ممکن است
+  font-family خودشان را داشته باشند.
+*/
+
+html[lang="fa"] * {
+  font-family: "BNazanin", sans-serif;
+}
+
+html[lang="en"] * {
+  font-family: "Neue Montreal", sans-serif;
+}
+
+
+/* =========================================================
+   KEEP ICON FONTS / SVG SAFE
+   ========================================================= */
+
+svg {
+  font-family: inherit;
+}
