@@ -12,20 +12,20 @@
 
   public/
   ├── fonts/
-  │   ├── Mj_Tehran_0.ttf
+  │   ├── BTitrBd.ttf
 */
 
 @font-face {
-  font-family: "Tehran";
-  src: url("/fonts/Mj_Tehran_0.ttf") format("truetype");
+  font-family: "BTitrBd";
+  src: url("/fonts/BTitrBd.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: "Tehran";
-  src: url("/fonts/Mj_Tehran_0.ttf") format("truetype");
+  font-family: "BTitrBd";
+  src: url("/fonts/BTitrBd.ttf") format("truetype");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -46,7 +46,7 @@
 
 @font-face {
   font-family: "Neue Montreal";
-  src: url("/fonts/NeueMontreal-Regular.otf") format("otf");
+  src: url("/fonts/NeueMontreal-Regular.otf") format("opentype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -54,7 +54,7 @@
 
 @font-face {
   font-family: "Neue Montreal";
-  src: url("/fonts/NeueMontreal-Medium.otf") format("otf");
+  src: url("/fonts/NeueMontreal-Medium.otf") format("opentype");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -62,7 +62,7 @@
 
 @font-face {
   font-family: "Neue Montreal";
-  src: url("/fonts/NeueMontreal-Bold.otf") format("otf");
+  src: url("/fonts/NeueMontreal-Bold.otf") format("opentype");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -120,7 +120,7 @@
   html[lang="fa"] input,
   html[lang="fa"] textarea,
   html[lang="fa"] select {
-    font-family: "Tehran", sans-serif;
+    font-family: "BTitrBd", sans-serif;
     font-style: normal;
   }
 
@@ -134,7 +134,7 @@
   html[dir="rtl"] input,
   html[dir="rtl"] textarea,
   html[dir="rtl"] select {
-    font-family: "Tehran", sans-serif;
+    font-family: "BTitrBd", sans-serif;
     font-style: normal;
   }
 
@@ -170,7 +170,7 @@
   html[lang="fa"] h4,
   html[lang="fa"] h5,
   html[lang="fa"] h6 {
-    font-family: "Tehran", sans-serif;
+    font-family: "BTitrBd", sans-serif;
   }
 
 
@@ -221,14 +221,14 @@
   html[lang="fa"] .font-serif,
   html[lang="fa"] .font-sans,
   html[lang="fa"] .font-serif-heading {
-    font-family: "Tehran", sans-serif;
+    font-family: "BTitrBd", sans-serif;
   }
 
 
   html[dir="rtl"] .font-serif,
   html[dir="rtl"] .font-sans,
   html[dir="rtl"] .font-serif-heading {
-    font-family: "Tehran", sans-serif;
+    font-family: "BTitrBd", sans-serif;
   }
 }
 
@@ -323,7 +323,7 @@
 */
 
 html[lang="fa"] * {
-  font-family: "Tehran", sans-serif;
+  font-family: "BTitrBd", sans-serif;
 }
 
 html[lang="en"] * {
