@@ -1171,7 +1171,7 @@ export const projects: Project[] = [
           "مرحله پنج اجرای سقف سازه ای طبقه همکف",
 
         imageUrl:
-          "/images/MDF-EX-Beam-and-column01.jpg",
+          "/images/MDF-EX-G-F-structure-slab01.jpg",
 
         type:
           "image",
