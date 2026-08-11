@@ -1092,10 +1092,10 @@ export const projects: Project[] = [
           "فنداسیون",
 
         caption:
-          "Phase 04 — First-Floor Columns & Beams",
+          "Phase 03 — Foundation Construction",
 
         captionFa:
-          "مرحله چهارم اجرای تیرها و ستون‌های طبقه اول",
+          "مرحله سوم اجرای فنداسیون",
 
         imageUrl:
           "/images/MDF-EX-foundation01.jpg",
@@ -1130,10 +1130,45 @@ export const projects: Project[] = [
           "تیر و ستون",
 
         caption:
-          "Phase 03 — Foundation Construction",
+          "Phase 04 — Ground-Floor Columns & Beams",
 
         captionFa:
-          "مرحله سوم اجرای فنداسیون",
+          "مرحله چهارم اجرای تیرها و ستون‌های طبقه همکف",
+
+        imageUrl:
+          "/images/MDF-EX-Beam-and-column01.jpg",
+
+        type:
+          "image",
+
+        galleryImages: [
+          "/images/MDF-EX-Beam-and-column02.jpg",
+          "/images/MDF-EX-Beam-and-column03.jpg",
+          "/images/MDF-EX-Beam-and-column04.jpg",
+          "/images/MDF-EX-Beam-and-column05.jpg",
+          "/images/MDF-EX-Beam-and-column06.jpg",
+          "/images/MDF-EX-Beam-and-column07.jpg"
+        ]
+      },
+      // --------------------------------------------------------
+      // STEP 05 Structural Slab
+      // --------------------------------------------------------
+
+      {
+        id:
+          "exec5",
+
+        title:
+          "Structural Slab",
+
+        titleFa:
+          "سقف سازه ای",
+
+        caption:
+          "Phase 05 — Ground-Floor Structural Slab",
+
+        captionFa:
+          "مرحله پنج اجرای سقف سازه ای طبقه همکف",
 
         imageUrl:
           "/images/MDF-EX-Beam-and-column01.jpg",
