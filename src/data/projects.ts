@@ -1109,6 +1109,9 @@ export const projects: Project[] = [
           "/images/MDF-EX-foundation04.jpg",
           "/images/MDF-EX-foundation05.jpg",
           "/images/MDF-EX-foundation06.png",
+          "/images/MDF-EX-foundation07.png",
+          "/images/MDF-EX-foundation08.png",
+          "/images/MDF-EX-foundation09.jpg",
           "/images/MDF-EX-foundation10.png"
         ]
       },
@@ -1144,10 +1147,7 @@ export const projects: Project[] = [
           "/images/MDF-EX-Beam-and-column04.jpg",
           "/images/MDF-EX-Beam-and-column05.jpg",
           "/images/MDF-EX-Beam-and-column06.jpg",
-          "/images/MDF-EX-foundation07.png",
-          "/images/MDF-EX-foundation08.png",
-          "/images/MDF-EX-foundation09.jpg",
-          "/images/MDF-EX-foundation10.png"
+          "/images/MDF-EX-Beam-and-column07.jpg"
         ]
       },
 
