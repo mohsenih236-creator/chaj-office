@@ -667,19 +667,7 @@ export const Home: React.FC<HomeProps> = ({
 
           {/* ==================================================
               CHAJ GROUP
-              ==================================================
-              
-              C aligns with column 1.
-              P aligns with column 5.
-
-              The text uses the custom font already located at:
-
-              /public/fonts/bgothl.ttf
-
-              Therefore its browser URL is:
-
-              /fonts/bgothl.ttf
-          */}
+              ================================================== */}
 
           <div
             className="
@@ -701,19 +689,24 @@ export const Home: React.FC<HomeProps> = ({
               left: `${chajGroupLeft}%`,
               width: `${chajGroupWidth}%`,
               top: '94%',
+
+              /* ONLY CHAJ GROUP FONT */
               fontFamily: '"CHAJGothic", sans-serif',
 
-              /* ONLY CHANGE:
-                 Keep CHAJ GROUP LTR even when site is RTL. */
+              /* KEEP CHAJ GROUP LTR IN BOTH LANGUAGES */
               direction: 'ltr',
-              unicodeBidi: 'bidi-override'
+              unicodeBidi: 'isolate'
             }}
             aria-hidden="true"
           >
             {'CHAJ GROUP'.split('').map((char, index) => (
               <span
                 key={`${char}-${index}`}
-                className="inline-block"
+                style={{
+                  fontFamily: '"CHAJGothic", sans-serif',
+                  direction: 'ltr',
+                  unicodeBidi: 'isolate'
+                }}
               >
                 {char === ' ' ? '\u00A0' : char}
               </span>
