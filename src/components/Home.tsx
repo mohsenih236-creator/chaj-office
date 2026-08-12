@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Language, Project, StudioInfo } from '../types';
 
 interface HomeProps {
@@ -11,9 +11,22 @@ interface HomeProps {
   studioInfo: StudioInfo;
 }
 
-/* ============================================================
-   CONTINUOUS IMAGE REEL
-   ============================================================ */
+/*
+ * ============================================================
+ * CONTINUOUS VERTICAL IMAGE REEL
+ * ============================================================
+ *
+ * Images move upward continuously at a constant speed.
+ *
+ * The image list is duplicated:
+ *
+ *   1 → 2 → 3 → 4
+ *   1 → 2 → 3 → 4
+ *
+ * The track moves exactly one complete image-set.
+ * Therefore the end position is visually identical to
+ * the beginning position and the loop can continue forever.
+ */
 
 let crossfadeInstanceCounter = 0;
 
@@ -21,7 +34,7 @@ const CrossfadeStack: React.FC<{
   images: string[];
   intervalMs?: number;
 }> = ({ images, intervalMs = 3200 }) => {
-  const instanceIdRef = useRef<number | null>(null);
+  const instanceIdRef = React.useRef<number | null>(null);
 
   if (instanceIdRef.current === null) {
     crossfadeInstanceCounter += 1;
@@ -32,6 +45,9 @@ const CrossfadeStack: React.FC<{
 
   if (images.length === 0) return null;
 
+  /*
+   * Soft fade/mask around the image.
+   */
   const maskStyle: React.CSSProperties = {
     WebkitMaskImage:
       'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 18%, rgba(0,0,0,1) 82%, rgba(0,0,0,0) 100%), linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 18%, rgba(0,0,0,1) 82%, rgba(0,0,0,0) 100%)',
@@ -45,91 +61,65 @@ const CrossfadeStack: React.FC<{
   };
 
   /*
-   * One complete revolution.
-   *
-   * Every image receives approximately the same amount
-   * of time on screen.
+   * Each image gets approximately intervalMs milliseconds.
    */
   const loopDurationMs = intervalMs * images.length;
   const loopSeconds = (loopDurationMs / 1000).toFixed(2);
 
   /*
-   * Each CrossfadeStack gets its own animation name.
-   * This prevents collisions between Projects / About /
-   * Services / Contact.
+   * Every CrossfadeStack gets its own animation name.
    */
   const animName = `reel-scroll-${instanceId}`;
 
   /*
-   * Duplicate the complete sequence.
-   *
-   * 1 2 3 4
-   * 1 2 3 4
-   *
-   * The animation moves exactly one complete sequence upward.
-   * Therefore the final visual position and initial position
-   * are identical.
+   * Duplicate the complete image sequence.
    */
   const doubled = [...images, ...images];
 
   return (
     <div className="relative w-full h-full overflow-hidden">
-
       <div
         style={{
           display: 'flex',
           flexDirection: 'column',
           width: '100%',
-          height: '100%',
-          animation: `${animName} ${loopSeconds}s linear infinite`,
-          willChange: 'transform'
+          height: '200%',
+          animation: `${animName} ${loopSeconds}s linear infinite`
         }}
       >
-
         {doubled.map((src, i) => (
           <div
             key={`${src}-${i}`}
             style={{
-              flex: '0 0 100%',
+              flex: '0 0 50%',
               width: '100%',
-              height: '100%'
+              height: '50%'
             }}
           >
             <img
               src={src}
               alt=""
-              draggable={false}
               className="w-full h-full object-cover"
               style={maskStyle}
             />
           </div>
         ))}
-
       </div>
 
       <style>{`
         @keyframes ${animName} {
-          0% {
-            transform: translate3d(0, 0, 0);
+          from {
+            transform: translateY(0);
           }
 
-          100% {
-            transform: translate3d(
-              0,
-              -${images.length * 100}%,
-              0
-            );
+          to {
+            transform: translateY(-50%);
           }
         }
       `}</style>
-
     </div>
   );
 };
-
-/* ============================================================
-   HOME
-   ============================================================ */
 
 export const Home: React.FC<HomeProps> = ({
   language,
@@ -140,10 +130,15 @@ export const Home: React.FC<HomeProps> = ({
   projects,
   studioInfo
 }) => {
-
   const isFa = language === 'FA';
 
   const [introFinished, setIntroFinished] = useState(false);
+
+  /*
+   * ============================================================
+   * INTRO
+   * ============================================================
+   */
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -153,9 +148,11 @@ export const Home: React.FC<HomeProps> = ({
     return () => clearTimeout(timer);
   }, []);
 
-  /* ==========================================================
-     PREVIEW IMAGES
-     ========================================================== */
+  /*
+   * ============================================================
+   * PREVIEW IMAGES
+   * ============================================================
+   */
 
   const projectPreviewImages = [
     '/images/shirvani-render03.png',
@@ -182,9 +179,11 @@ export const Home: React.FC<HomeProps> = ({
     '/images/coonect-whatsapp.jpg'
   ];
 
-  /* ==========================================================
-     NAVIGATION ITEMS
-     ========================================================== */
+  /*
+   * ============================================================
+   * NAVIGATION ITEMS
+   * ============================================================
+   */
 
   const items = [
     {
@@ -213,9 +212,11 @@ export const Home: React.FC<HomeProps> = ({
     }
   ];
 
-  /* ==========================================================
-     ARCHITECTURAL DIAGRAM
-     ========================================================== */
+  /*
+   * ============================================================
+   * ARCHITECTURAL DIAGRAM
+   * ============================================================
+   */
 
   const ASPECT = 6 / 5;
 
@@ -234,35 +235,33 @@ export const Home: React.FC<HomeProps> = ({
     ${viewBoxHeight}
   `;
 
-  /* ==========================================================
-     SVG X CONVERSION
-     ========================================================== */
+  /*
+   * Convert percentage positions to SVG coordinates.
+   */
 
   const toSvgX = (percent: number) => {
     return -MARGIN_X + (percent / 100) * viewBoxWidth;
   };
 
-  /* ==========================================================
-     FIVE THIN VERTICAL LINES
-     ========================================================== */
+  /*
+   * ============================================================
+   * FIVE THIN VERTICAL COLUMNS
+   * ============================================================
+   */
 
   const colPercent = [5, 18, 32, 45, 58];
 
   const thinLineX = colPercent.map(toSvgX);
 
-  const thinLineTopY = [
-    23,
-    27,
-    31,
-    34,
-    38
-  ];
+  const thinLineTopY = [23, 27, 31, 34, 38];
 
   const thinLineBottomY = 91;
 
-  /* ==========================================================
-     MAIN ROOF + COLUMN
-     ========================================================== */
+  /*
+   * ============================================================
+   * MAIN ROOF + COLUMN
+   * ============================================================
+   */
 
   const pillarX = 72 * ASPECT;
 
@@ -272,9 +271,11 @@ export const Home: React.FC<HomeProps> = ({
 
   const roofStrokeWidth = 8;
 
-  /* ==========================================================
-     ROOF GEOMETRY
-     ========================================================== */
+  /*
+   * ============================================================
+   * ROOF GEOMETRY
+   * ============================================================
+   */
 
   const roofStartX = 0;
   const roofStartY = 0;
@@ -282,11 +283,16 @@ export const Home: React.FC<HomeProps> = ({
   const roofEndX = pillarX;
   const roofEndY = pillarTopY;
 
+  /*
+   * ============================================================
+   * RIGHT ROOF CONTINUATION
+   * ============================================================
+   */
+
   const continuationEndX = contentWidth - 2;
 
   const beamLength = Math.sqrt(
-    pillarX * pillarX +
-    pillarTopY * pillarTopY
+    pillarX * pillarX + pillarTopY * pillarTopY
   );
 
   const beamUx = pillarX / beamLength;
@@ -296,29 +302,32 @@ export const Home: React.FC<HomeProps> = ({
     (continuationEndX - pillarX) / beamUx;
 
   const continuationEndY =
-    pillarTopY +
-    tContinuation * beamUy;
+    pillarTopY + tContinuation * beamUy;
 
-  /* ==========================================================
-     WORD ZONES
-     ========================================================== */
+  /*
+   * ============================================================
+   * WORD ZONE
+   * ============================================================
+   */
 
   const wordZoneTop = 41;
   const wordZoneBottom = 79;
 
-  const zoneFor = (key: string) => {
+  /*
+   * ============================================================
+   * IMAGE ZONES
+   * ============================================================
+   */
 
-    const idx = items.findIndex(
-      (i) => i.key === key
-    );
+  const zoneFor = (key: string) => {
+    const idx = items.findIndex((i) => i.key === key);
 
     const left = colPercent[idx];
 
     const width =
       idx + 1 < colPercent.length
         ? colPercent[idx + 1] - colPercent[idx]
-        : colPercent[idx] -
-          colPercent[idx - 1];
+        : colPercent[idx] - colPercent[idx - 1];
 
     return {
       left,
@@ -326,46 +335,43 @@ export const Home: React.FC<HomeProps> = ({
     };
   };
 
-  const projectsZone =
-    zoneFor('projects');
-
-  const aboutZone =
-    zoneFor('about');
-
-  const servicesZone =
-    zoneFor('services');
-
-  const contactZone =
-    zoneFor('contact');
-
-  /* ==========================================================
-     CHAJ GROUP POSITION
-     ========================================================== */
+  const projectsZone = zoneFor('projects');
+  const aboutZone = zoneFor('about');
+  const servicesZone = zoneFor('services');
+  const contactZone = zoneFor('contact');
 
   /*
+   * ============================================================
+   * CHAJ GROUP POSITION
+   * ============================================================
+   *
    * IMPORTANT:
    *
-   * The text starts exactly at the first thin column
-   * and ends exactly at the last thin column.
+   * The text starts exactly at the first thin column:
    *
-   * First column = 5%
-   * Last column  = 58%
+   * C → column 1
    *
-   * The bottom of all five thin columns = 91%
+   * and ends exactly at the fifth thin column:
    *
-   * Therefore CHAJ GROUP begins just below them.
+   * P → column 5
+   *
+   * The text width therefore equals:
+   *
+   * colPercent[4] - colPercent[0]
    */
 
   const chajGroupLeft = colPercent[0];
 
   const chajGroupWidth =
-    colPercent[colPercent.length - 1] -
-    colPercent[0];
+    colPercent[colPercent.length - 1] - colPercent[0];
 
-  const chajGroupTop = 92;
+  /*
+   * ============================================================
+   * RETURN
+   * ============================================================
+   */
 
   return (
-
     <div
       id="home-landing"
       className="
@@ -398,7 +404,6 @@ export const Home: React.FC<HomeProps> = ({
           }
         `}
       >
-
         <img
           src="/images/chaj-logo-group.png"
           alt="CHAJ Architecture Group"
@@ -409,7 +414,6 @@ export const Home: React.FC<HomeProps> = ({
             animate-chaj-logo
           "
         />
-
       </div>
 
       {/* ======================================================
@@ -461,16 +465,13 @@ export const Home: React.FC<HomeProps> = ({
               left: `${projectsZone.left}%`,
               width: `${projectsZone.width}%`,
               top: `${wordZoneTop}%`,
-              height:
-                `${wordZoneBottom - wordZoneTop}%`
+              height: `${wordZoneBottom - wordZoneTop}%`
             }}
           >
-
             <CrossfadeStack
               images={projectPreviewImages}
               intervalMs={3200}
             />
-
           </div>
 
           {/* ==================================================
@@ -487,16 +488,13 @@ export const Home: React.FC<HomeProps> = ({
               left: `${aboutZone.left}%`,
               width: `${aboutZone.width}%`,
               top: `${wordZoneTop}%`,
-              height:
-                `${wordZoneBottom - wordZoneTop}%`
+              height: `${wordZoneBottom - wordZoneTop}%`
             }}
           >
-
             <CrossfadeStack
               images={aboutPreviewImages}
               intervalMs={2600}
             />
-
           </div>
 
           {/* ==================================================
@@ -513,16 +511,13 @@ export const Home: React.FC<HomeProps> = ({
               left: `${servicesZone.left}%`,
               width: `${servicesZone.width}%`,
               top: `${wordZoneTop}%`,
-              height:
-                `${wordZoneBottom - wordZoneTop}%`
+              height: `${wordZoneBottom - wordZoneTop}%`
             }}
           >
-
             <CrossfadeStack
               images={servicesPreviewImages}
               intervalMs={3200}
             />
-
           </div>
 
           {/* ==================================================
@@ -539,16 +534,13 @@ export const Home: React.FC<HomeProps> = ({
               left: `${contactZone.left}%`,
               width: `${contactZone.width}%`,
               top: `${wordZoneTop}%`,
-              height:
-                `${wordZoneBottom - wordZoneTop}%`
+              height: `${wordZoneBottom - wordZoneTop}%`
             }}
           >
-
             <CrossfadeStack
               images={contactPreviewImages}
               intervalMs={2600}
             />
-
           </div>
 
           {/* ==================================================
@@ -569,9 +561,9 @@ export const Home: React.FC<HomeProps> = ({
             aria-hidden="true"
           >
 
-            {/* ================================================
+            {/* =================================================
                 MAIN DIAGONAL ROOF
-                ================================================ */}
+                ================================================= */}
 
             <line
               x1={roofStartX}
@@ -583,9 +575,9 @@ export const Home: React.FC<HomeProps> = ({
               strokeLinecap="square"
             />
 
-            {/* ================================================
-                MAIN COLUMN
-                ================================================ */}
+            {/* =================================================
+                MAIN VERTICAL COLUMN
+                ================================================= */}
 
             <line
               x1={pillarX}
@@ -597,9 +589,9 @@ export const Home: React.FC<HomeProps> = ({
               strokeLinecap="butt"
             />
 
-            {/* ================================================
+            {/* =================================================
                 ROOF CONTINUATION
-                ================================================ */}
+                ================================================= */}
 
             <line
               x1={pillarX}
@@ -611,12 +603,11 @@ export const Home: React.FC<HomeProps> = ({
               strokeLinecap="square"
             />
 
-            {/* ================================================
+            {/* =================================================
                 FIVE THIN VERTICAL LINES
-                ================================================ */}
+                ================================================= */}
 
             {thinLineX.map((x, i) => (
-
               <line
                 key={`thin-line-${i}`}
                 x1={x}
@@ -626,29 +617,72 @@ export const Home: React.FC<HomeProps> = ({
                 stroke="#1C1C1C"
                 strokeWidth="0.7"
               />
-
             ))}
 
           </svg>
 
           {/* ==================================================
-              NAVIGATION WORDS
+              CHAJ GROUP
+              ==================================================
+              
+              This is BELOW the five thin columns.
+
+              C aligns with column 1.
+              P aligns with column 5.
+
+              The characters are distributed across the
+              complete width using space-between.
+          */}
+
+          <div
+            className="
+              absolute
+              z-20
+              pointer-events-none
+              flex
+              items-start
+              justify-between
+              font-mono
+              font-medium
+              uppercase
+              text-[#1C1C1C]
+              leading-none
+              tracking-[-0.055em]
+              text-[13px]
+              sm:text-[17px]
+              md:text-[20px]
+            "
+            style={{
+              left: `${chajGroupLeft}%`,
+              width: `${chajGroupWidth}%`,
+              top: '94%'
+            }}
+            aria-hidden="true"
+          >
+            {'CHAJ GROUP'.split('').map((char, index) => (
+              <span
+                key={`${char}-${index}`}
+                className="inline-block"
+              >
+                {char === ' ' ? '\u00A0' : char}
+              </span>
+            ))}
+          </div>
+
+          {/* ==================================================
+              CLICKABLE WORD ZONES
               ================================================== */}
 
           {items.map((item, idx) => {
 
-            const left =
-              colPercent[idx];
+            const left = colPercent[idx];
 
             const width =
               idx + 1 < colPercent.length
-                ? colPercent[idx + 1] -
-                  colPercent[idx]
-                : colPercent[idx] -
-                  colPercent[idx - 1];
+                ? colPercent[idx + 1] - colPercent[idx]
+                : colPercent[idx] - colPercent[idx - 1];
 
             return (
-
               <button
                 key={item.labelEn}
                 onClick={item.action}
@@ -673,8 +707,7 @@ export const Home: React.FC<HomeProps> = ({
                   left: `${left}%`,
                   width: `${width}%`,
                   top: `${wordZoneTop}%`,
-                  height:
-                    `${wordZoneBottom - wordZoneTop}%`
+                  height: `${wordZoneBottom - wordZoneTop}%`
                 }}
               >
 
@@ -713,96 +746,25 @@ export const Home: React.FC<HomeProps> = ({
                       mix-blend-difference
                     "
                   >
-
                     {item.labelEn
                       .toUpperCase()
                       .split('')
-                      .map(
-                        (ch, chIdx) => (
-
-                          <span
-                            key={chIdx}
-                          >
-                            {ch}
-                          </span>
-
-                        )
-                      )}
-
+                      .map((ch, chIdx) => (
+                        <span key={chIdx}>
+                          {ch}
+                        </span>
+                      ))}
                   </span>
 
                 )}
 
               </button>
-
             );
           })}
-
-          {/* ==================================================
-              CHAJ GROUP
-              ==================================================
-
-              EXACTLY BELOW THE FIVE THIN COLUMNS.
-
-              LEFT:
-              starts at first thin column.
-
-              WIDTH:
-              ends exactly at last thin column.
-
-              FONT:
-              larger than before.
-
-              LETTER SPACING:
-              reduced.
-
-              TEXT:
-              stretched across the complete column span.
-              ================================================== */}
-
-          <div
-            className="
-              absolute
-              z-20
-              pointer-events-none
-              flex
-              justify-center
-              items-start
-            "
-            style={{
-              left: `${chajGroupLeft}%`,
-              width: `${chajGroupWidth}%`,
-              top: `${chajGroupTop}%`,
-              height: '7%'
-            }}
-          >
-
-            <span
-              className="
-                block
-                w-full
-                whitespace-nowrap
-                uppercase
-                font-mono
-                font-medium
-                text-[#1C1C1C]
-                text-[13px]
-                sm:text-base
-                md:text-lg
-                leading-none
-                tracking-[0.04em]
-                text-center
-              "
-            >
-              CHAJ GROUP
-            </span>
-
-          </div>
 
         </div>
 
       </div>
-
     </div>
   );
 };
