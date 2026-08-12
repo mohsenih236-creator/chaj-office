@@ -75,6 +75,18 @@ export const AboutView: React.FC<AboutViewProps> = ({ studioInfo, language, open
         </div>
       </div>
 
+      {/* Meaning of the Name */}
+      <div className="mb-16 border-t border-black/10 pt-16">
+        <span className="font-sans text-[10px] uppercase tracking-[0.3em] font-bold text-[#8C8C8C] block mb-6">
+          {isFa ? 'معنای نام «چاج»' : 'THE MEANING OF "CHAJ"'}
+        </span>
+        <p className="max-w-3xl text-base sm:text-lg text-[#4A4A4A] leading-relaxed font-light italic font-serif">
+          {isFa
+            ? '«چاج» در زبان مازنی به لبه‌ی سقف شیروانی و محل اتصال آن با دیوار گفته می‌شود؛ جزئی کوچک اما هویت‌بخش که مرز میان معماری، آسمان و طبیعت را تعریف می‌کند.'
+            : '"Chaj" in Mazani refers to the edge of a pitched roof where it meets the wall—a subtle yet defining detail that shapes the boundary between architecture, sky, and nature.'}
+        </p>
+      </div>
+
       {/* Principals Section */}
       <div className="my-20 border-t border-black/10 pt-16">
         <span className="font-sans text-[10px] uppercase tracking-[0.3em] font-bold text-[#8C8C8C] block mb-8">
@@ -147,4 +159,3 @@ export const AboutView: React.FC<AboutViewProps> = ({ studioInfo, language, open
     </div>
   );
 };
-
