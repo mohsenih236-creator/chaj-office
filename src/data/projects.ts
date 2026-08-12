@@ -4,10 +4,10 @@ export const studioInfo: StudioInfo = {
   name: "CHAJ Group",
 
   taglineEn:
-    "About Chaj Architectural Group",
+    "Chaj; The Beginning of a Journey",
 
   taglineFa:
-    "درباره گروه معماری چاج",
+    "چاج؛ آغاز یک مسیر",
 
   aboutEn:
     "Chaj Architecture Group was founded in 2016 in Babolsar, Iran, by brothers Sadegh Laghaei Firouzjaei and Valiollah Laghaei Firouzjaei, with a focus on architectural design, project development, and construction. At Chaj, we see architecture as a process of discovering and creating new qualities in space. Our approach begins with understanding the context, needs, and underlying ideas of each project, and continues through architectural and interior design, detailing, 3D modeling, architectural visualization, and ultimately, project execution. We seek to establish a meaningful relationship between concept, function, form, light, material, and context in every project. The result is not simply a building, but a space shaped around people, place, and the way they live. For us, every project is an opportunity to redefine the relationship between people and space, from the initial idea to the final architectural experience.",
