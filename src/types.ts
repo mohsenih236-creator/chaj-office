@@ -277,6 +277,12 @@ export interface StudioInfo {
   aboutEn: string;
   aboutFa: string;
 
+  /**
+   * Short note explaining the meaning/origin of the studio's name.
+   */
+  nameMeaningEn?: string;
+  nameMeaningFa?: string;
+
 
   principals: {
     name: string;
