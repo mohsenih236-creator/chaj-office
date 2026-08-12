@@ -13,19 +13,20 @@ interface HomeProps {
 
 /*
  * ============================================================
- * CONTINUOUS VERTICAL IMAGE REEL
+ * CONTINUOUS VERTICAL IMAGE REEL — SEAMLESS LOOP
  * ============================================================
  *
- * Images move upward continuously at a constant speed.
+ * Images move upward continuously with no pause or visible jump.
  *
- * The image list is duplicated:
+ * The sequence is repeated three times:
  *
  *   1 → 2 → 3 → 4
  *   1 → 2 → 3 → 4
+ *   1 → 2 → 3 → 4
  *
- * The track moves exactly one complete image-set.
- * Therefore the end position is visually identical to
- * the beginning position and the loop can continue forever.
+ * The browser always has the next image sequence physically
+ * present, so the transition from the last image back to the
+ * first image is continuous.
  */
 
 let crossfadeInstanceCounter = 0;
@@ -46,8 +47,11 @@ const CrossfadeStack: React.FC<{
   if (images.length === 0) return null;
 
   /*
-   * Soft fade/mask around the image.
+   * ============================================================
+   * SOFT IMAGE MASK
+   * ============================================================
    */
+
   const maskStyle: React.CSSProperties = {
     WebkitMaskImage:
       'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 18%, rgba(0,0,0,1) 82%, rgba(0,0,0,0) 100%), linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 18%, rgba(0,0,0,1) 82%, rgba(0,0,0,0) 100%)',
@@ -57,49 +61,92 @@ const CrossfadeStack: React.FC<{
     maskImage:
       'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 18%, rgba(0,0,0,1) 82%, rgba(0,0,0,0) 100%), linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 18%, rgba(0,0,0,1) 82%, rgba(0,0,0,0) 100%)',
 
-    maskComposite: 'intersect'
+    maskComposite: 'intersect',
+
+    /*
+     * GPU rendering helpers for smoother movement.
+     */
+    transform: 'translateZ(0)',
+    backfaceVisibility: 'hidden'
   };
 
   /*
-   * Each image gets approximately intervalMs milliseconds.
+   * ============================================================
+   * ANIMATION TIMING
+   * ============================================================
    */
+
   const loopDurationMs = intervalMs * images.length;
   const loopSeconds = (loopDurationMs / 1000).toFixed(2);
 
   /*
    * Every CrossfadeStack gets its own animation name.
    */
+
   const animName = `reel-scroll-${instanceId}`;
 
   /*
-   * Duplicate the complete image sequence.
+   * ============================================================
+   * THREE COPIES OF THE IMAGE SEQUENCE
+   * ============================================================
    */
-  const doubled = [...images, ...images];
+
+  const tripled = [
+    ...images,
+    ...images,
+    ...images
+  ];
+
+  /*
+   * ============================================================
+   * RETURN
+   * ============================================================
+   */
 
   return (
-    <div className="relative w-full h-full overflow-hidden">
+    <div
+      className="
+        relative
+        w-full
+        h-full
+        overflow-hidden
+      "
+      style={{
+        contain: 'paint',
+        transform: 'translateZ(0)'
+      }}
+    >
       <div
         style={{
           display: 'flex',
           flexDirection: 'column',
           width: '100%',
-          height: '200%',
+          height: `${tripled.length * 100}%`,
+          willChange: 'transform',
+          transform: 'translate3d(0, 0, 0)',
           animation: `${animName} ${loopSeconds}s linear infinite`
         }}
       >
-        {doubled.map((src, i) => (
+        {tripled.map((src, i) => (
           <div
             key={`${src}-${i}`}
             style={{
-              flex: '0 0 50%',
+              flex: '0 0 auto',
               width: '100%',
-              height: '50%'
+              height: `${100 / tripled.length}%`,
+              overflow: 'hidden'
             }}
           >
             <img
               src={src}
               alt=""
-              className="w-full h-full object-cover"
+              draggable={false}
+              className="
+                block
+                w-full
+                h-full
+                object-cover
+              "
               style={maskStyle}
             />
           </div>
@@ -108,12 +155,16 @@ const CrossfadeStack: React.FC<{
 
       <style>{`
         @keyframes ${animName} {
-          from {
-            transform: translateY(0);
+          0% {
+            transform: translate3d(0, 0, 0);
           }
 
-          to {
-            transform: translateY(-50%);
+          100% {
+            transform: translate3d(
+              0,
+              -${(100 * images.length) / tripled.length}%,
+              0
+            );
           }
         }
       `}</style>
@@ -345,17 +396,12 @@ export const Home: React.FC<HomeProps> = ({
    * CHAJ GROUP POSITION
    * ============================================================
    *
-   * The text starts exactly at the first thin column:
+   * C aligns with the first thin column.
    *
-   * C → column 1
+   * P aligns with the fifth thin column.
    *
-   * and ends exactly at the fifth thin column:
-   *
-   * P → column 5
-   *
-   * The text width therefore equals:
-   *
-   * colPercent[4] - colPercent[0]
+   * The complete text therefore spans exactly between
+   * the first and fifth columns.
    */
 
   const chajGroupLeft = colPercent[0];
@@ -379,20 +425,6 @@ export const Home: React.FC<HomeProps> = ({
         bg-[#F4F1EE]
       "
     >
-
-      {/* ======================================================
-          CHAJ GROUP FONT
-          ====================================================== */}
-
-      <style>{`
-        @font-face {
-          font-family: 'CHAJGroup';
-          src: url('/fonts/bgothl.ttf') format('truetype');
-          font-weight: normal;
-          font-style: normal;
-          font-display: swap;
-        }
-      `}</style>
 
       {/* ======================================================
           CHAJ LOGO INTRO
@@ -637,13 +669,16 @@ export const Home: React.FC<HomeProps> = ({
               CHAJ GROUP
               ==================================================
               
-              This is BELOW the five thin columns.
-
               C aligns with column 1.
               P aligns with column 5.
 
-              The characters are distributed across the
-              complete width using space-between.
+              The text uses the custom font already located at:
+
+              /public/fonts/bgothl.ttf
+
+              Therefore its browser URL is:
+
+              /fonts/bgothl.ttf
           */}
 
           <div
@@ -666,7 +701,7 @@ export const Home: React.FC<HomeProps> = ({
               left: `${chajGroupLeft}%`,
               width: `${chajGroupWidth}%`,
               top: '94%',
-              fontFamily: 'CHAJGroup'
+              fontFamily: '"CHAJGothic", sans-serif'
             }}
             aria-hidden="true"
           >
