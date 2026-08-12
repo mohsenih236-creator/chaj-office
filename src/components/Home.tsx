@@ -668,17 +668,14 @@ export const Home: React.FC<HomeProps> = ({
           {/* ==================================================
               CHAJ GROUP
               ==================================================
-              
+
               C aligns with column 1.
               P aligns with column 5.
 
-              The text uses the custom font already located at:
+              ONLY THE FONT HAS BEEN CHANGED HERE.
 
+              Font:
               /public/fonts/bgothl.ttf
-
-              Therefore its browser URL is:
-
-              /fonts/bgothl.ttf
           */}
 
           <div
@@ -701,7 +698,9 @@ export const Home: React.FC<HomeProps> = ({
               left: `${chajGroupLeft}%`,
               width: `${chajGroupWidth}%`,
               top: '94%',
-              fontFamily: '"CHAJGothic", sans-serif'
+              fontFamily: '"CHAJGothic", sans-serif',
+              fontWeight: 400,
+              fontStyle: 'normal'
             }}
             aria-hidden="true"
           >
@@ -709,6 +708,11 @@ export const Home: React.FC<HomeProps> = ({
               <span
                 key={`${char}-${index}`}
                 className="inline-block"
+                style={{
+                  fontFamily: '"CHAJGothic", sans-serif',
+                  fontWeight: 400,
+                  fontStyle: 'normal'
+                }}
               >
                 {char === ' ' ? '\u00A0' : char}
               </span>
