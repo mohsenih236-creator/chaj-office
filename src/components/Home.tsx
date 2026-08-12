@@ -11,9 +11,10 @@ interface HomeProps {
   studioInfo: StudioInfo;
 }
 
-// Vertical drum/carousel image stack: the outgoing image rotates
-// up and away while the incoming image rotates in from below,
-// as if both are mounted on the inside of a spinning cylinder.
+// Vertical film-reel image stack: like an old filmstrip or slide
+// projector — the outgoing frame slides straight up and off the top,
+// while the next frame slides up from the bottom into its place on
+// the same track, at the same time, no tilt or perspective.
 const CrossfadeStack: React.FC<{
   images: string[];
   intervalMs?: number;
@@ -21,7 +22,7 @@ const CrossfadeStack: React.FC<{
   const [index, setIndex] = useState(0);
   const prevIndexRef = React.useRef(0);
   const [prevIndex, setPrevIndex] = useState<number | null>(null);
-  const [spinning, setSpinning] = useState(false);
+  const [rolling, setRolling] = useState(false);
 
   useEffect(() => {
     if (images.length <= 1) return;
@@ -32,12 +33,11 @@ const CrossfadeStack: React.FC<{
         prevIndexRef.current = prev;
         return next;
       });
-      setSpinning(true);
-      // Drop the outgoing slide from the DOM once its spin finishes.
+      setRolling(true);
       window.setTimeout(() => {
-        setSpinning(false);
+        setRolling(false);
         setPrevIndex(null);
-      }, 1400);
+      }, 1200);
     }, intervalMs);
     return () => clearInterval(timer);
   }, [images.length, intervalMs]);
@@ -54,24 +54,12 @@ const CrossfadeStack: React.FC<{
   };
 
   return (
-    <div
-      className="relative w-full h-full"
-      style={{ perspective: '900px' }}
-    >
+    <div className="relative w-full h-full overflow-hidden">
       {images.map((src, i) => {
         const isCurrent = i === index;
-        const isLeaving = spinning && i === prevIndex;
+        const isLeaving = rolling && i === prevIndex;
 
         if (!isCurrent && !isLeaving) return null;
-
-        // Leaving slide spins up and out (rotateX -100deg, moves up).
-        // Incoming slide spins in from below (starts at rotateX 100deg,
-        // settles at 0deg) — both read as riding the inside of one drum.
-        const transform = isLeaving
-          ? 'rotateX(-100deg) translateY(-6%)'
-          : spinning && isCurrent
-          ? 'rotateX(0deg) translateY(0%)'
-          : 'rotateX(0deg) translateY(0%)';
 
         return (
           <img
@@ -81,31 +69,24 @@ const CrossfadeStack: React.FC<{
             className="absolute inset-0 w-full h-full object-cover"
             style={{
               ...maskStyle,
-              transformOrigin: 'center center',
-              transform: isCurrent && spinning
-                ? 'rotateX(0deg) translateY(0%)'
-                : isCurrent
-                ? 'rotateX(0deg) translateY(0%)'
-                : transform,
-              animation: isCurrent && spinning
-                ? 'drum-in 1400ms ease-in-out'
+              animation: isCurrent && rolling
+                ? 'reel-in 1200ms ease-in-out'
                 : isLeaving
-                ? 'drum-out 1400ms ease-in-out'
+                ? 'reel-out 1200ms ease-in-out'
                 : undefined,
-              backfaceVisibility: 'hidden',
-              transformStyle: 'preserve-3d'
+              transform: 'translateY(0%)'
             }}
           />
         );
       })}
       <style>{`
-        @keyframes drum-in {
-          0% { transform: rotateX(100deg) translateY(6%); opacity: 0.4; }
-          100% { transform: rotateX(0deg) translateY(0%); opacity: 1; }
+        @keyframes reel-in {
+          0% { transform: translateY(100%); }
+          100% { transform: translateY(0%); }
         }
-        @keyframes drum-out {
-          0% { transform: rotateX(0deg) translateY(0%); opacity: 1; }
-          100% { transform: rotateX(-100deg) translateY(-6%); opacity: 0.4; }
+        @keyframes reel-out {
+          0% { transform: translateY(0%); }
+          100% { transform: translateY(-100%); }
         }
       `}</style>
     </div>
