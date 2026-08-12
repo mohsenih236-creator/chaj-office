@@ -54,6 +54,8 @@ function HomePage({ language, setContactModalOpen }: SharedState) {
   return (
     <Home
       language={language}
+      projects={projects}
+      studioInfo={studioInfo}
       onProjects={() => {
         navigate('/projects');
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -285,4 +287,3 @@ export default function App() {
     </BrowserRouter>
   );
 }
-
