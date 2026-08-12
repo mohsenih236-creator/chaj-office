@@ -1,6 +1,6 @@
 import React from 'react';
 import { Language } from '../types';
-import { ArrowUp, Instagram, Mail, Send } from 'lucide-react';
+import { ArrowUp, Instagram, Mail, Send, Phone } from 'lucide-react';
 
 interface FooterProps {
   language: Language;
@@ -84,6 +84,24 @@ export const Footer: React.FC<FooterProps> = ({ language, openContact }) => {
               className="w-9 h-9 border border-black/15 flex items-center justify-center text-[#1C1C1C] hover:bg-[#1C1C1C] hover:text-[#F4F1EE] transition-all duration-300"
             >
               <span className="text-[15px] font-bold">W</span>
+            </a>
+
+            {/* Phone */}
+            <a
+              href="tel:+989001112478"
+              aria-label="Phone"
+              title="Phone"
+              className="flex items-center gap-2 text-[#1C1C1C] hover:text-[#8C8C8C] transition-colors duration-300 group"
+            >
+              <span className="w-9 h-9 border border-black/15 flex items-center justify-center flex-shrink-0 group-hover:bg-[#1C1C1C] group-hover:text-[#F4F1EE] transition-all duration-300">
+                <Phone className="w-4 h-4" />
+              </span>
+              <span
+                dir="ltr"
+                className="font-sans text-[11px] tracking-[0.05em] font-medium whitespace-nowrap"
+              >
+                +98 900 111 2478
+              </span>
             </a>
           </div>
 
