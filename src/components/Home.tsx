@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Language } from '../types';
+import { Language, Project, StudioInfo } from '../types';
 
 interface HomeProps {
   language: Language;
@@ -7,6 +7,8 @@ interface HomeProps {
   onAbout: () => void;
   onServices: () => void;
   onContact: () => void;
+  projects: Project[];
+  studioInfo: StudioInfo;
 }
 
 export const Home: React.FC<HomeProps> = ({
@@ -14,10 +16,13 @@ export const Home: React.FC<HomeProps> = ({
   onProjects,
   onAbout,
   onServices,
-  onContact
+  onContact,
+  projects,
+  studioInfo
 }) => {
   const isFa = language === 'FA';
   const [introFinished, setIntroFinished] = useState(false);
+  const [hoveredKey, setHoveredKey] = useState<string | null>(null);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -27,26 +32,47 @@ export const Home: React.FC<HomeProps> = ({
     return () => clearTimeout(timer);
   }, []);
 
+  // Image sets shown on hover for each nav item.
+  const projectPreviewImages = projects
+    .map((p) => p.heroImage)
+    .filter(Boolean);
+
+  const aboutPreviewImages = studioInfo.principals
+    .map((p) => p.image)
+    .filter(Boolean);
+
+  const servicesPreviewImages = studioInfo.services
+    .map((s) => (s as any).image)
+    .filter(Boolean);
+
   const items = [
     {
+      key: 'projects',
       labelEn: 'Projects',
       labelFa: 'پروژه‌ها',
-      action: onProjects
+      action: onProjects,
+      previewImages: projectPreviewImages
     },
     {
+      key: 'about',
       labelEn: 'About',
       labelFa: 'درباره ما',
-      action: onAbout
+      action: onAbout,
+      previewImages: aboutPreviewImages
     },
     {
+      key: 'services',
       labelEn: 'Services',
       labelFa: 'خدمات',
-      action: onServices
+      action: onServices,
+      previewImages: servicesPreviewImages
     },
     {
+      key: 'contact',
       labelEn: 'Contact',
       labelFa: 'تماس با ما',
-      action: onContact
+      action: onContact,
+      previewImages: [] as string[]
     }
   ];
 
@@ -251,6 +277,36 @@ export const Home: React.FC<HomeProps> = ({
   const wordZoneTop = 41;
   const wordZoneBottom = 79;
 
+  // Preview image cycling: cycle through the hovered item's images.
+  const [previewIndex, setPreviewIndex] = useState(0);
+
+  useEffect(() => {
+    if (!hoveredKey) return;
+    const activeItem = items.find((i) => i.key === hoveredKey);
+    if (!activeItem || activeItem.previewImages.length <= 1) return;
+
+    const interval = setInterval(() => {
+      setPreviewIndex((prev) => (prev + 1) % activeItem.previewImages.length);
+    }, 1100);
+
+    return () => clearInterval(interval);
+  }, [hoveredKey]);
+
+  const activeItem = items.find((i) => i.key === hoveredKey);
+  const activePreviewImage =
+    activeItem && activeItem.previewImages.length > 0
+      ? activeItem.previewImages[previewIndex % activeItem.previewImages.length]
+      : null;
+
+  const handleHoverStart = (key: string) => {
+    setHoveredKey(key);
+    setPreviewIndex(0);
+  };
+
+  const handleHoverEnd = () => {
+    setHoveredKey(null);
+  };
+
   return (
     <div
       id="home-landing"
@@ -284,6 +340,45 @@ export const Home: React.FC<HomeProps> = ({
             animate-chaj-logo
           "
         />
+      </div>
+
+      {/* ======================================================
+          HOVER PREVIEW IMAGE
+          Fixed panel that shows the relevant image set while
+          the user hovers a nav word (Projects / About / Services).
+          ====================================================== */}
+
+      <div
+        className={`
+          pointer-events-none
+          fixed
+          top-1/2
+          right-6
+          md:right-16
+          -translate-y-1/2
+          z-40
+          w-[42vw]
+          max-w-[420px]
+          aspect-[4/5]
+          transition-opacity
+          duration-500
+          ${activePreviewImage ? 'opacity-100' : 'opacity-0'}
+        `}
+      >
+        {activePreviewImage && (
+          <img
+            key={activePreviewImage}
+            src={activePreviewImage}
+            alt=""
+            className="
+              w-full
+              h-full
+              object-cover
+              shadow-xl
+              animate-fade-in
+            "
+          />
+        )}
       </div>
 
       {/* ======================================================
@@ -435,6 +530,10 @@ export const Home: React.FC<HomeProps> = ({
               <button
                 key={item.labelEn}
                 onClick={item.action}
+                onMouseEnter={() => handleHoverStart(item.key)}
+                onMouseLeave={handleHoverEnd}
+                onFocus={() => handleHoverStart(item.key)}
+                onBlur={handleHoverEnd}
                 aria-label={
                   isFa
                     ? item.labelFa
