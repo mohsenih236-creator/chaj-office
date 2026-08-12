@@ -116,7 +116,9 @@ export const Home: React.FC<HomeProps> = ({
   // Portrait images requested for the Projects word zone.
   const projectPreviewImages = [
     '/images/shirvani-render03.png',
-    '/images/west-view-01.jpg'
+    '/images/west-view-01.jpg',
+    '/images/west-view-02.jpg',
+    '/images/shirvani-old-woman.jpg'
   ];
 
   // Portrait team images for the About word zone.
