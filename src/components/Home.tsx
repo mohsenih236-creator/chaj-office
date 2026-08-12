@@ -345,8 +345,6 @@ export const Home: React.FC<HomeProps> = ({
    * CHAJ GROUP POSITION
    * ============================================================
    *
-   * IMPORTANT:
-   *
    * The text starts exactly at the first thin column:
    *
    * C → column 1
@@ -381,6 +379,20 @@ export const Home: React.FC<HomeProps> = ({
         bg-[#F4F1EE]
       "
     >
+
+      {/* ======================================================
+          CHAJ GROUP FONT
+          ====================================================== */}
+
+      <style>{`
+        @font-face {
+          font-family: 'CHAJGroup';
+          src: url('/fonts/bgothl.ttf') format('truetype');
+          font-weight: normal;
+          font-style: normal;
+          font-display: swap;
+        }
+      `}</style>
 
       {/* ======================================================
           CHAJ LOGO INTRO
@@ -642,8 +654,6 @@ export const Home: React.FC<HomeProps> = ({
               flex
               items-start
               justify-between
-              font-mono
-              font-medium
               uppercase
               text-[#1C1C1C]
               leading-none
@@ -655,7 +665,8 @@ export const Home: React.FC<HomeProps> = ({
             style={{
               left: `${chajGroupLeft}%`,
               width: `${chajGroupWidth}%`,
-              top: '94%'
+              top: '94%',
+              fontFamily: 'CHAJGroup'
             }}
             aria-hidden="true"
           >
