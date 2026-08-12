@@ -92,6 +92,22 @@ export const Home: React.FC<HomeProps> = ({
     .map((p) => p.image)
     .filter(Boolean);
 
+  // Images for the Services word zone (full-bleed, same treatment as Projects).
+  const servicesPreviewImages = [
+    '/images/services-01.JPG',
+    '/images/services-02.jpg',
+    '/images/services-03.jpg'
+  ];
+
+  // Images for the Contact word zone (scaled-down, centered, same treatment as About).
+  const contactPreviewImages = [
+    '/images/connect-gmail.jpg',
+    '/images/connect-inesta.jpg',
+    '/images/connect-phone.jpg',
+    '/images/coonect-telgram.jpg',
+    '/images/coonect-whatsapp.jpg'
+  ];
+
   const items = [
     {
       key: 'projects',
@@ -230,16 +246,24 @@ export const Home: React.FC<HomeProps> = ({
 
   // Percentage span (left/width) for each item's column, used to size
   // and position the background image stacks precisely between the
-  // two letter-columns of "PROJECTS" and "ABOUT".
+  // two letter-columns of each word. For the last item (contact) there
+  // is no explicit right-edge entry in colPercent, so we fall back to
+  // the same column width as the preceding gap to keep the zone sized
+  // consistently with the others.
   const zoneFor = (key: string) => {
     const idx = items.findIndex((i) => i.key === key);
     const left = colPercent[idx];
-    const width = colPercent[idx + 1] - colPercent[idx];
+    const width =
+      idx + 1 < colPercent.length
+        ? colPercent[idx + 1] - colPercent[idx]
+        : colPercent[idx] - colPercent[idx - 1];
     return { left, width };
   };
 
   const projectsZone = zoneFor('projects');
   const aboutZone = zoneFor('about');
+  const servicesZone = zoneFor('services');
+  const contactZone = zoneFor('contact');
 
   return (
     <div
@@ -350,6 +374,42 @@ export const Home: React.FC<HomeProps> = ({
           </div>
 
           {/* ==================================================
+              SERVICES — background crossfading images, same
+              full-zone treatment as Projects.
+              ================================================== */}
+
+          <div
+            className="absolute pointer-events-none z-0"
+            style={{
+              left: `${servicesZone.left}%`,
+              width: `${servicesZone.width}%`,
+              top: `${wordZoneTop}%`,
+              height: `${wordZoneBottom - wordZoneTop}%`
+            }}
+          >
+            <CrossfadeStack images={servicesPreviewImages} intervalMs={3200} />
+          </div>
+
+          {/* ==================================================
+              CONTACT — background crossfading images, scaled
+              down and centered, same treatment as About.
+              ================================================== */}
+
+          <div
+            className="absolute pointer-events-none z-0 flex items-center justify-center"
+            style={{
+              left: `${contactZone.left}%`,
+              width: `${contactZone.width}%`,
+              top: `${wordZoneTop}%`,
+              height: `${wordZoneBottom - wordZoneTop}%`
+            }}
+          >
+            <div className="w-[62%] h-[62%]">
+              <CrossfadeStack images={contactPreviewImages} intervalMs={2600} />
+            </div>
+          </div>
+
+          {/* ==================================================
               SVG ARCHITECTURAL DRAWING
               ================================================== */}
 
@@ -436,8 +496,9 @@ export const Home: React.FC<HomeProps> = ({
             const left = colPercent[idx];
 
             const width =
-              colPercent[idx + 1] -
-              colPercent[idx];
+              idx + 1 < colPercent.length
+                ? colPercent[idx + 1] - colPercent[idx]
+                : colPercent[idx] - colPercent[idx - 1];
 
             return (
               <button
