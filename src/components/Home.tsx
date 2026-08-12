@@ -356,11 +356,11 @@ export const Home: React.FC<HomeProps> = ({
 
           {/* ==================================================
               ABOUT — background crossfading team portraits,
-              scaled down to sit within the "ABOUT" word zone.
+              same full-zone treatment as Projects/Services.
               ================================================== */}
 
           <div
-            className="absolute pointer-events-none z-0 flex items-center justify-center"
+            className="absolute pointer-events-none z-0"
             style={{
               left: `${aboutZone.left}%`,
               width: `${aboutZone.width}%`,
@@ -368,9 +368,7 @@ export const Home: React.FC<HomeProps> = ({
               height: `${wordZoneBottom - wordZoneTop}%`
             }}
           >
-            <div className="w-[62%] h-[62%]">
-              <CrossfadeStack images={aboutPreviewImages} intervalMs={2600} />
-            </div>
+            <CrossfadeStack images={aboutPreviewImages} intervalMs={2600} />
           </div>
 
           {/* ==================================================
@@ -391,12 +389,12 @@ export const Home: React.FC<HomeProps> = ({
           </div>
 
           {/* ==================================================
-              CONTACT — background crossfading images, scaled
-              down and centered, same treatment as About.
+              CONTACT — background crossfading images, same
+              full-zone treatment as Projects/Services.
               ================================================== */}
 
           <div
-            className="absolute pointer-events-none z-0 flex items-center justify-center"
+            className="absolute pointer-events-none z-0"
             style={{
               left: `${contactZone.left}%`,
               width: `${contactZone.width}%`,
@@ -404,9 +402,7 @@ export const Home: React.FC<HomeProps> = ({
               height: `${wordZoneBottom - wordZoneTop}%`
             }}
           >
-            <div className="w-[62%] h-[62%]">
-              <CrossfadeStack images={contactPreviewImages} intervalMs={2600} />
-            </div>
+            <CrossfadeStack images={contactPreviewImages} intervalMs={2600} />
           </div>
 
           {/* ==================================================
