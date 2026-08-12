@@ -147,7 +147,7 @@ export const Footer: React.FC<FooterProps> = ({ language, openContact }) => {
         <div className="md:col-span-12 pt-8 mt-4 border-t border-black/10 flex flex-col sm:flex-row justify-between items-center gap-4">
 
           <p className="font-sans text-[10px] uppercase tracking-[0.25em] text-[#8C8C8C]">
-            © 2017 CHAJ GROUP.{' '}
+            © 2016 CHAJ GROUP.{' '}
             {isFa
               ? 'تمامی حقوق متعلق به مجموعه گروه معماری چاج و کپی برداری ممنوع می باشد'
               : 'All rights belong to Chaj Architectural Group and copying is prohibited.'}
