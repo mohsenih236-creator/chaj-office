@@ -11,6 +11,56 @@ interface HomeProps {
   studioInfo: StudioInfo;
 }
 
+// Continuously cross-fading image stack (no hard cuts) with soft,
+// feathered edges on all sides via a mask gradient.
+const CrossfadeStack: React.FC<{
+  images: string[];
+  intervalMs?: number;
+}> = ({ images, intervalMs = 3200 }) => {
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    if (images.length <= 1) return;
+    const timer = setInterval(() => {
+      setIndex((prev) => (prev + 1) % images.length);
+    }, intervalMs);
+    return () => clearInterval(timer);
+  }, [images.length, intervalMs]);
+
+  if (images.length === 0) return null;
+
+  const maskStyle: React.CSSProperties = {
+    WebkitMaskImage:
+      'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 18%, rgba(0,0,0,1) 82%, rgba(0,0,0,0) 100%), linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 18%, rgba(0,0,0,1) 82%, rgba(0,0,0,0) 100%)',
+    WebkitMaskComposite: 'source-in',
+    maskImage:
+      'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 18%, rgba(0,0,0,1) 82%, rgba(0,0,0,0) 100%), linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 18%, rgba(0,0,0,1) 82%, rgba(0,0,0,0) 100%)',
+    maskComposite: 'intersect'
+  };
+
+  return (
+    <div className="relative w-full h-full">
+      {images.map((src, i) => (
+        <img
+          key={src + i}
+          src={src}
+          alt=""
+          className={`
+            absolute inset-0
+            w-full h-full
+            object-cover
+            transition-opacity
+            duration-[1800ms]
+            ease-in-out
+            ${i === index ? 'opacity-100' : 'opacity-0'}
+          `}
+          style={maskStyle}
+        />
+      ))}
+    </div>
+  );
+};
+
 export const Home: React.FC<HomeProps> = ({
   language,
   onProjects,
@@ -22,7 +72,6 @@ export const Home: React.FC<HomeProps> = ({
 }) => {
   const isFa = language === 'FA';
   const [introFinished, setIntroFinished] = useState(false);
-  const [hoveredKey, setHoveredKey] = useState<string | null>(null);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -32,17 +81,15 @@ export const Home: React.FC<HomeProps> = ({
     return () => clearTimeout(timer);
   }, []);
 
-  // Image sets shown on hover for each nav item.
-  const projectPreviewImages = projects
-    .map((p) => p.heroImage)
-    .filter(Boolean);
+  // Portrait images requested for the Projects word zone.
+  const projectPreviewImages = [
+    '/images/shirvani-render03.png',
+    '/images/west-view-01.jpg'
+  ];
 
+  // Portrait team images for the About word zone.
   const aboutPreviewImages = studioInfo.principals
     .map((p) => p.image)
-    .filter(Boolean);
-
-  const servicesPreviewImages = studioInfo.services
-    .map((s) => (s as any).image)
     .filter(Boolean);
 
   const items = [
@@ -50,29 +97,25 @@ export const Home: React.FC<HomeProps> = ({
       key: 'projects',
       labelEn: 'Projects',
       labelFa: 'پروژه‌ها',
-      action: onProjects,
-      previewImages: projectPreviewImages
+      action: onProjects
     },
     {
       key: 'about',
       labelEn: 'About',
       labelFa: 'درباره ما',
-      action: onAbout,
-      previewImages: aboutPreviewImages
+      action: onAbout
     },
     {
       key: 'services',
       labelEn: 'Services',
       labelFa: 'خدمات',
-      action: onServices,
-      previewImages: servicesPreviewImages
+      action: onServices
     },
     {
       key: 'contact',
       labelEn: 'Contact',
       labelFa: 'تماس با ما',
-      action: onContact,
-      previewImages: [] as string[]
+      action: onContact
     }
   ];
 
@@ -178,98 +221,6 @@ export const Home: React.FC<HomeProps> = ({
 
   /*
    * ------------------------------------------------------------
-   * THIN LINE UNDER THE ROOF
-   * ------------------------------------------------------------
-   *
-   * IMPORTANT:
-   *
-   * This is NOT a <path>.
-   *
-   * It is made from two simple SVG lines:
-   *
-   * 1. diagonal line under the roof
-   * 2. vertical line at the right end
-   *
-   * This creates the L-shaped detail from the reference image.
-   */
-
-  /*
-   * Horizontal distance between the pillar and
-   * the beginning of the thin diagonal line.
-   *
-   * This is intentionally separated from the pillar.
-   */
-  const thinLineStartGap = 7;
-
-  /*
-   * Perpendicular direction from the roof.
-   */
-  const perpX = -beamUy;
-  const perpY = beamUx;
-
-  /*
-   * Start of the thin line.
-   *
-   * It begins to the RIGHT of the pillar,
-   * while also being below the roof.
-   */
-  const thinRoofStart = {
-    x: pillarX + thinLineStartGap,
-    y: pillarTopY + thinLineStartGap * (beamUy / beamUx)
-  };
-
-  /*
-   * End of the diagonal thin line.
-   *
-   * It stops before the end of the thick roof.
-   */
-  const thinRoofEndX = continuationEndX - 3;
-
-  const thinRoofT =
-    (thinRoofEndX - pillarX) / beamUx;
-
-  const thinRoofCenterEnd = {
-    x: thinRoofEndX,
-    y: pillarTopY + thinRoofT * beamUy
-  };
-
-  /*
-   * Move the line downward from the roof.
-   *
-   * This controls the visible gap between
-   * the thick roof and thin line.
-   */
-  const thinRoofOffset = 7;
-
-  const thinRoofEnd = {
-    x:
-      thinRoofCenterEnd.x +
-      thinRoofOffset * perpX,
-
-    y:
-      thinRoofCenterEnd.y +
-      thinRoofOffset * perpY
-  };
-
-  /*
-   * The vertical end of the L.
-   *
-   * It rises upward until it reaches
-   * the LOWER edge of the thick roof.
-   */
-  const roofHalfThickness = roofStrokeWidth / 2;
-
-  const lVerticalTopY =
-    continuationEndY + roofHalfThickness;
-
-  /*
-   * Small correction so the vertical stroke visually
-   * touches the bottom edge of the thick roof.
-   */
-  const lVerticalBottomY = thinRoofEnd.y;
-
-  /*
-   * ------------------------------------------------------------
    * WORD POSITION
    * ------------------------------------------------------------
    */
@@ -277,35 +228,18 @@ export const Home: React.FC<HomeProps> = ({
   const wordZoneTop = 41;
   const wordZoneBottom = 79;
 
-  // Preview image cycling: cycle through the hovered item's images.
-  const [previewIndex, setPreviewIndex] = useState(0);
-
-  useEffect(() => {
-    if (!hoveredKey) return;
-    const activeItem = items.find((i) => i.key === hoveredKey);
-    if (!activeItem || activeItem.previewImages.length <= 1) return;
-
-    const interval = setInterval(() => {
-      setPreviewIndex((prev) => (prev + 1) % activeItem.previewImages.length);
-    }, 1100);
-
-    return () => clearInterval(interval);
-  }, [hoveredKey]);
-
-  const activeItem = items.find((i) => i.key === hoveredKey);
-  const activePreviewImage =
-    activeItem && activeItem.previewImages.length > 0
-      ? activeItem.previewImages[previewIndex % activeItem.previewImages.length]
-      : null;
-
-  const handleHoverStart = (key: string) => {
-    setHoveredKey(key);
-    setPreviewIndex(0);
+  // Percentage span (left/width) for each item's column, used to size
+  // and position the background image stacks precisely between the
+  // two letter-columns of "PROJECTS" and "ABOUT".
+  const zoneFor = (key: string) => {
+    const idx = items.findIndex((i) => i.key === key);
+    const left = colPercent[idx];
+    const width = colPercent[idx + 1] - colPercent[idx];
+    return { left, width };
   };
 
-  const handleHoverEnd = () => {
-    setHoveredKey(null);
-  };
+  const projectsZone = zoneFor('projects');
+  const aboutZone = zoneFor('about');
 
   return (
     <div
@@ -340,45 +274,6 @@ export const Home: React.FC<HomeProps> = ({
             animate-chaj-logo
           "
         />
-      </div>
-
-      {/* ======================================================
-          HOVER PREVIEW IMAGE
-          Fixed panel that shows the relevant image set while
-          the user hovers a nav word (Projects / About / Services).
-          ====================================================== */}
-
-      <div
-        className={`
-          pointer-events-none
-          fixed
-          top-1/2
-          right-6
-          md:right-16
-          -translate-y-1/2
-          z-40
-          w-[42vw]
-          max-w-[420px]
-          aspect-[4/5]
-          transition-opacity
-          duration-500
-          ${activePreviewImage ? 'opacity-100' : 'opacity-0'}
-        `}
-      >
-        {activePreviewImage && (
-          <img
-            key={activePreviewImage}
-            src={activePreviewImage}
-            alt=""
-            className="
-              w-full
-              h-full
-              object-cover
-              shadow-xl
-              animate-fade-in
-            "
-          />
-        )}
       </div>
 
       {/* ======================================================
@@ -418,6 +313,43 @@ export const Home: React.FC<HomeProps> = ({
         >
 
           {/* ==================================================
+              PROJECTS — background crossfading portrait images
+              Sits behind the "PROJECTS" word zone, between the
+              two letter columns.
+              ================================================== */}
+
+          <div
+            className="absolute pointer-events-none z-0"
+            style={{
+              left: `${projectsZone.left}%`,
+              width: `${projectsZone.width}%`,
+              top: `${wordZoneTop}%`,
+              height: `${wordZoneBottom - wordZoneTop}%`
+            }}
+          >
+            <CrossfadeStack images={projectPreviewImages} intervalMs={3200} />
+          </div>
+
+          {/* ==================================================
+              ABOUT — background crossfading team portraits,
+              scaled down to sit within the "ABOUT" word zone.
+              ================================================== */}
+
+          <div
+            className="absolute pointer-events-none z-0 flex items-center justify-center"
+            style={{
+              left: `${aboutZone.left}%`,
+              width: `${aboutZone.width}%`,
+              top: `${wordZoneTop}%`,
+              height: `${wordZoneBottom - wordZoneTop}%`
+            }}
+          >
+            <div className="w-[62%] h-[62%]">
+              <CrossfadeStack images={aboutPreviewImages} intervalMs={2600} />
+            </div>
+          </div>
+
+          {/* ==================================================
               SVG ARCHITECTURAL DRAWING
               ================================================== */}
 
@@ -430,6 +362,7 @@ export const Home: React.FC<HomeProps> = ({
               w-full
               h-full
               pointer-events-none
+              z-10
             "
             aria-hidden="true"
           >
@@ -477,26 +410,6 @@ export const Home: React.FC<HomeProps> = ({
             />
 
             {/* ================================================
-                THIN DIAGONAL LINE UNDER ROOF
-
-                IMPORTANT:
-                This is a normal <line>, NOT a path.
-
-                It starts with a gap from the column.
-                ================================================ */}
-
-            
-
-            {/* ================================================
-                VERTICAL END OF THIN LINE
-
-                This creates the L shape and rises
-                into the thickness of the roof.
-                ================================================ */}
-
-            
-
-            {/* ================================================
                 FIVE THIN VERTICAL LINES
                 ================================================ */}
 
@@ -530,10 +443,6 @@ export const Home: React.FC<HomeProps> = ({
               <button
                 key={item.labelEn}
                 onClick={item.action}
-                onMouseEnter={() => handleHoverStart(item.key)}
-                onMouseLeave={handleHoverEnd}
-                onFocus={() => handleHoverStart(item.key)}
-                onBlur={handleHoverEnd}
                 aria-label={
                   isFa
                     ? item.labelFa
@@ -542,6 +451,7 @@ export const Home: React.FC<HomeProps> = ({
                 className="
                   group
                   absolute
+                  z-20
                   flex
                   items-start
                   justify-center
@@ -569,6 +479,7 @@ export const Home: React.FC<HomeProps> = ({
                       md:text-xl
                       text-[#1C1C1C]
                       tracking-tight
+                      mix-blend-difference
                     "
                   >
                     {item.labelFa}
@@ -590,6 +501,7 @@ export const Home: React.FC<HomeProps> = ({
                       md:text-sm
                       tracking-[0.1em]
                       text-[#1C1C1C]
+                      mix-blend-difference
                     "
                   >
                     {item.labelEn
