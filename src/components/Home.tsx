@@ -11,37 +11,14 @@ interface HomeProps {
   studioInfo: StudioInfo;
 }
 
-// Vertical film-reel image stack: like an old filmstrip or slide
-// projector — the outgoing frame slides straight up and off the top,
-// while the next frame slides up from the bottom into its place on
-// the same track, at the same time, no tilt or perspective.
+// Continuous vertical film-reel scroll: images move upward at a
+// constant, gentle speed with no pauses or stops — like film
+// running steadily through a projector. The stack of images is
+// duplicated once so the loop is seamless.
 const CrossfadeStack: React.FC<{
   images: string[];
   intervalMs?: number;
 }> = ({ images, intervalMs = 3200 }) => {
-  const [index, setIndex] = useState(0);
-  const prevIndexRef = React.useRef(0);
-  const [prevIndex, setPrevIndex] = useState<number | null>(null);
-  const [rolling, setRolling] = useState(false);
-
-  useEffect(() => {
-    if (images.length <= 1) return;
-    const timer = setInterval(() => {
-      setPrevIndex(prevIndexRef.current);
-      setIndex((prev) => {
-        const next = (prev + 1) % images.length;
-        prevIndexRef.current = prev;
-        return next;
-      });
-      setRolling(true);
-      window.setTimeout(() => {
-        setRolling(false);
-        setPrevIndex(null);
-      }, 1200);
-    }, intervalMs);
-    return () => clearInterval(timer);
-  }, [images.length, intervalMs]);
-
   if (images.length === 0) return null;
 
   const maskStyle: React.CSSProperties = {
@@ -53,40 +30,48 @@ const CrossfadeStack: React.FC<{
     maskComposite: 'intersect'
   };
 
+  // Duration per full loop scales with how many frames there are so
+  // each image gets roughly the same amount of screen time regardless
+  // of list length; intervalMs (ms per single frame) times count.
+  const loopDurationMs = intervalMs * images.length;
+  const loopSeconds = (loopDurationMs / 1000).toFixed(2);
+  const animName = `reel-scroll-${loopSeconds.replace('.', '_')}-${images.length}`;
+
+  const doubled = [...images, ...images];
+
   return (
     <div className="relative w-full h-full overflow-hidden">
-      {images.map((src, i) => {
-        const isCurrent = i === index;
-        const isLeaving = rolling && i === prevIndex;
-
-        if (!isCurrent && !isLeaving) return null;
-
-        return (
-          <img
+      <div
+        style={{
+          animation: `${animName} ${loopSeconds}s linear infinite`
+        }}
+      >
+        {doubled.map((src, i) => (
+          <div
             key={src + i}
-            src={src}
-            alt=""
-            className="absolute inset-0 w-full h-full object-cover"
-            style={{
-              ...maskStyle,
-              animation: isCurrent && rolling
-                ? 'reel-in 1200ms ease-in-out'
-                : isLeaving
-                ? 'reel-out 1200ms ease-in-out'
-                : undefined,
-              transform: 'translateY(0%)'
-            }}
-          />
-        );
-      })}
+            className="relative w-full"
+            style={{ height: '100%', aspectRatio: 'auto' }}
+          >
+            <img
+              src={src}
+              alt=""
+              className="w-full h-full object-cover"
+              style={maskStyle}
+            />
+          </div>
+        ))}
+      </div>
       <style>{`
-        @keyframes reel-in {
-          0% { transform: translateY(100%); }
-          100% { transform: translateY(0%); }
+        .relative.w-full.h-full.overflow-hidden > div {
+          display: flex;
+          flex-direction: column;
         }
-        @keyframes reel-out {
+        .relative.w-full.h-full.overflow-hidden > div > div {
+          flex: 0 0 100%;
+        }
+        @keyframes ${animName} {
           0% { transform: translateY(0%); }
-          100% { transform: translateY(-100%); }
+          100% { transform: translateY(-${images.length * 100}%); }
         }
       `}</style>
     </div>
