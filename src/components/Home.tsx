@@ -13,19 +13,17 @@ interface HomeProps {
 
 /*
  * ============================================================
- * CONTINUOUS INFINITE FILM REEL
+ * CONTINUOUS IMAGE REEL
  * ============================================================
  *
- * Images are connected in one continuous vertical chain:
+ * Images move upward continuously.
  *
- * 1 → 2 → 3 → 4 → 1 → 2 → 3 → 4 → ...
+ * The image sequence is duplicated several times so that the
+ * first image is already following the last image when the
+ * animation reaches the end of one sequence.
  *
- * There is no pause, fade, empty space, or visible reset.
- *
- * The image sequence is duplicated and the complete strip
- * moves by exactly one sequence length. Because the second
- * sequence is identical to the first, the loop closes
- * seamlessly.
+ * The animation moves exactly one sequence length and restarts
+ * at the identical visual position.
  */
 
 let crossfadeInstanceCounter = 0;
@@ -46,11 +44,8 @@ const CrossfadeStack: React.FC<{
   if (images.length === 0) return null;
 
   /*
-   * ------------------------------------------------------------
-   * IMAGE MASK
-   * ------------------------------------------------------------
+   * Soft fading mask around the image edges.
    */
-
   const maskStyle: React.CSSProperties = {
     WebkitMaskImage:
       'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 18%, rgba(0,0,0,1) 82%, rgba(0,0,0,0) 100%), linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 18%, rgba(0,0,0,1) 82%, rgba(0,0,0,0) 100%)',
@@ -64,88 +59,70 @@ const CrossfadeStack: React.FC<{
   };
 
   /*
-   * ------------------------------------------------------------
-   * DUPLICATE THE COMPLETE IMAGE SEQUENCE
-   * ------------------------------------------------------------
-   *
-   * Example:
-   *
-   * 1 2 3 4
-   * 1 2 3 4
-   *
-   * The second group is physically connected to the first.
+   * One image = intervalMs.
    */
-
-  const doubledImages = [...images, ...images];
+  const loopDurationMs = intervalMs * images.length;
+  const loopSeconds = (loopDurationMs / 1000).toFixed(2);
 
   /*
-   * ------------------------------------------------------------
-   * LOOP TIMING
-   * ------------------------------------------------------------
-   *
-   * intervalMs = time assigned to each image.
-   *
-   * 4 images × 3200ms = 12.8 seconds per complete cycle.
+   * Unique animation name for every reel.
    */
-
-  const loopDurationMs = images.length * intervalMs;
-  const loopSeconds = loopDurationMs / 1000;
+  const animName = `reel-scroll-${instanceId}`;
 
   /*
-   * Each CrossfadeStack receives its own animation name so
-   * Projects / About / Services / Contact never interfere
-   * with one another.
+   * Repeat the sequence several times.
+   *
+   * More than two copies are intentional:
+   * the first image is always physically present after the last
+   * image, so the eye never sees an empty gap.
    */
-
-  const animationName = `infinite-film-reel-${instanceId}`;
+  const repeatedImages = [
+    ...images,
+    ...images,
+    ...images
+  ];
 
   return (
-    <div
-      className="relative w-full h-full overflow-hidden"
-      style={{
-        WebkitMaskImage:
-          'linear-gradient(to bottom, transparent 0%, black 18%, black 82%, transparent 100%)',
-        maskImage:
-          'linear-gradient(to bottom, transparent 0%, black 18%, black 82%, transparent 100%)'
-      }}
-    >
-
-      {/* ======================================================
-          CONTINUOUS FILM STRIP
-          ====================================================== */}
+    <div className="relative w-full h-full overflow-hidden">
 
       <div
         style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: `${doubledImages.length * 100}%`,
-
           display: 'flex',
           flexDirection: 'column',
+          width: '100%',
 
-          animation: `${animationName} ${loopSeconds}s linear infinite`,
+          /*
+           * IMPORTANT:
+           * Every frame occupies exactly the height of the
+           * visible window.
+           */
+          height: `${repeatedImages.length * 100}%`,
+
+          animation: `${animName} ${loopSeconds}s linear infinite`,
 
           willChange: 'transform'
         }}
       >
 
-        {doubledImages.map((src, index) => (
+        {repeatedImages.map((src, i) => (
           <div
-            key={`${src}-${index}`}
+            key={`${src}-${i}`}
             style={{
-              position: 'relative',
               flex: '0 0 auto',
               width: '100%',
-              height: `${100 / doubledImages.length}%`
+              height: `${100 / repeatedImages.length}%`
             }}
           >
             <img
               src={src}
               alt=""
               draggable={false}
-              className="absolute inset-0 w-full h-full object-cover"
+              className="
+                block
+                w-full
+                h-full
+                object-cover
+              "
               style={maskStyle}
             />
           </div>
@@ -153,20 +130,16 @@ const CrossfadeStack: React.FC<{
 
       </div>
 
-      {/* ======================================================
-          SEAMLESS LOOP
-          ====================================================== */}
-
       <style>{`
 
-        @keyframes ${animationName} {
+        @keyframes ${animName} {
 
           0% {
-            transform: translate3d(0, 0, 0);
+            transform: translateY(0);
           }
 
           100% {
-            transform: translate3d(0, -50%, 0);
+            transform: translateY(-${100 * images.length / repeatedImages.length}%);
           }
 
         }
@@ -177,6 +150,13 @@ const CrossfadeStack: React.FC<{
   );
 };
 
+
+/*
+ * ============================================================
+ * HOME
+ * ============================================================
+ */
+
 export const Home: React.FC<HomeProps> = ({
   language,
   onProjects,
@@ -186,20 +166,32 @@ export const Home: React.FC<HomeProps> = ({
   projects,
   studioInfo
 }) => {
+
   const isFa = language === 'FA';
+
   const [introFinished, setIntroFinished] = useState(false);
 
+
+  /*
+   * ============================================================
+   * INTRO
+   * ============================================================
+   */
+
   useEffect(() => {
+
     const timer = setTimeout(() => {
       setIntroFinished(true);
     }, 2800);
 
     return () => clearTimeout(timer);
+
   }, []);
+
 
   /*
    * ============================================================
-   * PROJECT PREVIEW IMAGES
+   * PREVIEW IMAGES
    * ============================================================
    */
 
@@ -210,21 +202,11 @@ export const Home: React.FC<HomeProps> = ({
     '/images/shirvani-old-woman.jpg'
   ];
 
-  /*
-   * ============================================================
-   * ABOUT PREVIEW IMAGES
-   * ============================================================
-   */
 
   const aboutPreviewImages = studioInfo.principals
     .map((p) => p.image)
     .filter(Boolean);
 
-  /*
-   * ============================================================
-   * SERVICES PREVIEW IMAGES
-   * ============================================================
-   */
 
   const servicesPreviewImages = [
     '/images/services-01.JPG',
@@ -232,11 +214,6 @@ export const Home: React.FC<HomeProps> = ({
     '/images/services-03.jpg'
   ];
 
-  /*
-   * ============================================================
-   * CONTACT PREVIEW IMAGES
-   * ============================================================
-   */
 
   const contactPreviewImages = [
     '/images/connect-gmail.jpg',
@@ -246,6 +223,7 @@ export const Home: React.FC<HomeProps> = ({
     '/images/coonect-whatsapp.jpg'
   ];
 
+
   /*
    * ============================================================
    * NAVIGATION ITEMS
@@ -253,31 +231,37 @@ export const Home: React.FC<HomeProps> = ({
    */
 
   const items = [
+
     {
       key: 'projects',
       labelEn: 'Projects',
       labelFa: 'پروژه‌ها',
       action: onProjects
     },
+
     {
       key: 'about',
       labelEn: 'About',
       labelFa: 'درباره ما',
       action: onAbout
     },
+
     {
       key: 'services',
       labelEn: 'Services',
       labelFa: 'خدمات',
       action: onServices
     },
+
     {
       key: 'contact',
       labelEn: 'Contact',
       labelFa: 'تماس با ما',
       action: onContact
     }
+
   ];
+
 
   /*
    * ============================================================
@@ -288,12 +272,16 @@ export const Home: React.FC<HomeProps> = ({
   const ASPECT = 6 / 5;
 
   const MARGIN_Y = 6;
+
   const MARGIN_X = MARGIN_Y * ASPECT;
 
   const contentWidth = 100 * ASPECT;
 
-  const viewBoxWidth = contentWidth + MARGIN_X;
-  const viewBoxHeight = 100 + MARGIN_Y;
+  const viewBoxWidth =
+    contentWidth + MARGIN_X;
+
+  const viewBoxHeight =
+    100 + MARGIN_Y;
 
   const viewBox = `
     ${-MARGIN_X}
@@ -302,34 +290,55 @@ export const Home: React.FC<HomeProps> = ({
     ${viewBoxHeight}
   `;
 
+
   /*
-   * ------------------------------------------------------------
+   * ============================================================
    * SVG X CONVERSION
-   * ------------------------------------------------------------
+   * ============================================================
    */
 
   const toSvgX = (percent: number) => {
-    return -MARGIN_X + (percent / 100) * viewBoxWidth;
+
+    return (
+      -MARGIN_X +
+      (percent / 100) * viewBoxWidth
+    );
+
   };
 
+
   /*
-   * ------------------------------------------------------------
-   * FIVE VERTICAL LINES
-   * ------------------------------------------------------------
+   * ============================================================
+   * FIVE THIN COLUMNS
+   * ============================================================
    */
 
-  const colPercent = [5, 18, 32, 45, 58];
+  const colPercent = [
+    5,
+    18,
+    32,
+    45,
+    58
+  ];
 
-  const thinLineX = colPercent.map(toSvgX);
+  const thinLineX =
+    colPercent.map(toSvgX);
 
-  const thinLineTopY = [23, 27, 31, 34, 38];
+  const thinLineTopY = [
+    23,
+    27,
+    31,
+    34,
+    38
+  ];
 
   const thinLineBottomY = 91;
 
+
   /*
-   * ------------------------------------------------------------
+   * ============================================================
    * MAIN ROOF + COLUMN
-   * ------------------------------------------------------------
+   * ============================================================
    */
 
   const pillarX = 72 * ASPECT;
@@ -340,87 +349,125 @@ export const Home: React.FC<HomeProps> = ({
 
   const roofStrokeWidth = 8;
 
-  /*
-   * ------------------------------------------------------------
-   * ROOF GEOMETRY
-   * ------------------------------------------------------------
-   */
-
-  const roofStartX = 0;
-  const roofStartY = 0;
-
-  /*
-   * Main roof ends exactly at the column.
-   */
-
-  const roofEndX = pillarX;
-  const roofEndY = pillarTopY;
-
-  /*
-   * ------------------------------------------------------------
-   * RIGHT SIDE OF ROOF
-   * ------------------------------------------------------------
-   */
-
-  const continuationEndX = contentWidth - 2;
-
-  const beamLength = Math.sqrt(
-    pillarX * pillarX + pillarTopY * pillarTopY
-  );
-
-  const beamUx = pillarX / beamLength;
-  const beamUy = pillarTopY / beamLength;
-
-  /*
-   * Continue the roof using the exact same slope.
-   */
-
-  const tContinuation =
-    (continuationEndX - pillarX) / beamUx;
-
-  const continuationEndY =
-    pillarTopY + tContinuation * beamUy;
 
   /*
    * ============================================================
-   * WORD POSITION
+   * ROOF GEOMETRY
+   * ============================================================
+   */
+
+  const roofStartX = 0;
+
+  const roofStartY = 0;
+
+  const roofEndX = pillarX;
+
+  const roofEndY = pillarTopY;
+
+
+  /*
+   * ============================================================
+   * RIGHT ROOF CONTINUATION
+   * ============================================================
+   */
+
+  const continuationEndX =
+    contentWidth - 2;
+
+  const beamLength =
+    Math.sqrt(
+      pillarX * pillarX +
+      pillarTopY * pillarTopY
+    );
+
+  const beamUx =
+    pillarX / beamLength;
+
+  const beamUy =
+    pillarTopY / beamLength;
+
+  const tContinuation =
+    (continuationEndX - pillarX) /
+    beamUx;
+
+  const continuationEndY =
+    pillarTopY +
+    tContinuation * beamUy;
+
+
+  /*
+   * ============================================================
+   * WORD ZONE
    * ============================================================
    */
 
   const wordZoneTop = 41;
+
   const wordZoneBottom = 79;
 
+
   /*
-   * Each word receives a background-image zone corresponding
-   * to its column.
+   * ============================================================
+   * IMAGE ZONES
+   * ============================================================
    */
 
   const zoneFor = (key: string) => {
-    const idx = items.findIndex((i) => i.key === key);
 
-    const left = colPercent[idx];
+    const idx =
+      items.findIndex(
+        (i) => i.key === key
+      );
+
+    const left =
+      colPercent[idx];
 
     const width =
       idx + 1 < colPercent.length
-        ? colPercent[idx + 1] - colPercent[idx]
-        : colPercent[idx] - colPercent[idx - 1];
+        ? colPercent[idx + 1] -
+          colPercent[idx]
+        : colPercent[idx] -
+          colPercent[idx - 1];
 
     return {
       left,
       width
     };
+
   };
 
-  const projectsZone = zoneFor('projects');
-  const aboutZone = zoneFor('about');
-  const servicesZone = zoneFor('services');
-  const contactZone = zoneFor('contact');
+
+  const projectsZone =
+    zoneFor('projects');
+
+  const aboutZone =
+    zoneFor('about');
+
+  const servicesZone =
+    zoneFor('services');
+
+  const contactZone =
+    zoneFor('contact');
+
+
+  /*
+   * ============================================================
+   * RETURN
+   * ============================================================
+   */
 
   return (
+
     <div
       id="home-landing"
-      className="relative min-h-screen overflow-hidden bg-[#F4F1EE]"
+      className="
+        relative
+        min-h-screen
+        overflow-hidden
+        bg-[#F4F1EE]
+      "
     >
+
 
       {/* ======================================================
           CHAJ LOGO INTRO
@@ -428,10 +475,16 @@ export const Home: React.FC<HomeProps> = ({
 
       <div
         className={`
-          absolute inset-0 z-50
-          flex items-center justify-center
+          absolute
+          inset-0
+          z-50
+          flex
+          items-center
+          justify-center
           bg-[#F4F1EE]
-          transition-opacity duration-1000
+          transition-opacity
+          duration-1000
+
           ${
             introFinished
               ? 'pointer-events-none opacity-0'
@@ -439,6 +492,7 @@ export const Home: React.FC<HomeProps> = ({
           }
         `}
       >
+
         <img
           src="/images/chaj-logo-group.png"
           alt="CHAJ Architecture Group"
@@ -449,7 +503,9 @@ export const Home: React.FC<HomeProps> = ({
             animate-chaj-logo
           "
         />
+
       </div>
+
 
       {/* ======================================================
           MAIN CONTENT
@@ -464,6 +520,7 @@ export const Home: React.FC<HomeProps> = ({
           justify-center
           transition-opacity
           duration-1000
+
           ${
             introFinished
               ? 'opacity-100'
@@ -471,6 +528,7 @@ export const Home: React.FC<HomeProps> = ({
           }
         `}
       >
+
 
         {/* ====================================================
             ARCHITECTURAL DIAGRAM
@@ -486,81 +544,122 @@ export const Home: React.FC<HomeProps> = ({
           "
         >
 
+
           {/* ==================================================
-              PROJECTS
+              PROJECTS IMAGE REEL
               ================================================== */}
 
           <div
-            className="absolute pointer-events-none z-0"
+            className="
+              absolute
+              pointer-events-none
+              z-0
+            "
             style={{
               left: `${projectsZone.left}%`,
               width: `${projectsZone.width}%`,
               top: `${wordZoneTop}%`,
-              height: `${wordZoneBottom - wordZoneTop}%`
+              height: `${
+                wordZoneBottom -
+                wordZoneTop
+              }%`
             }}
           >
+
             <CrossfadeStack
               images={projectPreviewImages}
               intervalMs={3200}
             />
+
           </div>
 
+
           {/* ==================================================
-              ABOUT
+              ABOUT IMAGE REEL
               ================================================== */}
 
           <div
-            className="absolute pointer-events-none z-0"
+            className="
+              absolute
+              pointer-events-none
+              z-0
+            "
             style={{
               left: `${aboutZone.left}%`,
               width: `${aboutZone.width}%`,
               top: `${wordZoneTop}%`,
-              height: `${wordZoneBottom - wordZoneTop}%`
+              height: `${
+                wordZoneBottom -
+                wordZoneTop
+              }%`
             }}
           >
+
             <CrossfadeStack
               images={aboutPreviewImages}
               intervalMs={2600}
             />
+
           </div>
 
+
           {/* ==================================================
-              SERVICES
+              SERVICES IMAGE REEL
               ================================================== */}
 
           <div
-            className="absolute pointer-events-none z-0"
+            className="
+              absolute
+              pointer-events-none
+              z-0
+            "
             style={{
               left: `${servicesZone.left}%`,
               width: `${servicesZone.width}%`,
               top: `${wordZoneTop}%`,
-              height: `${wordZoneBottom - wordZoneTop}%`
+              height: `${
+                wordZoneBottom -
+                wordZoneTop
+              }%`
             }}
           >
+
             <CrossfadeStack
               images={servicesPreviewImages}
               intervalMs={3200}
             />
+
           </div>
 
+
           {/* ==================================================
-              CONTACT
+              CONTACT IMAGE REEL
               ================================================== */}
 
           <div
-            className="absolute pointer-events-none z-0"
+            className="
+              absolute
+              pointer-events-none
+              z-0
+            "
             style={{
               left: `${contactZone.left}%`,
               width: `${contactZone.width}%`,
               top: `${wordZoneTop}%`,
-              height: `${wordZoneBottom - wordZoneTop}%`
+              height: `${
+                wordZoneBottom -
+                wordZoneTop
+              }%`
             }}
           >
+
             <CrossfadeStack
               images={contactPreviewImages}
               intervalMs={2600}
             />
+
           </div>
+
 
           {/* ==================================================
               SVG ARCHITECTURAL DRAWING
@@ -580,6 +679,7 @@ export const Home: React.FC<HomeProps> = ({
             aria-hidden="true"
           >
 
+
             {/* ================================================
                 MAIN DIAGONAL ROOF
                 ================================================ */}
@@ -594,8 +694,9 @@ export const Home: React.FC<HomeProps> = ({
               strokeLinecap="square"
             />
 
+
             {/* ================================================
-                VERTICAL COLUMN
+                MAIN VERTICAL COLUMN
                 ================================================ */}
 
             <line
@@ -608,8 +709,9 @@ export const Home: React.FC<HomeProps> = ({
               strokeLinecap="butt"
             />
 
+
             {/* ================================================
-                ROOF CONTINUATION
+                RIGHT SIDE ROOF CONTINUATION
                 ================================================ */}
 
             <line
@@ -622,11 +724,13 @@ export const Home: React.FC<HomeProps> = ({
               strokeLinecap="square"
             />
 
+
             {/* ================================================
                 FIVE THIN VERTICAL LINES
                 ================================================ */}
 
             {thinLineX.map((x, i) => (
+
               <line
                 key={`thin-line-${i}`}
                 x1={x}
@@ -636,106 +740,214 @@ export const Home: React.FC<HomeProps> = ({
                 stroke="#1C1C1C"
                 strokeWidth="0.7"
               />
+
             ))}
 
           </svg>
+
+
+          {/* ==================================================
+              CHAJ GROUP
+              ==================================================
+
+              The wordmark starts at the first thin column
+              and ends at the last thin column.
+
+              Each character is distributed across the exact
+              width of the five-column structure.
+          */}
+
+          <div
+            className="
+              absolute
+              z-20
+              pointer-events-none
+              flex
+              items-center
+            "
+            style={{
+              left: `${colPercent[0]}%`,
+
+              width: `${
+                colPercent[
+                  colPercent.length - 1
+                ] -
+                colPercent[0]
+              }%`,
+
+              top: '34%',
+
+              height: '6%'
+            }}
+          >
+
+            <span
+              className="
+                w-full
+                flex
+                items-center
+                justify-between
+                font-mono
+                font-medium
+                uppercase
+                text-[#1C1C1C]
+                text-[7px]
+                sm:text-[9px]
+                md:text-[11px]
+              "
+            >
+
+              {'CHAJ GROUP'.split('').map(
+                (char, index) => (
+
+                  <span
+                    key={index}
+                  >
+                    {char === ' '
+                      ? '\u00A0'
+                      : char}
+                  </span>
+
+                )
+              )}
+
+            </span>
+
+          </div>
+
 
           {/* ==================================================
               CLICKABLE WORD ZONES
               ================================================== */}
 
-          {items.map((item, idx) => {
+          {items.map(
+            (item, idx) => {
 
-            const left = colPercent[idx];
+              const left =
+                colPercent[idx];
 
-            const width =
-              idx + 1 < colPercent.length
-                ? colPercent[idx + 1] - colPercent[idx]
-                : colPercent[idx] - colPercent[idx - 1];
+              const width =
+                idx + 1 <
+                colPercent.length
+                  ? colPercent[idx + 1] -
+                    colPercent[idx]
+                  : colPercent[idx] -
+                    colPercent[idx - 1];
 
-            return (
-              <button
-                key={item.labelEn}
-                onClick={item.action}
-                aria-label={
-                  isFa
-                    ? item.labelFa
-                    : item.labelEn
-                }
-                className="
-                  group
-                  absolute
-                  z-20
-                  flex
-                  items-start
-                  justify-center
-                  cursor-pointer
-                  transition-opacity
-                  duration-500
-                  hover:opacity-50
-                "
-                style={{
-                  left: `${left}%`,
-                  width: `${width}%`,
-                  top: `${wordZoneTop}%`,
-                  height: `${wordZoneBottom - wordZoneTop}%`
-                }}
-              >
 
-                {isFa ? (
+              return (
 
-                  <span
-                    className="
-                      font-serif
-                      text-[11px]
-                      sm:text-lg
-                      md:text-xl
-                      text-[#1C1C1C]
-                      tracking-tight
-                      mix-blend-difference
-                    "
-                  >
-                    {item.labelFa}
-                  </span>
+                <button
+                  key={item.labelEn}
+                  onClick={item.action}
+                  aria-label={
+                    isFa
+                      ? item.labelFa
+                      : item.labelEn
+                  }
+                  className="
+                    group
+                    absolute
+                    z-20
+                    flex
+                    items-start
+                    justify-center
+                    cursor-pointer
+                    transition-opacity
+                    duration-500
+                    hover:opacity-50
+                  "
+                  style={{
+                    left: `${left}%`,
+                    width: `${width}%`,
+                    top: `${wordZoneTop}%`,
+                    height: `${
+                      wordZoneBottom -
+                      wordZoneTop
+                    }%`
+                  }}
+                >
 
-                ) : (
 
-                  <span
-                    className="
-                      flex
-                      flex-col
-                      items-center
-                      leading-tight
-                      font-mono
-                      font-medium
-                      uppercase
-                      text-[8px]
-                      sm:text-xs
-                      md:text-sm
-                      tracking-[0.1em]
-                      text-[#1C1C1C]
-                      mix-blend-difference
-                    "
-                  >
-                    {item.labelEn
-                      .toUpperCase()
-                      .split('')
-                      .map((ch, chIdx) => (
-                        <span key={chIdx}>
-                          {ch}
-                        </span>
-                      ))}
-                  </span>
+                  {/* ========================================
+                      PERSIAN
+                      ======================================== */}
 
-                )}
+                  {isFa ? (
 
-              </button>
-            );
-          })}
+                    <span
+                      className="
+                        font-serif
+                        text-[11px]
+                        sm:text-lg
+                        md:text-xl
+                        text-[#1C1C1C]
+                        tracking-tight
+                        mix-blend-difference
+                      "
+                    >
+                      {item.labelFa}
+                    </span>
+
+                  ) : (
+
+
+                    /* ======================================
+                       ENGLISH VERTICAL WORD
+                       ====================================== */
+
+                    <span
+                      className="
+                        flex
+                        flex-col
+                        items-center
+                        leading-tight
+                        font-mono
+                        font-medium
+                        uppercase
+                        text-[8px]
+                        sm:text-xs
+                        md:text-sm
+                        tracking-[0.1em]
+                        text-[#1C1C1C]
+                        mix-blend-difference
+                      "
+                    >
+
+                      {item.labelEn
+                        .toUpperCase()
+                        .split('')
+                        .map(
+                          (
+                            ch,
+                            chIdx
+                          ) => (
+
+                            <span
+                              key={chIdx}
+                            >
+                              {ch}
+                            </span>
+
+                          )
+                        )}
+
+                    </span>
+
+                  )}
+
+                </button>
+
+              );
+
+            }
+          )}
 
         </div>
 
       </div>
+
     </div>
+
   );
 };
