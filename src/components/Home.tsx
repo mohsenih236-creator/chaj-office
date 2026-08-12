@@ -11,18 +11,33 @@ interface HomeProps {
   studioInfo: StudioInfo;
 }
 
-// Continuously cross-fading image stack (no hard cuts) with soft,
-// feathered edges on all sides via a mask gradient.
+// Vertical drum/carousel image stack: the outgoing image rotates
+// up and away while the incoming image rotates in from below,
+// as if both are mounted on the inside of a spinning cylinder.
 const CrossfadeStack: React.FC<{
   images: string[];
   intervalMs?: number;
 }> = ({ images, intervalMs = 3200 }) => {
   const [index, setIndex] = useState(0);
+  const prevIndexRef = React.useRef(0);
+  const [prevIndex, setPrevIndex] = useState<number | null>(null);
+  const [spinning, setSpinning] = useState(false);
 
   useEffect(() => {
     if (images.length <= 1) return;
     const timer = setInterval(() => {
-      setIndex((prev) => (prev + 1) % images.length);
+      setPrevIndex(prevIndexRef.current);
+      setIndex((prev) => {
+        const next = (prev + 1) % images.length;
+        prevIndexRef.current = prev;
+        return next;
+      });
+      setSpinning(true);
+      // Drop the outgoing slide from the DOM once its spin finishes.
+      window.setTimeout(() => {
+        setSpinning(false);
+        setPrevIndex(null);
+      }, 1400);
     }, intervalMs);
     return () => clearInterval(timer);
   }, [images.length, intervalMs]);
@@ -39,24 +54,60 @@ const CrossfadeStack: React.FC<{
   };
 
   return (
-    <div className="relative w-full h-full">
-      {images.map((src, i) => (
-        <img
-          key={src + i}
-          src={src}
-          alt=""
-          className={`
-            absolute inset-0
-            w-full h-full
-            object-cover
-            transition-opacity
-            duration-[1800ms]
-            ease-in-out
-            ${i === index ? 'opacity-100' : 'opacity-0'}
-          `}
-          style={maskStyle}
-        />
-      ))}
+    <div
+      className="relative w-full h-full"
+      style={{ perspective: '900px' }}
+    >
+      {images.map((src, i) => {
+        const isCurrent = i === index;
+        const isLeaving = spinning && i === prevIndex;
+
+        if (!isCurrent && !isLeaving) return null;
+
+        // Leaving slide spins up and out (rotateX -100deg, moves up).
+        // Incoming slide spins in from below (starts at rotateX 100deg,
+        // settles at 0deg) — both read as riding the inside of one drum.
+        const transform = isLeaving
+          ? 'rotateX(-100deg) translateY(-6%)'
+          : spinning && isCurrent
+          ? 'rotateX(0deg) translateY(0%)'
+          : 'rotateX(0deg) translateY(0%)';
+
+        return (
+          <img
+            key={src + i}
+            src={src}
+            alt=""
+            className="absolute inset-0 w-full h-full object-cover"
+            style={{
+              ...maskStyle,
+              transformOrigin: 'center center',
+              transform: isCurrent && spinning
+                ? 'rotateX(0deg) translateY(0%)'
+                : isCurrent
+                ? 'rotateX(0deg) translateY(0%)'
+                : transform,
+              animation: isCurrent && spinning
+                ? 'drum-in 1400ms ease-in-out'
+                : isLeaving
+                ? 'drum-out 1400ms ease-in-out'
+                : undefined,
+              backfaceVisibility: 'hidden',
+              transformStyle: 'preserve-3d'
+            }}
+          />
+        );
+      })}
+      <style>{`
+        @keyframes drum-in {
+          0% { transform: rotateX(100deg) translateY(6%); opacity: 0.4; }
+          100% { transform: rotateX(0deg) translateY(0%); opacity: 1; }
+        }
+        @keyframes drum-out {
+          0% { transform: rotateX(0deg) translateY(0%); opacity: 1; }
+          100% { transform: rotateX(-100deg) translateY(-6%); opacity: 0.4; }
+        }
+      `}</style>
     </div>
   );
 };
