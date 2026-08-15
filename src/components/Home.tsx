@@ -36,6 +36,40 @@ const CrossfadeStack: React.FC<{
 
   /*
    * ============================================================
+   * SOFT IMAGE MASK
+   * ============================================================
+   *
+   * ONLY CHANGE:
+   *
+   * The four edges of each image are softly faded.
+   *
+   * TOP:
+   * Image gradually appears as it enters the zone.
+   *
+   * BOTTOM:
+   * Image gradually disappears as it leaves the zone.
+   *
+   * LEFT / RIGHT:
+   * Image edges are also softly faded.
+   */
+
+  const maskStyle: React.CSSProperties = {
+    WebkitMaskImage:
+      'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.25) 5%, rgba(0,0,0,0.75) 11%, rgba(0,0,0,1) 17%, rgba(0,0,0,1) 83%, rgba(0,0,0,0.75) 89%, rgba(0,0,0,0.25) 95%, rgba(0,0,0,0) 100%), linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.25) 5%, rgba(0,0,0,0.75) 11%, rgba(0,0,0,1) 17%, rgba(0,0,0,1) 83%, rgba(0,0,0,0.75) 89%, rgba(0,0,0,0.25) 95%, rgba(0,0,0,0) 100%)',
+
+    WebkitMaskComposite: 'source-in',
+
+    maskImage:
+      'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.25) 5%, rgba(0,0,0,0.75) 11%, rgba(0,0,0,1) 17%, rgba(0,0,0,1) 83%, rgba(0,0,0,0.75) 89%, rgba(0,0,0,0.25) 95%, rgba(0,0,0,0) 100%), linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.25) 5%, rgba(0,0,0,0.75) 11%, rgba(0,0,0,1) 17%, rgba(0,0,0,1) 83%, rgba(0,0,0,0.75) 89%, rgba(0,0,0,0.25) 95%, rgba(0,0,0,0) 100%)',
+
+    maskComposite: 'intersect',
+
+    transform: 'translateZ(0)',
+    backfaceVisibility: 'hidden'
+  };
+
+  /*
+   * ============================================================
    * ANIMATION TIMING
    * ============================================================
    */
@@ -91,7 +125,6 @@ const CrossfadeStack: React.FC<{
           <div
             key={`${src}-${i}`}
             style={{
-              position: 'relative',
               flex: '0 0 auto',
               width: '100%',
               height: `${100 / tripled.length}%`,
@@ -108,48 +141,7 @@ const CrossfadeStack: React.FC<{
                 h-full
                 object-cover
               "
-              style={{
-                transform: 'translateZ(0)',
-                backfaceVisibility: 'hidden'
-              }}
-            />
-
-            {/* ==================================================
-                SOFT FADE ON ALL FOUR EDGES OF THE IMAGE
-                ================================================== */}
-
-            <div
-              aria-hidden="true"
-              style={{
-                position: 'absolute',
-                inset: 0,
-                pointerEvents: 'none',
-
-                background: `
-                  linear-gradient(
-                    to right,
-                    #F4F1EE 0%,
-                    rgba(244,241,238,0.82) 3%,
-                    rgba(244,241,238,0.35) 8%,
-                    rgba(244,241,238,0) 14%,
-                    rgba(244,241,238,0) 86%,
-                    rgba(244,241,238,0.35) 92%,
-                    rgba(244,241,238,0.82) 97%,
-                    #F4F1EE 100%
-                  ),
-                  linear-gradient(
-                    to bottom,
-                    #F4F1EE 0%,
-                    rgba(244,241,238,0.82) 3%,
-                    rgba(244,241,238,0.35) 8%,
-                    rgba(244,241,238,0) 14%,
-                    rgba(244,241,238,0) 86%,
-                    rgba(244,241,238,0.35) 92%,
-                    rgba(244,241,238,0.82) 97%,
-                    #F4F1EE 100%
-                  )
-                `
-              }}
+              style={maskStyle}
             />
           </div>
         ))}
@@ -370,18 +362,6 @@ export const Home: React.FC<HomeProps> = ({
    * ============================================================
    * IMAGE ZONES
    * ============================================================
-   *
-   * IMPORTANT:
-   *
-   * The images DO NOT extend to the roof itself.
-   *
-   * Each image occupies ONLY the space between two thin
-   * vertical columns.
-   *
-   * The TOP edge follows the actual heights of the columns.
-   *
-   * The BOTTOM edge is exactly at the common bottom of
-   * all five thin columns.
    */
 
   const svgYToPercent = (svgY: number) =>
@@ -399,10 +379,6 @@ export const Home: React.FC<HomeProps> = ({
 
     const width = right - left;
 
-    /*
-     * Exact top heights of the two thin columns
-     * surrounding this image zone.
-     */
     const topLeftY = thinLineTopY[idx];
 
     const topRightY =
@@ -410,32 +386,16 @@ export const Home: React.FC<HomeProps> = ({
         ? thinLineTopY[idx + 1]
         : thinLineTopY[idx];
 
-    /*
-     * Exact bottom of all thin columns.
-     */
     const bottomY = thinLineBottomY;
 
-    /*
-     * Convert SVG coordinates to percentage coordinates.
-     */
     const topLeft = svgYToPercent(topLeftY);
     const topRight = svgYToPercent(topRightY);
     const bottom = svgYToPercent(bottomY);
 
-    /*
-     * The container begins at the higher point.
-     */
     const top = topLeft;
 
-    /*
-     * Height is based on the left side.
-     */
     const height = bottom - top;
 
-    /*
-     * The clip-path creates the exact trapezoid between
-     * the two thin columns.
-     */
     const rightTopPercent =
       ((topRight - top) / height) * 100;
 
@@ -445,9 +405,6 @@ export const Home: React.FC<HomeProps> = ({
       top,
       height,
 
-      /*
-       * Exact sloped upper boundary.
-       */
       clipPath: `polygon(
         0% 0%,
         100% ${rightTopPercent}%,
