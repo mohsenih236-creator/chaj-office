@@ -68,7 +68,7 @@ const CrossfadeStack: React.FC<{
    * ============================================================
    */
 
-  const topFadePercent = 30;
+  const topFadePercent = 0;
   const bottomFadePercent = 30;
   const horizontalFadePercent = 14;
 
