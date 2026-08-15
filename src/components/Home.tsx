@@ -368,6 +368,22 @@ export const Home: React.FC<HomeProps> = ({
    * ============================================================
    * IMAGE ZONES
    * ============================================================
+   *
+   * ONLY CHANGE:
+   *
+   * Each image now starts exactly at the TOP of the
+   * corresponding thin vertical column and ends exactly
+   * at the common bottom of the columns.
+   *
+   * Column tops:
+   *
+   * Image 1 → 23 → 91
+   * Image 2 → 27 → 91
+   * Image 3 → 31 → 91
+   * Image 4 → 34 → 91
+   *
+   * Therefore each image has a different height while
+   * completely filling its corresponding column zone.
    */
 
   const zoneFor = (key: string) => {
@@ -380,9 +396,15 @@ export const Home: React.FC<HomeProps> = ({
         ? colPercent[idx + 1] - colPercent[idx]
         : colPercent[idx] - colPercent[idx - 1];
 
+    const top = thinLineTopY[idx];
+
+    const bottom = thinLineBottomY;
+
     return {
       left,
-      width
+      width,
+      top,
+      height: bottom - top
     };
   };
 
@@ -508,8 +530,8 @@ export const Home: React.FC<HomeProps> = ({
             style={{
               left: `${projectsZone.left}%`,
               width: `${projectsZone.width}%`,
-              top: `${wordZoneTop}%`,
-              height: `${wordZoneBottom - wordZoneTop}%`
+              top: `${projectsZone.top}%`,
+              height: `${projectsZone.height}%`
             }}
           >
             <CrossfadeStack
@@ -531,8 +553,8 @@ export const Home: React.FC<HomeProps> = ({
             style={{
               left: `${aboutZone.left}%`,
               width: `${aboutZone.width}%`,
-              top: `${wordZoneTop}%`,
-              height: `${wordZoneBottom - wordZoneTop}%`
+              top: `${aboutZone.top}%`,
+              height: `${aboutZone.height}%`
             }}
           >
             <CrossfadeStack
@@ -554,8 +576,8 @@ export const Home: React.FC<HomeProps> = ({
             style={{
               left: `${servicesZone.left}%`,
               width: `${servicesZone.width}%`,
-              top: `${wordZoneTop}%`,
-              height: `${wordZoneBottom - wordZoneTop}%`
+              top: `${servicesZone.top}%`,
+              height: `${servicesZone.height}%`
             }}
           >
             <CrossfadeStack
@@ -577,8 +599,8 @@ export const Home: React.FC<HomeProps> = ({
             style={{
               left: `${contactZone.left}%`,
               width: `${contactZone.width}%`,
-              top: `${wordZoneTop}%`,
-              height: `${wordZoneBottom - wordZoneTop}%`
+              top: `${contactZone.top}%`,
+              height: `${contactZone.height}%`
             }}
           >
             <CrossfadeStack
