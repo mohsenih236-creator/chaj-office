@@ -36,39 +36,74 @@ const CrossfadeStack: React.FC<{
 
   /*
    * ============================================================
-   * SOFT IMAGE MASK
+   * SOFT IMAGE FADE
    * ============================================================
    *
-   * Y AXIS:
+   * IMPORTANT:
    *
-   * 0%   -> completely faded
-   * 35%  -> fully visible
-   * 65%  -> fully visible
-   * 100% -> completely faded
+   * The fade is applied to the entire image reel container,
+   * NOT to the black architectural columns.
    *
-   * This creates a much softer transition at the top
-   * and bottom edges of each moving image.
+   * This keeps the black columns completely sharp.
    *
-   * X AXIS:
+   * TOP    → image fades out when leaving the zone
+   * BOTTOM → image fades in when entering the zone
+   * LEFT   → slight horizontal fade
+   * RIGHT  → slight horizontal fade
    *
-   * 0%   -> completely faded
-   * 18%  -> fully visible
-   * 82%  -> fully visible
-   * 100% -> completely faded
-   *
-   * The mask affects ONLY the images.
-   * The black architectural lines remain untouched.
-   * ============================================================
+   * The actual dimensions and animation remain unchanged.
    */
 
   const maskStyle: React.CSSProperties = {
     WebkitMaskImage:
-      'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 35%, rgba(0,0,0,1) 65%, rgba(0,0,0,0) 100%), linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 18%, rgba(0,0,0,1) 82%, rgba(0,0,0,0) 100%)',
+      `
+        linear-gradient(
+          to bottom,
+          rgba(0,0,0,0) 0%,
+          rgba(0,0,0,0.15) 5%,
+          rgba(0,0,0,0.55) 10%,
+          rgba(0,0,0,1) 16%,
+          rgba(0,0,0,1) 84%,
+          rgba(0,0,0,0.55) 90%,
+          rgba(0,0,0,0.15) 95%,
+          rgba(0,0,0,0) 100%
+        ),
+        linear-gradient(
+          to right,
+          rgba(0,0,0,0) 0%,
+          rgba(0,0,0,0.45) 7%,
+          rgba(0,0,0,1) 14%,
+          rgba(0,0,0,1) 86%,
+          rgba(0,0,0,0.45) 93%,
+          rgba(0,0,0,0) 100%
+        )
+      `,
 
     WebkitMaskComposite: 'source-in',
 
     maskImage:
-      'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 35%, rgba(0,0,0,1) 65%, rgba(0,0,0,0) 100%), linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 18%, rgba(0,0,0,1) 82%, rgba(0,0,0,0) 100%)',
+      `
+        linear-gradient(
+          to bottom,
+          rgba(0,0,0,0) 0%,
+          rgba(0,0,0,0.15) 5%,
+          rgba(0,0,0,0.55) 10%,
+          rgba(0,0,0,1) 16%,
+          rgba(0,0,0,1) 84%,
+          rgba(0,0,0,0.55) 90%,
+          rgba(0,0,0,0.15) 95%,
+          rgba(0,0,0,0) 100%
+        ),
+        linear-gradient(
+          to right,
+          rgba(0,0,0,0) 0%,
+          rgba(0,0,0,0.45) 7%,
+          rgba(0,0,0,1) 14%,
+          rgba(0,0,0,1) 86%,
+          rgba(0,0,0,0.45) 93%,
+          rgba(0,0,0,0) 100%
+        )
+      `,
 
     maskComposite: 'intersect',
 
@@ -115,7 +150,22 @@ const CrossfadeStack: React.FC<{
       "
       style={{
         contain: 'paint',
-        transform: 'translateZ(0)'
+        transform: 'translateZ(0)',
+
+        /*
+         * ======================================================
+         * IMPORTANT
+         * ======================================================
+         *
+         * The fade is attached to this outer container.
+         *
+         * Therefore the fade stays fixed at the four edges
+         * of the image zone while the images continue moving.
+         *
+         * The black architectural lines are outside this
+         * container and therefore remain completely sharp.
+         */
+        ...maskStyle
       }}
     >
       <div
@@ -149,7 +199,16 @@ const CrossfadeStack: React.FC<{
                 h-full
                 object-cover
               "
-              style={maskStyle}
+              style={{
+                /*
+                 * NO MASK HERE.
+                 *
+                 * The fade belongs to the fixed image-zone
+                 * container above.
+                 */
+                transform: 'translateZ(0)',
+                backfaceVisibility: 'hidden'
+              }}
             />
           </div>
         ))}
