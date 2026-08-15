@@ -15,6 +15,18 @@ interface HomeProps {
  * ============================================================
  * CONTINUOUS VERTICAL IMAGE REEL — SEAMLESS LOOP
  * ============================================================
+ *
+ * Images move upward continuously with no pause or visible jump.
+ *
+ * The sequence is repeated three times:
+ *
+ *   1 → 2 → 3 → 4
+ *   1 → 2 → 3 → 4
+ *   1 → 2 → 3 → 4
+ *
+ * The browser always has the next image sequence physically
+ * present, so the transition from the last image back to the
+ * first image is continuous.
  */
 
 let crossfadeInstanceCounter = 0;
@@ -38,19 +50,39 @@ const CrossfadeStack: React.FC<{
    * ============================================================
    * SOFT IMAGE MASK
    * ============================================================
+   *
+   * Only the vertical fade has been softened.
+   *
+   * Previous:
+   *   0% → transparent
+   *   18% → fully visible
+   *   82% → fully visible
+   *   100% → transparent
+   *
+   * New:
+   *   0% → transparent
+   *   28% → fully visible
+   *   72% → fully visible
+   *   100% → transparent
+   *
+   * This creates a longer and softer fade at the beginning
+   * and end of every image.
    */
 
   const maskStyle: React.CSSProperties = {
     WebkitMaskImage:
-      'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 18%, rgba(0,0,0,1) 82%, rgba(0,0,0,0) 100%), linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 18%, rgba(0,0,0,1) 82%, rgba(0,0,0,0) 100%)',
+      'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 28%, rgba(0,0,0,1) 72%, rgba(0,0,0,0) 100%), linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 18%, rgba(0,0,0,1) 82%, rgba(0,0,0,0) 100%)',
 
     WebkitMaskComposite: 'source-in',
 
     maskImage:
-      'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 18%, rgba(0,0,0,1) 82%, rgba(0,0,0,0) 100%), linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 18%, rgba(0,0,0,1) 82%, rgba(0,0,0,0) 100%)',
+      'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 28%, rgba(0,0,0,1) 72%, rgba(0,0,0,0) 100%), linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 18%, rgba(0,0,0,1) 82%, rgba(0,0,0,0) 100%)',
 
     maskComposite: 'intersect',
 
+    /*
+     * GPU rendering helpers for smoother movement.
+     */
     transform: 'translateZ(0)',
     backfaceVisibility: 'hidden'
   };
@@ -63,6 +95,10 @@ const CrossfadeStack: React.FC<{
 
   const loopDurationMs = intervalMs * images.length;
   const loopSeconds = (loopDurationMs / 1000).toFixed(2);
+
+  /*
+   * Every CrossfadeStack gets its own animation name.
+   */
 
   const animName = `reel-scroll-${instanceId}`;
 
@@ -350,29 +386,24 @@ export const Home: React.FC<HomeProps> = ({
    * IMAGE ZONES
    * ============================================================
    *
-   * IMPORTANT:
+   * The image zones now follow the exact geometry of the
+   * architectural columns.
    *
-   * The images DO NOT extend to the roof itself.
+   * TOP:
+   * Each image starts exactly at the diagonal roof line.
+   * Therefore every image has a different top position,
+   * following the roof slope.
    *
-   * Each image occupies ONLY the space between two thin
-   * vertical columns.
+   * BOTTOM:
+   * Every image ends exactly at the bottom of the thin columns.
    *
-   * The TOP edge follows the actual heights of the columns.
-   *
-   * The BOTTOM edge is exactly at the common bottom of
-   * all five thin columns.
-   *
-   * Therefore:
-   *
-   *       /----------------
-   *      / IMAGE
-   *     / IMAGE
-   *    / IMAGE
-   *   /____________________
-   *
-   * The top is sloped.
-   * The bottom is perfectly aligned.
+   * This means the images never extend outside the columns.
    */
+
+  const roofSlope = pillarTopY / pillarX;
+
+  const roofYAtSvgX = (svgX: number) =>
+    roofSlope * svgX;
 
   const svgYToPercent = (svgY: number) =>
     ((svgY + MARGIN_Y) / viewBoxHeight) * 100;
@@ -382,70 +413,32 @@ export const Home: React.FC<HomeProps> = ({
 
     const left = colPercent[idx];
 
-    const right =
+    const width =
       idx + 1 < colPercent.length
-        ? colPercent[idx + 1]
-        : colPercent[idx];
-
-    const width = right - left;
+        ? colPercent[idx + 1] - colPercent[idx]
+        : colPercent[idx] - colPercent[idx - 1];
 
     /*
-     * Exact top heights of the two thin columns
-     * surrounding this image zone.
+     * TOP follows the roof slope exactly.
      */
-    const topLeftY = thinLineTopY[idx];
+    const topSvgY = roofYAtSvgX(
+      toSvgX(left)
+    );
 
-    const topRightY =
-      idx + 1 < thinLineTopY.length
-        ? thinLineTopY[idx + 1]
-        : thinLineTopY[idx];
+    const top = svgYToPercent(topSvgY);
 
     /*
-     * Exact bottom of all thin columns.
+     * BOTTOM follows the exact bottom of the thin columns.
      */
-    const bottomY = thinLineBottomY;
-
-    /*
-     * Convert SVG coordinates to percentage coordinates.
-     */
-    const topLeft = svgYToPercent(topLeftY);
-    const topRight = svgYToPercent(topRightY);
-    const bottom = svgYToPercent(bottomY);
-
-    /*
-     * The container begins at the higher point.
-     */
-    const top = topLeft;
-
-    /*
-     * Height is based on the left side.
-     */
-    const height = bottom - top;
-
-    /*
-     * The clip-path creates the exact trapezoid between
-     * the two thin columns.
-     *
-     * The image can never escape this area.
-     */
-    const rightTopPercent =
-      ((topRight - top) / height) * 100;
+    const bottom = svgYToPercent(
+      thinLineBottomY
+    );
 
     return {
       left,
       width,
       top,
-      height,
-
-      /*
-       * Exact sloped upper boundary.
-       */
-      clipPath: `polygon(
-        0% 0%,
-        100% ${rightTopPercent}%,
-        100% 100%,
-        0% 100%
-      )`
+      height: bottom - top
     };
   };
 
@@ -458,6 +451,13 @@ export const Home: React.FC<HomeProps> = ({
    * ============================================================
    * CHAJ GROUP POSITION
    * ============================================================
+   *
+   * C aligns with the first thin column.
+   *
+   * P aligns with the fifth thin column.
+   *
+   * The complete text therefore spans exactly between
+   * the first and fifth columns.
    */
 
   const chajGroupLeft = colPercent[0];
@@ -565,8 +565,7 @@ export const Home: React.FC<HomeProps> = ({
               left: `${projectsZone.left}%`,
               width: `${projectsZone.width}%`,
               top: `${projectsZone.top}%`,
-              height: `${projectsZone.height}%`,
-              clipPath: projectsZone.clipPath
+              height: `${projectsZone.height}%`
             }}
           >
             <CrossfadeStack
@@ -589,8 +588,7 @@ export const Home: React.FC<HomeProps> = ({
               left: `${aboutZone.left}%`,
               width: `${aboutZone.width}%`,
               top: `${aboutZone.top}%`,
-              height: `${aboutZone.height}%`,
-              clipPath: aboutZone.clipPath
+              height: `${aboutZone.height}%`
             }}
           >
             <CrossfadeStack
@@ -613,8 +611,7 @@ export const Home: React.FC<HomeProps> = ({
               left: `${servicesZone.left}%`,
               width: `${servicesZone.width}%`,
               top: `${servicesZone.top}%`,
-              height: `${servicesZone.height}%`,
-              clipPath: servicesZone.clipPath
+              height: `${servicesZone.height}%`
             }}
           >
             <CrossfadeStack
@@ -637,8 +634,7 @@ export const Home: React.FC<HomeProps> = ({
               left: `${contactZone.left}%`,
               width: `${contactZone.width}%`,
               top: `${contactZone.top}%`,
-              height: `${contactZone.height}%`,
-              clipPath: contactZone.clipPath
+              height: `${contactZone.height}%`
             }}
           >
             <CrossfadeStack
@@ -749,7 +745,11 @@ export const Home: React.FC<HomeProps> = ({
               left: `${chajGroupLeft}%`,
               width: `${chajGroupWidth}%`,
               top: '94%',
+
+              /* ONLY CHAJ GROUP FONT */
               fontFamily: '"CHAJGothic", sans-serif',
+
+              /* KEEP CHAJ GROUP LTR IN BOTH LANGUAGES */
               direction: 'ltr',
               unicodeBidi: 'isolate'
             }}
