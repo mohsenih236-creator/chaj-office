@@ -36,31 +36,74 @@ const CrossfadeStack: React.FC<{
 
   /*
    * ============================================================
-   * SOFT IMAGE MASK
+   * SOFT IMAGE FADE
    * ============================================================
    *
-   * ONLY CHANGE:
+   * IMPORTANT:
    *
-   * The four edges of each image are softly faded.
+   * The fade is applied to the entire image reel container,
+   * NOT to the black architectural columns.
    *
-   * TOP:
-   * Image gradually appears as it enters the zone.
+   * This keeps the black columns completely sharp.
    *
-   * BOTTOM:
-   * Image gradually disappears as it leaves the zone.
+   * TOP    → image fades out when leaving the zone
+   * BOTTOM → image fades in when entering the zone
+   * LEFT   → slight horizontal fade
+   * RIGHT  → slight horizontal fade
    *
-   * LEFT / RIGHT:
-   * Image edges are also softly faded.
+   * The actual dimensions and animation remain unchanged.
    */
 
   const maskStyle: React.CSSProperties = {
     WebkitMaskImage:
-      'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.25) 5%, rgba(0,0,0,0.75) 11%, rgba(0,0,0,1) 17%, rgba(0,0,0,1) 83%, rgba(0,0,0,0.75) 89%, rgba(0,0,0,0.25) 95%, rgba(0,0,0,0) 100%), linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.25) 5%, rgba(0,0,0,0.75) 11%, rgba(0,0,0,1) 17%, rgba(0,0,0,1) 83%, rgba(0,0,0,0.75) 89%, rgba(0,0,0,0.25) 95%, rgba(0,0,0,0) 100%)',
+      `
+        linear-gradient(
+          to bottom,
+          rgba(0,0,0,0) 0%,
+          rgba(0,0,0,0.15) 5%,
+          rgba(0,0,0,0.55) 10%,
+          rgba(0,0,0,1) 16%,
+          rgba(0,0,0,1) 84%,
+          rgba(0,0,0,0.55) 90%,
+          rgba(0,0,0,0.15) 95%,
+          rgba(0,0,0,0) 100%
+        ),
+        linear-gradient(
+          to right,
+          rgba(0,0,0,0) 0%,
+          rgba(0,0,0,0.45) 7%,
+          rgba(0,0,0,1) 14%,
+          rgba(0,0,0,1) 86%,
+          rgba(0,0,0,0.45) 93%,
+          rgba(0,0,0,0) 100%
+        )
+      `,
 
     WebkitMaskComposite: 'source-in',
 
     maskImage:
-      'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.25) 5%, rgba(0,0,0,0.75) 11%, rgba(0,0,0,1) 17%, rgba(0,0,0,1) 83%, rgba(0,0,0,0.75) 89%, rgba(0,0,0,0.25) 95%, rgba(0,0,0,0) 100%), linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0.25) 5%, rgba(0,0,0,0.75) 11%, rgba(0,0,0,1) 17%, rgba(0,0,0,1) 83%, rgba(0,0,0,0.75) 89%, rgba(0,0,0,0.25) 95%, rgba(0,0,0,0) 100%)',
+      `
+        linear-gradient(
+          to bottom,
+          rgba(0,0,0,0) 0%,
+          rgba(0,0,0,0.15) 5%,
+          rgba(0,0,0,0.55) 10%,
+          rgba(0,0,0,1) 16%,
+          rgba(0,0,0,1) 84%,
+          rgba(0,0,0,0.55) 90%,
+          rgba(0,0,0,0.15) 95%,
+          rgba(0,0,0,0) 100%
+        ),
+        linear-gradient(
+          to right,
+          rgba(0,0,0,0) 0%,
+          rgba(0,0,0,0.45) 7%,
+          rgba(0,0,0,1) 14%,
+          rgba(0,0,0,1) 86%,
+          rgba(0,0,0,0.45) 93%,
+          rgba(0,0,0,0) 100%
+        )
+      `,
 
     maskComposite: 'intersect',
 
@@ -107,7 +150,22 @@ const CrossfadeStack: React.FC<{
       "
       style={{
         contain: 'paint',
-        transform: 'translateZ(0)'
+        transform: 'translateZ(0)',
+
+        /*
+         * ======================================================
+         * IMPORTANT
+         * ======================================================
+         *
+         * The fade is attached to this outer container.
+         *
+         * Therefore the fade stays fixed at the four edges
+         * of the image zone while the images continue moving.
+         *
+         * The black architectural lines are outside this
+         * container and therefore remain completely sharp.
+         */
+        ...maskStyle
       }}
     >
       <div
@@ -141,7 +199,16 @@ const CrossfadeStack: React.FC<{
                 h-full
                 object-cover
               "
-              style={maskStyle}
+              style={{
+                /*
+                 * NO MASK HERE.
+                 *
+                 * The fade belongs to the fixed image-zone
+                 * container above.
+                 */
+                transform: 'translateZ(0)',
+                backfaceVisibility: 'hidden'
+              }}
             />
           </div>
         ))}
@@ -379,6 +446,11 @@ export const Home: React.FC<HomeProps> = ({
 
     const width = right - left;
 
+    /*
+     * Exact top heights of the two thin columns
+     * surrounding this image zone.
+     */
+
     const topLeftY = thinLineTopY[idx];
 
     const topRightY =
@@ -386,15 +458,36 @@ export const Home: React.FC<HomeProps> = ({
         ? thinLineTopY[idx + 1]
         : thinLineTopY[idx];
 
+    /*
+     * Exact bottom of all thin columns.
+     */
+
     const bottomY = thinLineBottomY;
+
+    /*
+     * Convert SVG coordinates to percentage coordinates.
+     */
 
     const topLeft = svgYToPercent(topLeftY);
     const topRight = svgYToPercent(topRightY);
     const bottom = svgYToPercent(bottomY);
 
+    /*
+     * The container begins at the higher point.
+     */
+
     const top = topLeft;
 
+    /*
+     * Height is based on the left side.
+     */
+
     const height = bottom - top;
+
+    /*
+     * The clip-path creates the exact trapezoid between
+     * the two thin columns.
+     */
 
     const rightTopPercent =
       ((topRight - top) / height) * 100;
