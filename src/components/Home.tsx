@@ -370,18 +370,6 @@ export const Home: React.FC<HomeProps> = ({
    * ============================================================
    */
 
-  /*
-   * Roof slope (line from roofStartX/Y at 0,0 to pillarX/pillarTopY)
-   * used only to compute each image zone's BOTTOM edge in SVG
-   * y-units, so the bottom sits right under the diagonal roof line
-   * at that column's x-position. Top edge stays at wordZoneTop,
-   * unchanged from before.
-   */
-  const roofSlope = pillarTopY / pillarX;
-  const roofYAtSvgX = (svgX: number) => roofSlope * svgX;
-  const svgYToPercent = (svgY: number) =>
-    ((svgY + MARGIN_Y) / viewBoxHeight) * 100;
-
   const zoneFor = (key: string) => {
     const idx = items.findIndex((i) => i.key === key);
 
@@ -392,15 +380,9 @@ export const Home: React.FC<HomeProps> = ({
         ? colPercent[idx + 1] - colPercent[idx]
         : colPercent[idx] - colPercent[idx - 1];
 
-    const bottomSvgY = roofYAtSvgX(toSvgX(left));
-    const bottom = svgYToPercent(bottomSvgY);
-    const top = wordZoneTop;
-
     return {
       left,
-      width,
-      top,
-      height: bottom - top
+      width
     };
   };
 
@@ -526,8 +508,8 @@ export const Home: React.FC<HomeProps> = ({
             style={{
               left: `${projectsZone.left}%`,
               width: `${projectsZone.width}%`,
-              top: `${projectsZone.top}%`,
-              height: `${projectsZone.height}%`
+              top: `${wordZoneTop}%`,
+              height: `${wordZoneBottom - wordZoneTop}%`
             }}
           >
             <CrossfadeStack
@@ -549,8 +531,8 @@ export const Home: React.FC<HomeProps> = ({
             style={{
               left: `${aboutZone.left}%`,
               width: `${aboutZone.width}%`,
-              top: `${aboutZone.top}%`,
-              height: `${aboutZone.height}%`
+              top: `${wordZoneTop}%`,
+              height: `${wordZoneBottom - wordZoneTop}%`
             }}
           >
             <CrossfadeStack
@@ -572,8 +554,8 @@ export const Home: React.FC<HomeProps> = ({
             style={{
               left: `${servicesZone.left}%`,
               width: `${servicesZone.width}%`,
-              top: `${servicesZone.top}%`,
-              height: `${servicesZone.height}%`
+              top: `${wordZoneTop}%`,
+              height: `${wordZoneBottom - wordZoneTop}%`
             }}
           >
             <CrossfadeStack
@@ -595,8 +577,8 @@ export const Home: React.FC<HomeProps> = ({
             style={{
               left: `${contactZone.left}%`,
               width: `${contactZone.width}%`,
-              top: `${contactZone.top}%`,
-              height: `${contactZone.height}%`
+              top: `${wordZoneTop}%`,
+              height: `${wordZoneBottom - wordZoneTop}%`
             }}
           >
             <CrossfadeStack
