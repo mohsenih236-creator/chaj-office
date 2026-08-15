@@ -38,81 +38,102 @@ const CrossfadeStack: React.FC<{
    * ============================================================
    * SOFT IMAGE MASK
    * ============================================================
+   *
+   * IMPORTANT:
+   *
+   * The actual roof angle is:
+   *
+   * atan(28 / 86.4) = 17.956165°
+   *
+   * CSS linear-gradient uses its angle perpendicular
+   * to the visible transition edge.
+   *
+   * Therefore:
+   *
+   * 90° + 17.956165° = 107.956165°
+   *
+   * This makes the upper fading edge parallel to the
+   * architectural roof.
    */
+
+  const ROOF_FADE_ANGLE = 107.956165;
 
   const maskStyle: React.CSSProperties = {
-  /*
-   * ============================================================
-   * FOUR-SIDE SOFT FADE
-   * ============================================================
-   *
-   * TOP FADE:
-   * The upper fading edge is angled to follow the roof slope.
-   *
-   * BOTTOM FADE:
-   * Strong fade as the image leaves the zone from below.
-   *
-   * LEFT / RIGHT:
-   * Soft fading prevents any sharp horizontal image edges.
-   */
+    WebkitMaskImage: `
+      linear-gradient(
+        ${ROOF_FADE_ANGLE}deg,
+        rgba(0,0,0,0) 0%,
+        rgba(0,0,0,0) 7%,
+        rgba(0,0,0,0.08) 10%,
+        rgba(0,0,0,0.22) 13%,
+        rgba(0,0,0,0.48) 17%,
+        rgba(0,0,0,0.78) 21%,
+        rgba(0,0,0,1) 26%,
+        rgba(0,0,0,1) 70%,
+        rgba(0,0,0,0.82) 76%,
+        rgba(0,0,0,0.58) 81%,
+        rgba(0,0,0,0.32) 86%,
+        rgba(0,0,0,0.12) 92%,
+        rgba(0,0,0,0) 100%
+      ),
+      linear-gradient(
+        to right,
+        rgba(0,0,0,0) 0%,
+        rgba(0,0,0,0.08) 5%,
+        rgba(0,0,0,0.25) 9%,
+        rgba(0,0,0,0.58) 14%,
+        rgba(0,0,0,0.85) 19%,
+        rgba(0,0,0,1) 24%,
+        rgba(0,0,0,1) 76%,
+        rgba(0,0,0,0.85) 81%,
+        rgba(0,0,0,0.58) 86%,
+        rgba(0,0,0,0.25) 91%,
+        rgba(0,0,0,0.08) 95%,
+        rgba(0,0,0,0) 100%
+      )
+    `,
 
-  WebkitMaskImage: `
-    linear-gradient(
-      108deg,
-      rgba(0,0,0,0) 0%,
-      rgba(0,0,0,0.12) 8%,
-      rgba(0,0,0,0.55) 16%,
-      rgba(0,0,0,1) 25%,
-      rgba(0,0,0,1) 72%,
-      rgba(0,0,0,0.55) 84%,
-      rgba(0,0,0,0.12) 92%,
-      rgba(0,0,0,0) 100%
-    ),
-    linear-gradient(
-      to right,
-      rgba(0,0,0,0) 0%,
-      rgba(0,0,0,0.15) 8%,
-      rgba(0,0,0,0.65) 17%,
-      rgba(0,0,0,1) 25%,
-      rgba(0,0,0,1) 75%,
-      rgba(0,0,0,0.65) 83%,
-      rgba(0,0,0,0.15) 92%,
-      rgba(0,0,0,0) 100%
-    )
-  `,
+    WebkitMaskComposite: 'source-in',
 
-  WebkitMaskComposite: 'source-in',
+    maskImage: `
+      linear-gradient(
+        ${ROOF_FADE_ANGLE}deg,
+        rgba(0,0,0,0) 0%,
+        rgba(0,0,0,0) 7%,
+        rgba(0,0,0,0.08) 10%,
+        rgba(0,0,0,0.22) 13%,
+        rgba(0,0,0,0.48) 17%,
+        rgba(0,0,0,0.78) 21%,
+        rgba(0,0,0,1) 26%,
+        rgba(0,0,0,1) 70%,
+        rgba(0,0,0,0.82) 76%,
+        rgba(0,0,0,0.58) 81%,
+        rgba(0,0,0,0.32) 86%,
+        rgba(0,0,0,0.12) 92%,
+        rgba(0,0,0,0) 100%
+      ),
+      linear-gradient(
+        to right,
+        rgba(0,0,0,0) 0%,
+        rgba(0,0,0,0.08) 5%,
+        rgba(0,0,0,0.25) 9%,
+        rgba(0,0,0,0.58) 14%,
+        rgba(0,0,0,0.85) 19%,
+        rgba(0,0,0,1) 24%,
+        rgba(0,0,0,1) 76%,
+        rgba(0,0,0,0.85) 81%,
+        rgba(0,0,0,0.58) 86%,
+        rgba(0,0,0,0.25) 91%,
+        rgba(0,0,0,0.08) 95%,
+        rgba(0,0,0,0) 100%
+      )
+    `,
 
-  maskImage: `
-    linear-gradient(
-      108deg,
-      rgba(0,0,0,0) 0%,
-      rgba(0,0,0,0.12) 8%,
-      rgba(0,0,0,0.55) 16%,
-      rgba(0,0,0,1) 25%,
-      rgba(0,0,0,1) 72%,
-      rgba(0,0,0,0.55) 84%,
-      rgba(0,0,0,0.12) 92%,
-      rgba(0,0,0,0) 100%
-    ),
-    linear-gradient(
-      to right,
-      rgba(0,0,0,0) 0%,
-      rgba(0,0,0,0.15) 8%,
-      rgba(0,0,0,0.65) 17%,
-      rgba(0,0,0,1) 25%,
-      rgba(0,0,0,1) 75%,
-      rgba(0,0,0,0.65) 83%,
-      rgba(0,0,0,0.15) 92%,
-      rgba(0,0,0,0) 100%
-    )
-  `,
+    maskComposite: 'intersect',
 
-  maskComposite: 'intersect',
-
-  transform: 'translateZ(0)',
-  backfaceVisibility: 'hidden'
-};
+    transform: 'translateZ(0)',
+    backfaceVisibility: 'hidden'
+  };
 
   /*
    * ============================================================
@@ -719,68 +740,7 @@ export const Home: React.FC<HomeProps> = ({
             />
 
             {/* =================================================
-                FADE GRADIENTS FOR FIVE THIN VERTICAL LINES
-                =================================================
-                
-                هر خط از بالای خودش به‌تدریج ظاهر می‌شود،
-                در قسمت میانی کاملاً مشکی است و در انتها
-                به‌تدریج محو می‌شود.
-                
-                مختصات خطوط هیچ تغییری نکرده‌اند.
-                ================================================= */}
-
-            <defs>
-              {thinLineTopY.map((topY, i) => (
-                <linearGradient
-                  key={`thin-line-gradient-${i}`}
-                  id={`thin-line-fade-${i}`}
-                  x1="0"
-                  y1={topY}
-                  x2="0"
-                  y2={thinLineBottomY}
-                  gradientUnits="userSpaceOnUse"
-                >
-                  <stop
-                    offset="0%"
-                    stopColor="#1C1C1C"
-                    stopOpacity="0"
-                  />
-
-                  <stop
-                    offset="18%"
-                    stopColor="#1C1C1C"
-                    stopOpacity="0.18"
-                  />
-
-                  <stop
-                    offset="32%"
-                    stopColor="#1C1C1C"
-                    stopOpacity="1"
-                  />
-
-                  <stop
-                    offset="68%"
-                    stopColor="#1C1C1C"
-                    stopOpacity="1"
-                  />
-
-                  <stop
-                    offset="82%"
-                    stopColor="#1C1C1C"
-                    stopOpacity="0.18"
-                  />
-
-                  <stop
-                    offset="100%"
-                    stopColor="#1C1C1C"
-                    stopOpacity="0"
-                  />
-                </linearGradient>
-              ))}
-            </defs>
-
-            {/* =================================================
-                FIVE THIN VERTICAL LINES WITH FADE
+                FIVE THIN VERTICAL LINES
                 ================================================= */}
 
             {thinLineX.map((x, i) => (
@@ -790,7 +750,7 @@ export const Home: React.FC<HomeProps> = ({
                 y1={thinLineTopY[i]}
                 x2={x}
                 y2={thinLineBottomY}
-                stroke={`url(#thin-line-fade-${i})`}
+                stroke="#1C1C1C"
                 strokeWidth="0.7"
               />
             ))}
