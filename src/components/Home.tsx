@@ -42,12 +42,12 @@ const CrossfadeStack: React.FC<{
 
   const maskStyle: React.CSSProperties = {
     WebkitMaskImage:
-      'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 18%, rgba(0,0,0,1) 82%, rgba(0,0,0,0) 100%), linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 18%, rgba(0,0,0,1) 82%, rgba(0,0,0,0) 100%)',
+      'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 24%, rgba(0,0,0,1) 76%, rgba(0,0,0,0) 100%), linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 18%, rgba(0,0,0,1) 82%, rgba(0,0,0,0) 100%)',
 
     WebkitMaskComposite: 'source-in',
 
     maskImage:
-      'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 18%, rgba(0,0,0,1) 82%, rgba(0,0,0,0) 100%), linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 18%, rgba(0,0,0,1) 82%, rgba(0,0,0,0) 100%)',
+      'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 24%, rgba(0,0,0,1) 76%, rgba(0,0,0,0) 100%), linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 18%, rgba(0,0,0,1) 82%, rgba(0,0,0,0) 100%)',
 
     maskComposite: 'intersect',
 
