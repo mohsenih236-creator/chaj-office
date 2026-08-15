@@ -61,10 +61,10 @@ const CrossfadeStack: React.FC<{
           to bottom,
           rgba(0,0,0,0) 0%,
           rgba(0,0,0,0.15) 5%,
-          rgba(0,0,0,0.55) 0%,
+          rgba(0,0,0,0.55) 10%,
           rgba(0,0,0,1) 0%,
           rgba(0,0,0,1) 100%,
-          rgba(0,0,0,0.55) 100%,
+          rgba(0,0,0,0.55) 90%,
           rgba(0,0,0,0.15) 95%,
           rgba(0,0,0,0) 100%
         ),
@@ -72,8 +72,8 @@ const CrossfadeStack: React.FC<{
           to right,
           rgba(0,0,0,0) 0%,
           rgba(0,0,0,0.45) 7%,
-          rgba(0,0,0,1) 0%,
-          rgba(0,0,0,1) 100%,
+          rgba(0,0,0,1) 14%,
+          rgba(0,0,0,1) 86%,
           rgba(0,0,0,0.45) 93%,
           rgba(0,0,0,0) 100%
         )
@@ -87,10 +87,10 @@ const CrossfadeStack: React.FC<{
           to bottom,
           rgba(0,0,0,0) 0%,
           rgba(0,0,0,0.15) 5%,
-          rgba(0,0,0,0.55) 0%,
+          rgba(0,0,0,0.55) 10%,
           rgba(0,0,0,1) 0%,
           rgba(0,0,0,1) 100%,
-          rgba(0,0,0,0.55) 100%,
+          rgba(0,0,0,0.55) 90%,
           rgba(0,0,0,0.15) 95%,
           rgba(0,0,0,0) 100%
         ),
@@ -98,8 +98,8 @@ const CrossfadeStack: React.FC<{
           to right,
           rgba(0,0,0,0) 0%,
           rgba(0,0,0,0.45) 7%,
-          rgba(0,0,0,1) 0%,
-          rgba(0,0,0,1) 100%,
+          rgba(0,0,0,1) 14%,
+          rgba(0,0,0,1) 86%,
           rgba(0,0,0,0.45) 93%,
           rgba(0,0,0,0) 100%
         )
