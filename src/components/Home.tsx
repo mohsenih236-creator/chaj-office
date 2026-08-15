@@ -51,7 +51,13 @@ const CrossfadeStack: React.FC<{
    * LEFT   → slight horizontal fade
    * RIGHT  → slight horizontal fade
    *
-   * The actual dimensions and animation remain unchanged.
+   * Widened vs. the previous version: the fade band now spans
+   * roughly 40% of the zone's height at top and bottom (was
+   * ~11%), so the fade reads as a slow, visible dissolve — like
+   * the reference screenshot — instead of a near-instant cut.
+   * The clip-path on the wrapper (unchanged, see zoneFor) still
+   * gives the sharp diagonal roofline cut, which matches the
+   * precision of the rest of the architectural line drawing.
    */
 
   const maskStyle: React.CSSProperties = {
@@ -60,21 +66,17 @@ const CrossfadeStack: React.FC<{
         linear-gradient(
           to bottom,
           rgba(0,0,0,0) 0%,
-          rgba(0,0,0,0.15) 5%,
-          rgba(0,0,0,0.55) 24%,
-          rgba(0,0,0,1) 35%,
-          rgba(0,0,0,1) 65%,
-          rgba(0,0,0,0.55) 76%,
-          rgba(0,0,0,0.15) 95%,
+          rgba(0,0,0,1) 42%,
+          rgba(0,0,0,1) 58%,
           rgba(0,0,0,0) 100%
         ),
         linear-gradient(
           to right,
           rgba(0,0,0,0) 0%,
-          rgba(0,0,0,0.45) 24%,
-          rgba(0,0,0,1) 35%,
-          rgba(0,0,0,1) 65%,
-          rgba(0,0,0,0.45) 76%,
+          rgba(0,0,0,0.6) 18%,
+          rgba(0,0,0,1) 30%,
+          rgba(0,0,0,1) 70%,
+          rgba(0,0,0,0.6) 82%,
           rgba(0,0,0,0) 100%
         )
       `,
@@ -86,21 +88,17 @@ const CrossfadeStack: React.FC<{
         linear-gradient(
           to bottom,
           rgba(0,0,0,0) 0%,
-          rgba(0,0,0,0.15) 5%,
-          rgba(0,0,0,0.55) 24%,
-          rgba(0,0,0,1) 35%,
-          rgba(0,0,0,1) 65%,
-          rgba(0,0,0,0.55) 76%,
-          rgba(0,0,0,0.15) 95%,
+          rgba(0,0,0,1) 42%,
+          rgba(0,0,0,1) 58%,
           rgba(0,0,0,0) 100%
         ),
         linear-gradient(
           to right,
           rgba(0,0,0,0) 0%,
-          rgba(0,0,0,0.45) 24%,
-          rgba(0,0,0,1) 35%,
-          rgba(0,0,0,1) 65%,
-          rgba(0,0,0,0.45) 76%,
+          rgba(0,0,0,0.6) 18%,
+          rgba(0,0,0,1) 30%,
+          rgba(0,0,0,1) 70%,
+          rgba(0,0,0,0.6) 82%,
           rgba(0,0,0,0) 100%
         )
       `,
@@ -486,7 +484,7 @@ export const Home: React.FC<HomeProps> = ({
 
     /*
      * The clip-path creates the exact trapezoid between
-     * the two thin columns.
+     * the two thin columns, matching the diagonal roofline.
      */
 
     const rightTopPercent =
