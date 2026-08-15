@@ -36,72 +36,18 @@ const CrossfadeStack: React.FC<{
 
   /*
    * ============================================================
-   * SOFT IMAGE FADE
+   * SOFT IMAGE MASK
    * ============================================================
-   *
-   * IMPORTANT:
-   *
-   * The fade is applied to the entire image reel container,
-   * NOT to the black architectural columns.
-   *
-   * This keeps the black columns completely sharp.
-   *
-   * TOP    → image fades out when leaving the zone
-   * BOTTOM → image fades in when entering the zone
-   * LEFT   → slight horizontal fade
-   * RIGHT  → slight horizontal fade
-   *
-   * Widened vs. the previous version: the fade band now spans
-   * roughly 40% of the zone's height at top and bottom (was
-   * ~11%), so the fade reads as a slow, visible dissolve — like
-   * the reference screenshot — instead of a near-instant cut.
-   * The clip-path on the wrapper (unchanged, see zoneFor) still
-   * gives the sharp diagonal roofline cut, which matches the
-   * precision of the rest of the architectural line drawing.
    */
 
   const maskStyle: React.CSSProperties = {
     WebkitMaskImage:
-      `
-        linear-gradient(
-          to bottom,
-          rgba(0,0,0,0) 0%,
-          rgba(0,0,0,1) 42%,
-          rgba(0,0,0,1) 58%,
-          rgba(0,0,0,0) 100%
-        ),
-        linear-gradient(
-          to right,
-          rgba(0,0,0,0) 0%,
-          rgba(0,0,0,0.6) 18%,
-          rgba(0,0,0,1) 30%,
-          rgba(0,0,0,1) 70%,
-          rgba(0,0,0,0.6) 82%,
-          rgba(0,0,0,0) 100%
-        )
-      `,
+      'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 24%, rgba(0,0,0,1) 76%, rgba(0,0,0,0) 100%), linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 18%, rgba(0,0,0,1) 82%, rgba(0,0,0,0) 100%)',
 
     WebkitMaskComposite: 'source-in',
 
     maskImage:
-      `
-        linear-gradient(
-          to bottom,
-          rgba(0,0,0,0) 0%,
-          rgba(0,0,0,1) 42%,
-          rgba(0,0,0,1) 58%,
-          rgba(0,0,0,0) 100%
-        ),
-        linear-gradient(
-          to right,
-          rgba(0,0,0,0) 0%,
-          rgba(0,0,0,0.6) 18%,
-          rgba(0,0,0,1) 30%,
-          rgba(0,0,0,1) 70%,
-          rgba(0,0,0,0.6) 82%,
-          rgba(0,0,0,0) 100%
-        )
-      `,
+      'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 24%, rgba(0,0,0,1) 76%, rgba(0,0,0,0) 100%), linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 18%, rgba(0,0,0,1) 82%, rgba(0,0,0,0) 100%)',
 
     maskComposite: 'intersect',
 
@@ -148,22 +94,7 @@ const CrossfadeStack: React.FC<{
       "
       style={{
         contain: 'paint',
-        transform: 'translateZ(0)',
-
-        /*
-         * ======================================================
-         * IMPORTANT
-         * ======================================================
-         *
-         * The fade is attached to this outer container.
-         *
-         * Therefore the fade stays fixed at the four edges
-         * of the image zone while the images continue moving.
-         *
-         * The black architectural lines are outside this
-         * container and therefore remain completely sharp.
-         */
-        ...maskStyle
+        transform: 'translateZ(0)'
       }}
     >
       <div
@@ -197,16 +128,7 @@ const CrossfadeStack: React.FC<{
                 h-full
                 object-cover
               "
-              style={{
-                /*
-                 * NO MASK HERE.
-                 *
-                 * The fade belongs to the fixed image-zone
-                 * container above.
-                 */
-                transform: 'translateZ(0)',
-                backfaceVisibility: 'hidden'
-              }}
+              style={maskStyle}
             />
           </div>
         ))}
@@ -444,11 +366,6 @@ export const Home: React.FC<HomeProps> = ({
 
     const width = right - left;
 
-    /*
-     * Exact top heights of the two thin columns
-     * surrounding this image zone.
-     */
-
     const topLeftY = thinLineTopY[idx];
 
     const topRightY =
@@ -456,36 +373,15 @@ export const Home: React.FC<HomeProps> = ({
         ? thinLineTopY[idx + 1]
         : thinLineTopY[idx];
 
-    /*
-     * Exact bottom of all thin columns.
-     */
-
     const bottomY = thinLineBottomY;
-
-    /*
-     * Convert SVG coordinates to percentage coordinates.
-     */
 
     const topLeft = svgYToPercent(topLeftY);
     const topRight = svgYToPercent(topRightY);
     const bottom = svgYToPercent(bottomY);
 
-    /*
-     * The container begins at the higher point.
-     */
-
     const top = topLeft;
 
-    /*
-     * Height is based on the left side.
-     */
-
     const height = bottom - top;
-
-    /*
-     * The clip-path creates the exact trapezoid between
-     * the two thin columns, matching the diagonal roofline.
-     */
 
     const rightTopPercent =
       ((topRight - top) / height) * 100;
@@ -764,7 +660,68 @@ export const Home: React.FC<HomeProps> = ({
             />
 
             {/* =================================================
-                FIVE THIN VERTICAL LINES
+                FADE GRADIENTS FOR FIVE THIN VERTICAL LINES
+                =================================================
+                
+                هر خط از بالای خودش به‌تدریج ظاهر می‌شود،
+                در قسمت میانی کاملاً مشکی است و در انتها
+                به‌تدریج محو می‌شود.
+                
+                مختصات خطوط هیچ تغییری نکرده‌اند.
+                ================================================= */}
+
+            <defs>
+              {thinLineTopY.map((topY, i) => (
+                <linearGradient
+                  key={`thin-line-gradient-${i}`}
+                  id={`thin-line-fade-${i}`}
+                  x1="0"
+                  y1={topY}
+                  x2="0"
+                  y2={thinLineBottomY}
+                  gradientUnits="userSpaceOnUse"
+                >
+                  <stop
+                    offset="0%"
+                    stopColor="#1C1C1C"
+                    stopOpacity="0"
+                  />
+
+                  <stop
+                    offset="18%"
+                    stopColor="#1C1C1C"
+                    stopOpacity="0.18"
+                  />
+
+                  <stop
+                    offset="32%"
+                    stopColor="#1C1C1C"
+                    stopOpacity="1"
+                  />
+
+                  <stop
+                    offset="68%"
+                    stopColor="#1C1C1C"
+                    stopOpacity="1"
+                  />
+
+                  <stop
+                    offset="82%"
+                    stopColor="#1C1C1C"
+                    stopOpacity="0.18"
+                  />
+
+                  <stop
+                    offset="100%"
+                    stopColor="#1C1C1C"
+                    stopOpacity="0"
+                  />
+                </linearGradient>
+              ))}
+            </defs>
+
+            {/* =================================================
+                FIVE THIN VERTICAL LINES WITH FADE
                 ================================================= */}
 
             {thinLineX.map((x, i) => (
@@ -774,7 +731,7 @@ export const Home: React.FC<HomeProps> = ({
                 y1={thinLineTopY[i]}
                 x2={x}
                 y2={thinLineBottomY}
-                stroke="#1C1C1C"
+                stroke={`url(#thin-line-fade-${i})`}
                 strokeWidth="0.7"
               />
             ))}
