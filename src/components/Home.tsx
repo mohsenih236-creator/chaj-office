@@ -369,22 +369,27 @@ export const Home: React.FC<HomeProps> = ({
    * IMAGE ZONES
    * ============================================================
    *
-   * ONLY CHANGE:
+   * The image zones now follow the exact geometry of the
+   * architectural columns.
    *
-   * Each image now starts exactly at the TOP of the
-   * corresponding thin vertical column and ends exactly
-   * at the common bottom of the columns.
+   * TOP:
+   * Each image starts exactly at the diagonal roof line.
+   * Therefore every image has a different top position,
+   * following the roof slope.
    *
-   * Column tops:
+   * BOTTOM:
+   * Every image ends exactly at the bottom of the thin columns.
    *
-   * Image 1 → 23 → 91
-   * Image 2 → 27 → 91
-   * Image 3 → 31 → 91
-   * Image 4 → 34 → 91
-   *
-   * Therefore each image has a different height while
-   * completely filling its corresponding column zone.
+   * This means the images never extend outside the columns.
    */
+
+  const roofSlope = pillarTopY / pillarX;
+
+  const roofYAtSvgX = (svgX: number) =>
+    roofSlope * svgX;
+
+  const svgYToPercent = (svgY: number) =>
+    ((svgY + MARGIN_Y) / viewBoxHeight) * 100;
 
   const zoneFor = (key: string) => {
     const idx = items.findIndex((i) => i.key === key);
@@ -396,9 +401,21 @@ export const Home: React.FC<HomeProps> = ({
         ? colPercent[idx + 1] - colPercent[idx]
         : colPercent[idx] - colPercent[idx - 1];
 
-    const top = thinLineTopY[idx];
+    /*
+     * TOP follows the roof slope exactly.
+     */
+    const topSvgY = roofYAtSvgX(
+      toSvgX(left)
+    );
 
-    const bottom = thinLineBottomY;
+    const top = svgYToPercent(topSvgY);
+
+    /*
+     * BOTTOM follows the exact bottom of the thin columns.
+     */
+    const bottom = svgYToPercent(
+      thinLineBottomY
+    );
 
     return {
       left,
