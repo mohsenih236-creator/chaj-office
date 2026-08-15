@@ -372,8 +372,10 @@ export const Home: React.FC<HomeProps> = ({
 
   /*
    * Roof slope (line from roofStartX/Y at 0,0 to pillarX/pillarTopY)
-   * used only to compute each image zone's TOP edge in SVG y-units,
-   * so the top follows the diagonal instead of the flat wordZoneTop.
+   * used only to compute each image zone's BOTTOM edge in SVG
+   * y-units, so the bottom sits right under the diagonal roof line
+   * at that column's x-position. Top edge stays at wordZoneTop,
+   * unchanged from before.
    */
   const roofSlope = pillarTopY / pillarX;
   const roofYAtSvgX = (svgX: number) => roofSlope * svgX;
@@ -390,9 +392,9 @@ export const Home: React.FC<HomeProps> = ({
         ? colPercent[idx + 1] - colPercent[idx]
         : colPercent[idx] - colPercent[idx - 1];
 
-    const topSvgY = roofYAtSvgX(toSvgX(left));
-    const top = svgYToPercent(topSvgY);
-    const bottom = svgYToPercent(thinLineBottomY);
+    const bottomSvgY = roofYAtSvgX(toSvgX(left));
+    const bottom = svgYToPercent(bottomSvgY);
+    const top = wordZoneTop;
 
     return {
       left,
