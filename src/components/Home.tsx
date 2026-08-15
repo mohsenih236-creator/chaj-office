@@ -59,23 +59,23 @@ const CrossfadeStack: React.FC<{
       `
         linear-gradient(
           to bottom,
-          rgba(0,0,0,0) 0%,
+          rgba(0,0,0,0) 50%,
           rgba(0,0,0,0.15) 0%,
           rgba(0,0,0,0.55) 0%,
           rgba(0,0,0,1) 0%,
           rgba(0,0,0,1) 100%,
           rgba(0,0,0,0.55) 100%,
           rgba(0,0,0,0.15) 100%,
-          rgba(0,0,0,0) 100%
+          rgba(0,0,0,0) 50%
         ),
         linear-gradient(
           to right,
-          rgba(0,0,0,0) 0%,
+          rgba(0,0,0,0) 50%,
           rgba(0,0,0,0.45) 0%,
           rgba(0,0,0,1) 0%,
           rgba(0,0,0,1) 100%,
           rgba(0,0,0,0.45) 100%,
-          rgba(0,0,0,0) 100%
+          rgba(0,0,0,0) 50%
         )
       `,
 
@@ -85,23 +85,23 @@ const CrossfadeStack: React.FC<{
       `
         linear-gradient(
           to bottom,
-          rgba(0,0,0,0) 0%,
+          rgba(0,0,0,0) 50%,
           rgba(0,0,0,0.15) 0%,
           rgba(0,0,0,0.55) 0%,
           rgba(0,0,0,1) 0%,
           rgba(0,0,0,1) 100%,
           rgba(0,0,0,0.55) 100%,
           rgba(0,0,0,0.15) 100%,
-          rgba(0,0,0,0) 100%
+          rgba(0,0,0,0) 50%
         ),
         linear-gradient(
           to right,
-          rgba(0,0,0,0) 0%,
+          rgba(0,0,0,0) 50%,
           rgba(0,0,0,0.45) 0%,
           rgba(0,0,0,1) 0%,
           rgba(0,0,0,1) 100%,
           rgba(0,0,0,0.45) 100%,
-          rgba(0,0,0,0) 100%
+          rgba(0,0,0,0) 50%
         )
       `,
 
