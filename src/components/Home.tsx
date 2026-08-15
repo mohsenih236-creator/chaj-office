@@ -68,8 +68,8 @@ const CrossfadeStack: React.FC<{
    * ============================================================
    */
 
-  const topFadePercent = 24;
-  const bottomFadePercent = 24;
+  const topFadePercent = 30;
+  const bottomFadePercent = 30;
   const horizontalFadePercent = 14;
 
   /*
@@ -166,7 +166,7 @@ const CrossfadeStack: React.FC<{
         style={{
           clipPath: topFadeClipPath,
           background:
-            'linear-gradient(201.25deg, #F4F1EE 0%, rgba(244,241,238,0.92) 20%, rgba(244,241,238,0.55) 52%, rgba(244,241,238,0) 100%)'
+            'linear-gradient(201.25deg, #F4F1EE 0%, rgba(244,241,238,0.96) 22%, rgba(244,241,238,0.62) 55%, rgba(244,241,238,0) 100%)'
         }}
       />
 
@@ -186,7 +186,7 @@ const CrossfadeStack: React.FC<{
         style={{
           height: `${bottomFadePercent}%`,
           background:
-            'linear-gradient(to bottom, rgba(244,241,238,0) 0%, rgba(244,241,238,0.45) 35%, rgba(244,241,238,0.88) 72%, #F4F1EE 100%)'
+            'linear-gradient(to bottom, rgba(244,241,238,0) 0%, rgba(244,241,238,0.34) 34%, rgba(244,241,238,0.80) 70%, #F4F1EE 100%)'
         }}
       />
 
