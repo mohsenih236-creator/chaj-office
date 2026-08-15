@@ -66,19 +66,6 @@ const CrossfadeStack: React.FC<{
    * ============================================================
    * FADE SETTINGS
    * ============================================================
-   *
-   * These values control the visual softness of the image edges.
-   *
-   * TOP:
-   * The top fade follows the same slope as the roof.
-   *
-   * BOTTOM:
-   * Strong vertical fade before the image leaves the zone.
-   *
-   * LEFT / RIGHT:
-   * Soft horizontal fade.
-   *
-   * ============================================================
    */
 
   const topFadePercent = 0;
@@ -90,16 +77,9 @@ const CrossfadeStack: React.FC<{
    * TOP FADE GEOMETRY
    * ============================================================
    *
-   * The top edge of the image is NOT horizontal.
-   *
-   * It follows the roof slope exactly.
-   *
-   * topSlopePercent is calculated from the actual SVG geometry.
-   *
-   * The second edge is shifted downward by topFadePercent.
-   *
-   * Therefore the entire fade band remains parallel to the roof.
-   *
+   * The upper fade follows the exact roof slope.
+   * Both upper and lower boundaries of the fade remain
+   * parallel to the roof.
    * ============================================================
    */
 
@@ -111,12 +91,6 @@ const CrossfadeStack: React.FC<{
       0% ${topFadePercent}%
     )
   `;
-
-  /*
-   * ============================================================
-   * RETURN
-   * ============================================================
-   */
 
   return (
     <div
@@ -180,15 +154,6 @@ const CrossfadeStack: React.FC<{
 
       {/* ======================================================
           TOP FADE
-          ======================================================
-
-          IMPORTANT:
-
-          This fade is a parallelogram whose upper and lower
-          edges are both parallel to the roof.
-
-          Therefore there is no horizontal/sharp cut at the
-          image exit point.
           ====================================================== */}
 
       <div
@@ -289,6 +254,13 @@ const CrossfadeStack: React.FC<{
   );
 };
 
+
+/*
+ * ============================================================
+ * HOME
+ * ============================================================
+ */
+
 export const Home: React.FC<HomeProps> = ({
   language,
   onProjects,
@@ -298,6 +270,7 @@ export const Home: React.FC<HomeProps> = ({
   projects,
   studioInfo
 }) => {
+
   const isFa = language === 'FA';
 
   const [introFinished, setIntroFinished] = useState(false);
@@ -413,6 +386,11 @@ export const Home: React.FC<HomeProps> = ({
     return -MARGIN_X + (percent / 100) * viewBoxWidth;
   };
 
+  const svgYToPercent = (svgY: number) =>
+    ((svgY + MARGIN_Y) /
+      viewBoxHeight) *
+    100;
+
   /*
    * ============================================================
    * FIVE THIN VERTICAL COLUMNS
@@ -453,14 +431,6 @@ export const Home: React.FC<HomeProps> = ({
    * ============================================================
    * EXACT ROOF SLOPE
    * ============================================================
-   *
-   * This is the most important part.
-   *
-   * The image exit line uses THIS exact mathematical slope.
-   *
-   * Therefore the image upper edge and the roof are truly
-   * parallel, instead of being visually approximated.
-   * ============================================================
    */
 
   const roofSlope =
@@ -470,15 +440,6 @@ export const Home: React.FC<HomeProps> = ({
   /*
    * ============================================================
    * FIVE THIN LINE TOP POSITIONS
-   * ============================================================
-   *
-   * Instead of manually assigning:
-   *
-   * [23, 27, 31, 34, 38]
-   *
-   * all five lines now follow the exact roof slope.
-   *
-   * The first line remains anchored at Y = 23.
    * ============================================================
    */
 
@@ -519,44 +480,16 @@ export const Home: React.FC<HomeProps> = ({
 
   /*
    * ============================================================
-   * WORD ZONE
-   * ============================================================
-   */
-
-  const wordZoneTop = 41;
-  const wordZoneBottom = 79;
-
-  /*
-   * ============================================================
    * IMAGE ZONES
    * ============================================================
    *
-   * IMPORTANT:
-   *
-   * The upper boundary is now generated mathematically from
-   * the exact roof slope.
-   *
-   * Therefore:
-   *
-   * IMAGE TOP
-   * ==========
-   *       /
-   *      /
-   *     /
-   *
-   * ROOF
-   * ==========
-   *
-   * Both are parallel.
+   * Every image zone follows the exact roof slope.
+   * The top edge is calculated mathematically.
    * ============================================================
    */
 
-  const svgYToPercent = (svgY: number) =>
-    ((svgY + MARGIN_Y) /
-      viewBoxHeight) *
-    100;
-
   const zoneFor = (key: string) => {
+
     const idx = items.findIndex(
       (i) => i.key === key
     );
@@ -571,11 +504,8 @@ export const Home: React.FC<HomeProps> = ({
     const width = right - left;
 
     /*
-     * Exact top heights of the two thin columns
-     * surrounding this image zone.
-     *
-     * Because thinLineTopY itself follows the roof slope,
-     * these two points form a line parallel to the roof.
+     * Exact top position of the left and right
+     * boundary lines.
      */
 
     const topLeftY =
@@ -594,7 +524,7 @@ export const Home: React.FC<HomeProps> = ({
       thinLineBottomY;
 
     /*
-     * Convert SVG coordinates to percentage coordinates.
+     * Convert SVG coordinates to percentage.
      */
 
     const topLeft =
@@ -606,29 +536,19 @@ export const Home: React.FC<HomeProps> = ({
     const bottom =
       svgYToPercent(bottomY);
 
-    /*
-     * Container starts exactly at its left top point.
-     */
-
     const top = topLeft;
 
     const height =
       bottom - top;
 
     /*
-     * Exact slope of the upper edge
-     * inside this zone.
+     * Exact slope of the upper edge.
      */
 
     const rightTopPercent =
       ((topRight - top) /
         height) *
       100;
-
-    /*
-     * Slope used by CrossfadeStack
-     * for the top fade.
-     */
 
     const topSlopePercent =
       rightTopPercent;
@@ -639,13 +559,6 @@ export const Home: React.FC<HomeProps> = ({
       top,
       height,
       topSlopePercent,
-
-      /*
-       * Exact trapezoid.
-       *
-       * The upper boundary is mathematically parallel
-       * to the roof.
-       */
 
       clipPath: `polygon(
         0% 0%,
@@ -667,6 +580,55 @@ export const Home: React.FC<HomeProps> = ({
 
   const contactZone =
     zoneFor('contact');
+
+  /*
+   * ============================================================
+   * WORD ZONE
+   * ============================================================
+   *
+   * IMPORTANT:
+   *
+   * All four labels start from EXACTLY the same horizontal
+   * Y coordinate.
+   *
+   * We do NOT use an arbitrary value such as 41%.
+   *
+   * Instead we calculate the actual upper boundary of the
+   * image area and place the labels safely inside it.
+   * ============================================================
+   */
+
+  const highestZoneTopY =
+    Math.max(...thinLineTopY);
+
+  const highestZoneTopPercent =
+    svgYToPercent(highestZoneTopY);
+
+  /*
+   * Safety distance from the upper image boundary.
+   *
+   * This guarantees that even the rightmost word,
+   * CONTACT, does not cross the sloped upper boundary.
+   */
+
+  const wordTopSafety = 4;
+
+  /*
+   * ONE COMMON HORIZONTAL STARTING LINE
+   */
+
+  const wordZoneTop =
+    highestZoneTopPercent +
+    wordTopSafety;
+
+  /*
+   * Common lower boundary.
+   *
+   * The labels finish before the lower edge of the
+   * image zone and therefore cannot protrude outside it.
+   */
+
+  const wordZoneBottom = 82;
 
   /*
    * ============================================================
@@ -720,6 +682,7 @@ export const Home: React.FC<HomeProps> = ({
           }
         `}
       >
+
         <img
           src="/images/chaj-logo-group.png"
           alt="CHAJ Architecture Group"
@@ -730,7 +693,9 @@ export const Home: React.FC<HomeProps> = ({
             animate-chaj-logo
           "
         />
+
       </div>
+
 
       {/* ======================================================
           MAIN CONTENT
@@ -786,6 +751,7 @@ export const Home: React.FC<HomeProps> = ({
                 projectsZone.clipPath
             }}
           >
+
             <CrossfadeStack
               images={projectPreviewImages}
               intervalMs={3200}
@@ -793,7 +759,9 @@ export const Home: React.FC<HomeProps> = ({
                 projectsZone.topSlopePercent
               }
             />
+
           </div>
+
 
           {/* ==================================================
               ABOUT IMAGE REEL
@@ -814,6 +782,7 @@ export const Home: React.FC<HomeProps> = ({
                 aboutZone.clipPath
             }}
           >
+
             <CrossfadeStack
               images={aboutPreviewImages}
               intervalMs={2600}
@@ -821,7 +790,9 @@ export const Home: React.FC<HomeProps> = ({
                 aboutZone.topSlopePercent
               }
             />
+
           </div>
+
 
           {/* ==================================================
               SERVICES IMAGE REEL
@@ -842,6 +813,7 @@ export const Home: React.FC<HomeProps> = ({
                 servicesZone.clipPath
             }}
           >
+
             <CrossfadeStack
               images={servicesPreviewImages}
               intervalMs={3200}
@@ -849,7 +821,9 @@ export const Home: React.FC<HomeProps> = ({
                 servicesZone.topSlopePercent
               }
             />
+
           </div>
+
 
           {/* ==================================================
               CONTACT IMAGE REEL
@@ -870,6 +844,7 @@ export const Home: React.FC<HomeProps> = ({
                 contactZone.clipPath
             }}
           >
+
             <CrossfadeStack
               images={contactPreviewImages}
               intervalMs={2600}
@@ -877,7 +852,9 @@ export const Home: React.FC<HomeProps> = ({
                 contactZone.topSlopePercent
               }
             />
+
           </div>
+
 
           {/* ==================================================
               SVG ARCHITECTURAL DRAWING
@@ -904,6 +881,7 @@ export const Home: React.FC<HomeProps> = ({
             <defs>
 
               {thinLineX.map((x, i) => (
+
                 <linearGradient
                   key={`line-gradient-${i}`}
                   id={`thin-line-gradient-${i}`}
@@ -940,7 +918,7 @@ export const Home: React.FC<HomeProps> = ({
                     stopOpacity="0.85"
                   />
 
-                  {/* SHARP CENTRAL AREA */}
+                  {/* CENTRAL SHARP AREA */}
 
                   <stop
                     offset="48%"
@@ -975,9 +953,11 @@ export const Home: React.FC<HomeProps> = ({
                   />
 
                 </linearGradient>
+
               ))}
 
             </defs>
+
 
             {/* =================================================
                 MAIN DIAGONAL ROOF
@@ -993,6 +973,7 @@ export const Home: React.FC<HomeProps> = ({
               strokeLinecap="square"
             />
 
+
             {/* =================================================
                 MAIN VERTICAL COLUMN
                 ================================================= */}
@@ -1006,6 +987,7 @@ export const Home: React.FC<HomeProps> = ({
               strokeWidth={roofStrokeWidth}
               strokeLinecap="butt"
             />
+
 
             {/* =================================================
                 ROOF CONTINUATION
@@ -1021,17 +1003,13 @@ export const Home: React.FC<HomeProps> = ({
               strokeLinecap="square"
             />
 
+
             {/* =================================================
                 FIVE THIN VERTICAL LINES
-                =================================================
-                
-                They remain present.
-
-                Their opacity fades smoothly at both ends
-                and becomes fully sharp in the center.
                 ================================================= */}
 
             {thinLineX.map((x, i) => (
+
               <line
                 key={`thin-line-${i}`}
                 x1={x}
@@ -1042,9 +1020,11 @@ export const Home: React.FC<HomeProps> = ({
                 strokeWidth="0.7"
                 strokeLinecap="butt"
               />
+
             ))}
 
           </svg>
+
 
           {/* ==================================================
               CHAJ GROUP
@@ -1077,8 +1057,10 @@ export const Home: React.FC<HomeProps> = ({
             }}
             aria-hidden="true"
           >
+
             {'CHAJ GROUP'.split('').map(
               (char, index) => (
+
                 <span
                   key={`${char}-${index}`}
                   style={{
@@ -1092,9 +1074,12 @@ export const Home: React.FC<HomeProps> = ({
                     ? '\u00A0'
                     : char}
                 </span>
+
               )
             )}
+
           </div>
+
 
           {/* ==================================================
               CLICKABLE WORD ZONES
@@ -1113,6 +1098,7 @@ export const Home: React.FC<HomeProps> = ({
                   colPercent[idx - 1];
 
             return (
+
               <button
                 key={item.labelEn}
                 onClick={item.action}
@@ -1128,6 +1114,7 @@ export const Home: React.FC<HomeProps> = ({
                   flex
                   items-start
                   justify-center
+                  overflow-hidden
                   cursor-pointer
                   transition-opacity
                   duration-500
@@ -1179,29 +1166,36 @@ export const Home: React.FC<HomeProps> = ({
                       mix-blend-difference
                     "
                   >
+
                     {item.labelEn
                       .toUpperCase()
                       .split('')
                       .map(
                         (ch, chIdx) => (
+
                           <span
                             key={chIdx}
                           >
                             {ch}
                           </span>
+
                         )
                       )}
+
                   </span>
 
                 )}
 
               </button>
+
             );
+
           })}
 
         </div>
 
       </div>
+
     </div>
   );
 };
