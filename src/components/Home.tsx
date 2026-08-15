@@ -57,10 +57,10 @@ const CrossfadeStack: React.FC<{
       linear-gradient(
         18deg,
         rgba(0,0,0,0) 0%,
-        rgba(0,0,0,0.15) 0%,
+        rgba(0,0,0,0.15) 5%,
         rgba(0,0,0,1) 20%,
         rgba(0,0,0,1) 80%,
-        rgba(0,0,0,0.15) 100%,
+        rgba(0,0,0,0.15) 95%,
         rgba(0,0,0,0) 100%
       ),
       linear-gradient(
@@ -76,8 +76,8 @@ const CrossfadeStack: React.FC<{
         to right,
         rgba(0,0,0,0) 0%,
         rgba(0,0,0,0.12) 6%,
-        rgba(0,0,0,1) 18%,
-        rgba(0,0,0,1) 82%,
+        rgba(0,0,0,1) 10%,
+        rgba(0,0,0,1) 90%,
         rgba(0,0,0,0.12) 94%,
         rgba(0,0,0,0) 100%
       )
