@@ -36,20 +36,22 @@ const CrossfadeStack: React.FC<{
 
   /*
    * ============================================================
-   * SOFT IMAGE MASK
+   * SOFT HORIZONTAL IMAGE EDGES
    * ============================================================
+   *
+   * ONLY the left and right edges of the images fade out.
+   *
+   * IMPORTANT:
+   * No change to image height, position, movement,
+   * animation speed, or image dimensions.
    */
 
   const maskStyle: React.CSSProperties = {
     WebkitMaskImage:
-      'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 24%, rgba(0,0,0,1) 76%, rgba(0,0,0,0) 100%), linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 18%, rgba(0,0,0,1) 82%, rgba(0,0,0,0) 100%)',
-
-    WebkitMaskComposite: 'source-in',
+      'linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 12%, rgba(0,0,0,1) 88%, rgba(0,0,0,0) 100%)',
 
     maskImage:
-      'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 24%, rgba(0,0,0,1) 76%, rgba(0,0,0,0) 100%), linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 18%, rgba(0,0,0,1) 82%, rgba(0,0,0,0) 100%)',
-
-    maskComposite: 'intersect',
+      'linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 12%, rgba(0,0,0,1) 88%, rgba(0,0,0,0) 100%)',
 
     transform: 'translateZ(0)',
     backfaceVisibility: 'hidden'
