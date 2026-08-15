@@ -36,29 +36,6 @@ const CrossfadeStack: React.FC<{
 
   /*
    * ============================================================
-   * SOFT HORIZONTAL IMAGE EDGES
-   * ============================================================
-   *
-   * ONLY the left and right edges of the images fade out.
-   *
-   * IMPORTANT:
-   * No change to image height, position, movement,
-   * animation speed, or image dimensions.
-   */
-
-  const maskStyle: React.CSSProperties = {
-    WebkitMaskImage:
-      'linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 12%, rgba(0,0,0,1) 88%, rgba(0,0,0,0) 100%)',
-
-    maskImage:
-      'linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 12%, rgba(0,0,0,1) 88%, rgba(0,0,0,0) 100%)',
-
-    transform: 'translateZ(0)',
-    backfaceVisibility: 'hidden'
-  };
-
-  /*
-   * ============================================================
    * ANIMATION TIMING
    * ============================================================
    */
@@ -114,6 +91,7 @@ const CrossfadeStack: React.FC<{
           <div
             key={`${src}-${i}`}
             style={{
+              position: 'relative',
               flex: '0 0 auto',
               width: '100%',
               height: `${100 / tripled.length}%`,
@@ -130,7 +108,48 @@ const CrossfadeStack: React.FC<{
                 h-full
                 object-cover
               "
-              style={maskStyle}
+              style={{
+                transform: 'translateZ(0)',
+                backfaceVisibility: 'hidden'
+              }}
+            />
+
+            {/* ==================================================
+                SOFT FADE ON ALL FOUR EDGES OF THE IMAGE
+                ================================================== */}
+
+            <div
+              aria-hidden="true"
+              style={{
+                position: 'absolute',
+                inset: 0,
+                pointerEvents: 'none',
+
+                background: `
+                  linear-gradient(
+                    to right,
+                    #F4F1EE 0%,
+                    rgba(244,241,238,0.82) 3%,
+                    rgba(244,241,238,0.35) 8%,
+                    rgba(244,241,238,0) 14%,
+                    rgba(244,241,238,0) 86%,
+                    rgba(244,241,238,0.35) 92%,
+                    rgba(244,241,238,0.82) 97%,
+                    #F4F1EE 100%
+                  ),
+                  linear-gradient(
+                    to bottom,
+                    #F4F1EE 0%,
+                    rgba(244,241,238,0.82) 3%,
+                    rgba(244,241,238,0.35) 8%,
+                    rgba(244,241,238,0) 14%,
+                    rgba(244,241,238,0) 86%,
+                    rgba(244,241,238,0.35) 92%,
+                    rgba(244,241,238,0.82) 97%,
+                    #F4F1EE 100%
+                  )
+                `
+              }}
             />
           </div>
         ))}
@@ -363,17 +382,6 @@ export const Home: React.FC<HomeProps> = ({
    *
    * The BOTTOM edge is exactly at the common bottom of
    * all five thin columns.
-   *
-   * Therefore:
-   *
-   *       /----------------
-   *      / IMAGE
-   *     / IMAGE
-   *    / IMAGE
-   *   /____________________
-   *
-   * The top is sloped.
-   * The bottom is perfectly aligned.
    */
 
   const svgYToPercent = (svgY: number) =>
@@ -427,8 +435,6 @@ export const Home: React.FC<HomeProps> = ({
     /*
      * The clip-path creates the exact trapezoid between
      * the two thin columns.
-     *
-     * The image can never escape this area.
      */
     const rightTopPercent =
       ((topRight - top) / height) * 100;
