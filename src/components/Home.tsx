@@ -99,8 +99,8 @@ const CrossfadeStack: React.FC<{
         to bottom,
         rgba(0,0,0,0) 0%,
         rgba(0,0,0,0.10) 5%,
-        rgba(0,0,0,1) 19%,
-        rgba(0,0,0,1) 78%,
+        rgba(0,0,0,1) 0%,
+        rgba(0,0,0,1) 100%,
         rgba(0,0,0,0.10) 94%,
         rgba(0,0,0,0) 100%
       ),
