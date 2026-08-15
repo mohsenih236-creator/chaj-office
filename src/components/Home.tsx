@@ -22,7 +22,12 @@ let crossfadeInstanceCounter = 0;
 const CrossfadeStack: React.FC<{
   images: string[];
   intervalMs?: number;
-}> = ({ images, intervalMs = 3200 }) => {
+  topSlopePercent?: number;
+}> = ({
+  images,
+  intervalMs = 3200,
+  topSlopePercent = 0
+}) => {
   const instanceIdRef = React.useRef<number | null>(null);
 
   if (instanceIdRef.current === null) {
@@ -33,93 +38,6 @@ const CrossfadeStack: React.FC<{
   const instanceId = instanceIdRef.current;
 
   if (images.length === 0) return null;
-
-  /*
-   * ============================================================
-   * IMAGE FADE
-   * ============================================================
-   *
-   * چهار طرف تصویر Fade می‌شوند.
-   *
-   * بالا:
-   * لبه Fade با زاویه‌ای طراحی شده که با شیب سقف
-   * موازی باشد.
-   *
-   * پایین:
-   * Fade عمودی و قوی‌تر.
-   *
-   * چپ و راست:
-   * Fade نرم.
-   */
-
-  const maskStyle: React.CSSProperties = {
-    WebkitMaskImage: `
-      linear-gradient(
-        18deg,
-        rgba(0,0,0,0) 0%,
-        rgba(0,0,0,0.15) 7%,
-        rgba(0,0,0,1) 20%,
-        rgba(0,0,0,1) 80%,
-        rgba(0,0,0,0.15) 93%,
-        rgba(0,0,0,0) 100%
-      ),
-      linear-gradient(
-        to bottom,
-        rgba(0,0,0,0) 0%,
-        rgba(0,0,0,0.10) 5%,
-        rgba(0,0,0,1) 19%,
-        rgba(0,0,0,1) 78%,
-        rgba(0,0,0,0.10) 94%,
-        rgba(0,0,0,0) 100%
-      ),
-      linear-gradient(
-        to right,
-        rgba(0,0,0,0) 0%,
-        rgba(0,0,0,0.12) 6%,
-        rgba(0,0,0,1) 18%,
-        rgba(0,0,0,1) 82%,
-        rgba(0,0,0,0.12) 94%,
-        rgba(0,0,0,0) 100%
-      )
-    `,
-
-    WebkitMaskComposite: 'source-in',
-
-    maskImage: `
-      linear-gradient(
-        18deg,
-        rgba(0,0,0,0) 0%,
-        rgba(0,0,0,0.15) 7%,
-        rgba(0,0,0,1) 20%,
-        rgba(0,0,0,1) 80%,
-        rgba(0,0,0,0.15) 93%,
-        rgba(0,0,0,0) 100%
-      ),
-      linear-gradient(
-        to bottom,
-        rgba(0,0,0,0) 0%,
-        rgba(0,0,0,0.10) 5%,
-        rgba(0,0,0,1) 19%,
-        rgba(0,0,0,1) 78%,
-        rgba(0,0,0,0.10) 94%,
-        rgba(0,0,0,0) 100%
-      ),
-      linear-gradient(
-        to right,
-        rgba(0,0,0,0) 0%,
-        rgba(0,0,0,0.12) 6%,
-        rgba(0,0,0,1) 18%,
-        rgba(0,0,0,1) 82%,
-        rgba(0,0,0,0.12) 94%,
-        rgba(0,0,0,0) 100%
-      )
-    `,
-
-    maskComposite: 'intersect',
-
-    transform: 'translateZ(0)',
-    backfaceVisibility: 'hidden'
-  };
 
   /*
    * ============================================================
@@ -146,6 +64,56 @@ const CrossfadeStack: React.FC<{
 
   /*
    * ============================================================
+   * FADE SETTINGS
+   * ============================================================
+   *
+   * These values control the visual softness of the image edges.
+   *
+   * TOP:
+   * The top fade follows the same slope as the roof.
+   *
+   * BOTTOM:
+   * Strong vertical fade before the image leaves the zone.
+   *
+   * LEFT / RIGHT:
+   * Soft horizontal fade.
+   *
+   * ============================================================
+   */
+
+  const topFadePercent = 28;
+  const bottomFadePercent = 22;
+  const horizontalFadePercent = 14;
+
+  /*
+   * ============================================================
+   * TOP FADE GEOMETRY
+   * ============================================================
+   *
+   * The top edge of the image is NOT horizontal.
+   *
+   * It follows the roof slope exactly.
+   *
+   * topSlopePercent is calculated from the actual SVG geometry.
+   *
+   * The second edge is shifted downward by topFadePercent.
+   *
+   * Therefore the entire fade band remains parallel to the roof.
+   *
+   * ============================================================
+   */
+
+  const topFadeClipPath = `
+    polygon(
+      0% 0%,
+      100% ${topSlopePercent}%,
+      100% ${topSlopePercent + topFadePercent}%,
+      0% ${topFadePercent}%
+    )
+  `;
+
+  /*
+   * ============================================================
    * RETURN
    * ============================================================
    */
@@ -163,6 +131,11 @@ const CrossfadeStack: React.FC<{
         transform: 'translateZ(0)'
       }}
     >
+
+      {/* ======================================================
+          MOVING IMAGE STACK
+          ====================================================== */}
+
       <div
         style={{
           display: 'flex',
@@ -174,6 +147,7 @@ const CrossfadeStack: React.FC<{
           animation: `${animName} ${loopSeconds}s linear infinite`
         }}
       >
+
         {tripled.map((src, i) => (
           <div
             key={`${src}-${i}`}
@@ -194,11 +168,106 @@ const CrossfadeStack: React.FC<{
                 h-full
                 object-cover
               "
-              style={maskStyle}
+              style={{
+                transform: 'translateZ(0)',
+                backfaceVisibility: 'hidden'
+              }}
             />
           </div>
         ))}
+
       </div>
+
+      {/* ======================================================
+          TOP FADE
+          ======================================================
+
+          IMPORTANT:
+
+          This fade is a parallelogram whose upper and lower
+          edges are both parallel to the roof.
+
+          Therefore there is no horizontal/sharp cut at the
+          image exit point.
+          ====================================================== */}
+
+      <div
+        className="
+          absolute
+          inset-0
+          pointer-events-none
+          z-10
+        "
+        style={{
+          clipPath: topFadeClipPath,
+          background:
+            'linear-gradient(201.25deg, #F4F1EE 0%, rgba(244,241,238,0.92) 20%, rgba(244,241,238,0.55) 52%, rgba(244,241,238,0) 100%)'
+        }}
+      />
+
+      {/* ======================================================
+          BOTTOM FADE
+          ====================================================== */}
+
+      <div
+        className="
+          absolute
+          left-0
+          right-0
+          bottom-0
+          pointer-events-none
+          z-10
+        "
+        style={{
+          height: `${bottomFadePercent}%`,
+          background:
+            'linear-gradient(to bottom, rgba(244,241,238,0) 0%, rgba(244,241,238,0.45) 35%, rgba(244,241,238,0.88) 72%, #F4F1EE 100%)'
+        }}
+      />
+
+      {/* ======================================================
+          LEFT FADE
+          ====================================================== */}
+
+      <div
+        className="
+          absolute
+          left-0
+          top-0
+          bottom-0
+          pointer-events-none
+          z-10
+        "
+        style={{
+          width: `${horizontalFadePercent}%`,
+          background:
+            'linear-gradient(to right, #F4F1EE 0%, rgba(244,241,238,0.72) 35%, rgba(244,241,238,0) 100%)'
+        }}
+      />
+
+      {/* ======================================================
+          RIGHT FADE
+          ====================================================== */}
+
+      <div
+        className="
+          absolute
+          right-0
+          top-0
+          bottom-0
+          pointer-events-none
+          z-10
+        "
+        style={{
+          width: `${horizontalFadePercent}%`,
+          background:
+            'linear-gradient(to left, #F4F1EE 0%, rgba(244,241,238,0.72) 35%, rgba(244,241,238,0) 100%)'
+        }}
+      />
+
+      {/* ======================================================
+          ANIMATION
+          ====================================================== */}
 
       <style>{`
         @keyframes ${animName} {
@@ -215,6 +284,7 @@ const CrossfadeStack: React.FC<{
           }
         }
       `}</style>
+
     </div>
   );
 };
@@ -335,7 +405,7 @@ export const Home: React.FC<HomeProps> = ({
 
   /*
    * ============================================================
-   * CONVERT PERCENTAGE POSITIONS TO SVG COORDINATES
+   * SVG COORDINATE CONVERSION
    * ============================================================
    */
 
@@ -352,10 +422,6 @@ export const Home: React.FC<HomeProps> = ({
   const colPercent = [5, 18, 32, 45, 58];
 
   const thinLineX = colPercent.map(toSvgX);
-
-  const thinLineTopY = [23, 27, 31, 34, 38];
-
-  const thinLineBottomY = 91;
 
   /*
    * ============================================================
@@ -385,6 +451,50 @@ export const Home: React.FC<HomeProps> = ({
 
   /*
    * ============================================================
+   * EXACT ROOF SLOPE
+   * ============================================================
+   *
+   * This is the most important part.
+   *
+   * The image exit line uses THIS exact mathematical slope.
+   *
+   * Therefore the image upper edge and the roof are truly
+   * parallel, instead of being visually approximated.
+   * ============================================================
+   */
+
+  const roofSlope =
+    (roofEndY - roofStartY) /
+    (roofEndX - roofStartX);
+
+  /*
+   * ============================================================
+   * FIVE THIN LINE TOP POSITIONS
+   * ============================================================
+   *
+   * Instead of manually assigning:
+   *
+   * [23, 27, 31, 34, 38]
+   *
+   * all five lines now follow the exact roof slope.
+   *
+   * The first line remains anchored at Y = 23.
+   * ============================================================
+   */
+
+  const firstThinLineTopY = 23;
+
+  const thinLineTopY = thinLineX.map((x) => {
+    return (
+      firstThinLineTopY +
+      (x - thinLineX[0]) * roofSlope
+    );
+  });
+
+  const thinLineBottomY = 91;
+
+  /*
+   * ============================================================
    * RIGHT ROOF CONTINUATION
    * ============================================================
    */
@@ -400,7 +510,8 @@ export const Home: React.FC<HomeProps> = ({
   const beamUy = pillarTopY / beamLength;
 
   const tContinuation =
-    (continuationEndX - pillarX) / beamUx;
+    (continuationEndX - pillarX) /
+    beamUx;
 
   const continuationEndY =
     pillarTopY +
@@ -420,46 +531,30 @@ export const Home: React.FC<HomeProps> = ({
    * IMAGE ZONES
    * ============================================================
    *
-   * نکته مهم:
+   * IMPORTANT:
    *
-   * لبه بالایی تصویر دقیقاً بر اساس شیب واقعی سقف
-   * محاسبه می‌شود.
+   * The upper boundary is now generated mathematically from
+   * the exact roof slope.
    *
-   * بنابراین دیگر topRightY به صورت دستی تعیین نمی‌شود.
+   * Therefore:
    *
-   * این باعث می‌شود:
-   *
-   * TOP IMAGE EDGE
-   *        ╲
-   *         ╲
-   *          ╲
-   *
-   * دقیقاً با:
+   * IMAGE TOP
+   * ==========
+   *       /
+   *      /
+   *     /
    *
    * ROOF
-   *        ╲
-   *         ╲
-   *          ╲
+   * ==========
    *
-   * موازی باشد.
+   * Both are parallel.
+   * ============================================================
    */
 
   const svgYToPercent = (svgY: number) =>
-    ((svgY + MARGIN_Y) / viewBoxHeight) * 100;
-
-  /*
-   * شیب دقیق سقف در مختصات SVG
-   */
-
-  const roofSlope =
-    (roofEndY - roofStartY) /
-    (roofEndX - roofStartX);
-
-  /*
-   * ============================================================
-   * IMAGE ZONE CALCULATION
-   * ============================================================
-   */
+    ((svgY + MARGIN_Y) /
+      viewBoxHeight) *
+    100;
 
   const zoneFor = (key: string) => {
     const idx = items.findIndex(
@@ -476,63 +571,30 @@ export const Home: React.FC<HomeProps> = ({
     const width = right - left;
 
     /*
-     * ----------------------------------------------------------
-     * LEFT X
-     * ----------------------------------------------------------
-     */
-
-    const leftX = thinLineX[idx];
-
-    /*
-     * ----------------------------------------------------------
-     * RIGHT X
-     * ----------------------------------------------------------
-     */
-
-    const rightX =
-      idx + 1 < thinLineX.length
-        ? thinLineX[idx + 1]
-        : thinLineX[idx];
-
-    /*
-     * ----------------------------------------------------------
-     * TOP LEFT
-     * ----------------------------------------------------------
+     * Exact top heights of the two thin columns
+     * surrounding this image zone.
      *
-     * ارتفاع اصلی ستون نازک حفظ شده.
+     * Because thinLineTopY itself follows the roof slope,
+     * these two points form a line parallel to the roof.
      */
 
     const topLeftY =
       thinLineTopY[idx];
 
-    /*
-     * ----------------------------------------------------------
-     * EXACT PARALLEL TOP EDGE
-     * ----------------------------------------------------------
-     *
-     * به جای اینکه topRightY را دستی وارد کنیم،
-     * بر اساس شیب واقعی سقف محاسبه می‌کنیم.
-     */
-
     const topRightY =
-      topLeftY +
-      (rightX - leftX) * roofSlope;
+      idx + 1 < thinLineTopY.length
+        ? thinLineTopY[idx + 1]
+        : thinLineTopY[idx];
 
     /*
-     * ----------------------------------------------------------
-     * BOTTOM
-     * ----------------------------------------------------------
-     *
-     * این مقدار دست نخورده باقی مانده.
+     * Common bottom.
      */
 
     const bottomY =
       thinLineBottomY;
 
     /*
-     * ----------------------------------------------------------
-     * CONVERT TO CSS PERCENTAGE
-     * ----------------------------------------------------------
+     * Convert SVG coordinates to percentage coordinates.
      */
 
     const topLeft =
@@ -545,9 +607,7 @@ export const Home: React.FC<HomeProps> = ({
       svgYToPercent(bottomY);
 
     /*
-     * ----------------------------------------------------------
-     * CONTAINER POSITION
-     * ----------------------------------------------------------
+     * Container starts exactly at its left top point.
      */
 
     const top = topLeft;
@@ -556,25 +616,36 @@ export const Home: React.FC<HomeProps> = ({
       bottom - top;
 
     /*
-     * ----------------------------------------------------------
-     * EXACT SLOPED TOP
-     * ----------------------------------------------------------
+     * Exact slope of the upper edge
+     * inside this zone.
      */
 
     const rightTopPercent =
-      ((topRight - top) / height) * 100;
+      ((topRight - top) /
+        height) *
+      100;
 
     /*
-     * ----------------------------------------------------------
-     * TRAPEZOID
-     * ----------------------------------------------------------
+     * Slope used by CrossfadeStack
+     * for the top fade.
      */
+
+    const topSlopePercent =
+      rightTopPercent;
 
     return {
       left,
       width,
       top,
       height,
+      topSlopePercent,
+
+      /*
+       * Exact trapezoid.
+       *
+       * The upper boundary is mathematically parallel
+       * to the roof.
+       */
 
       clipPath: `polygon(
         0% 0%,
@@ -711,12 +782,16 @@ export const Home: React.FC<HomeProps> = ({
               width: `${projectsZone.width}%`,
               top: `${projectsZone.top}%`,
               height: `${projectsZone.height}%`,
-              clipPath: projectsZone.clipPath
+              clipPath:
+                projectsZone.clipPath
             }}
           >
             <CrossfadeStack
               images={projectPreviewImages}
               intervalMs={3200}
+              topSlopePercent={
+                projectsZone.topSlopePercent
+              }
             />
           </div>
 
@@ -735,12 +810,16 @@ export const Home: React.FC<HomeProps> = ({
               width: `${aboutZone.width}%`,
               top: `${aboutZone.top}%`,
               height: `${aboutZone.height}%`,
-              clipPath: aboutZone.clipPath
+              clipPath:
+                aboutZone.clipPath
             }}
           >
             <CrossfadeStack
               images={aboutPreviewImages}
               intervalMs={2600}
+              topSlopePercent={
+                aboutZone.topSlopePercent
+              }
             />
           </div>
 
@@ -759,12 +838,16 @@ export const Home: React.FC<HomeProps> = ({
               width: `${servicesZone.width}%`,
               top: `${servicesZone.top}%`,
               height: `${servicesZone.height}%`,
-              clipPath: servicesZone.clipPath
+              clipPath:
+                servicesZone.clipPath
             }}
           >
             <CrossfadeStack
               images={servicesPreviewImages}
               intervalMs={3200}
+              topSlopePercent={
+                servicesZone.topSlopePercent
+              }
             />
           </div>
 
@@ -783,12 +866,16 @@ export const Home: React.FC<HomeProps> = ({
               width: `${contactZone.width}%`,
               top: `${contactZone.top}%`,
               height: `${contactZone.height}%`,
-              clipPath: contactZone.clipPath
+              clipPath:
+                contactZone.clipPath
             }}
           >
             <CrossfadeStack
               images={contactPreviewImages}
               intervalMs={2600}
+              topSlopePercent={
+                contactZone.topSlopePercent
+              }
             />
           </div>
 
@@ -811,23 +898,24 @@ export const Home: React.FC<HomeProps> = ({
           >
 
             {/* =================================================
-                LINE FADE DEFINITIONS
+                LINE GRADIENT DEFINITIONS
                 ================================================= */}
 
             <defs>
 
-              {thinLineX.map((_, i) => (
+              {thinLineX.map((x, i) => (
                 <linearGradient
                   key={`line-gradient-${i}`}
-                  id={`thin-line-fade-${i}`}
-                  x1="0"
-                  y1={thinLineTopY[i]}
-                  x2="0"
-                  y2={thinLineBottomY}
+                  id={`thin-line-gradient-${i}`}
                   gradientUnits="userSpaceOnUse"
+                  x1={x}
+                  y1={thinLineTopY[i]}
+                  x2={x}
+                  y2={thinLineBottomY}
                 >
 
-                  {/* بالای خط بسیار نرم */}
+                  {/* TOP FADE */}
+
                   <stop
                     offset="0%"
                     stopColor="#1C1C1C"
@@ -835,45 +923,51 @@ export const Home: React.FC<HomeProps> = ({
                   />
 
                   <stop
-                    offset="12%"
+                    offset="14%"
                     stopColor="#1C1C1C"
-                    stopOpacity="0.18"
+                    stopOpacity="0.08"
                   />
 
-                  {/* ورود به قسمت واضح */}
                   <stop
                     offset="28%"
                     stopColor="#1C1C1C"
-                    stopOpacity="0.75"
+                    stopOpacity="0.35"
                   />
 
-                  {/* مرکز کاملاً واضح */}
                   <stop
-                    offset="42%"
+                    offset="40%"
+                    stopColor="#1C1C1C"
+                    stopOpacity="0.85"
+                  />
+
+                  {/* SHARP CENTRAL AREA */}
+
+                  <stop
+                    offset="48%"
                     stopColor="#1C1C1C"
                     stopOpacity="1"
                   />
 
                   <stop
-                    offset="58%"
+                    offset="68%"
                     stopColor="#1C1C1C"
                     stopOpacity="1"
                   />
 
-                  {/* خروج نرم */}
+                  {/* BOTTOM FADE */}
+
                   <stop
-                    offset="72%"
+                    offset="78%"
                     stopColor="#1C1C1C"
-                    stopOpacity="0.75"
+                    stopOpacity="0.82"
                   />
 
                   <stop
                     offset="88%"
                     stopColor="#1C1C1C"
-                    stopOpacity="0.18"
+                    stopOpacity="0.32"
                   />
 
-                  {/* انتهای کاملاً محو */}
                   <stop
                     offset="100%"
                     stopColor="#1C1C1C"
@@ -929,6 +1023,12 @@ export const Home: React.FC<HomeProps> = ({
 
             {/* =================================================
                 FIVE THIN VERTICAL LINES
+                =================================================
+                
+                They remain present.
+
+                Their opacity fades smoothly at both ends
+                and becomes fully sharp in the center.
                 ================================================= */}
 
             {thinLineX.map((x, i) => (
@@ -938,8 +1038,9 @@ export const Home: React.FC<HomeProps> = ({
                 y1={thinLineTopY[i]}
                 x2={x}
                 y2={thinLineBottomY}
-                stroke={`url(#thin-line-fade-${i})`}
+                stroke={`url(#thin-line-gradient-${i})`}
                 strokeWidth="0.7"
+                strokeLinecap="butt"
               />
             ))}
 
@@ -969,7 +1070,8 @@ export const Home: React.FC<HomeProps> = ({
               left: `${chajGroupLeft}%`,
               width: `${chajGroupWidth}%`,
               top: '94%',
-              fontFamily: '"CHAJGothic", sans-serif',
+              fontFamily:
+                '"CHAJGothic", sans-serif',
               direction: 'ltr',
               unicodeBidi: 'isolate'
             }}
@@ -1035,9 +1137,10 @@ export const Home: React.FC<HomeProps> = ({
                   left: `${left}%`,
                   width: `${width}%`,
                   top: `${wordZoneTop}%`,
-                  height:
-                    `${wordZoneBottom -
-                    wordZoneTop}%`
+                  height: `${
+                    wordZoneBottom -
+                    wordZoneTop
+                  }%`
                 }}
               >
 
