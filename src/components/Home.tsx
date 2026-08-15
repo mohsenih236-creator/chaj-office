@@ -36,59 +36,49 @@ const CrossfadeStack: React.FC<{
 
   /*
    * ============================================================
-   * SOFT IMAGE MASK
+   * IMAGE FADE
    * ============================================================
    *
-   * IMPORTANT:
+   * چهار طرف تصویر Fade می‌شوند.
    *
-   * The actual roof angle is:
+   * بالا:
+   * لبه Fade با زاویه‌ای طراحی شده که با شیب سقف
+   * موازی باشد.
    *
-   * atan(28 / 86.4) = 17.956165°
+   * پایین:
+   * Fade عمودی و قوی‌تر.
    *
-   * CSS linear-gradient uses its angle perpendicular
-   * to the visible transition edge.
-   *
-   * Therefore:
-   *
-   * 90° + 17.956165° = 107.956165°
-   *
-   * This makes the upper fading edge parallel to the
-   * architectural roof.
+   * چپ و راست:
+   * Fade نرم.
    */
-
-  const ROOF_FADE_ANGLE = 107.956165;
 
   const maskStyle: React.CSSProperties = {
     WebkitMaskImage: `
       linear-gradient(
-        ${ROOF_FADE_ANGLE}deg,
+        18deg,
         rgba(0,0,0,0) 0%,
-        rgba(0,0,0,0) 7%,
-        rgba(0,0,0,0.08) 10%,
-        rgba(0,0,0,0.22) 13%,
-        rgba(0,0,0,0.48) 17%,
-        rgba(0,0,0,0.78) 21%,
-        rgba(0,0,0,1) 26%,
-        rgba(0,0,0,1) 70%,
-        rgba(0,0,0,0.82) 76%,
-        rgba(0,0,0,0.58) 81%,
-        rgba(0,0,0,0.32) 86%,
-        rgba(0,0,0,0.12) 92%,
+        rgba(0,0,0,0.15) 7%,
+        rgba(0,0,0,1) 20%,
+        rgba(0,0,0,1) 80%,
+        rgba(0,0,0,0.15) 93%,
+        rgba(0,0,0,0) 100%
+      ),
+      linear-gradient(
+        to bottom,
+        rgba(0,0,0,0) 0%,
+        rgba(0,0,0,0.10) 5%,
+        rgba(0,0,0,1) 19%,
+        rgba(0,0,0,1) 78%,
+        rgba(0,0,0,0.10) 94%,
         rgba(0,0,0,0) 100%
       ),
       linear-gradient(
         to right,
         rgba(0,0,0,0) 0%,
-        rgba(0,0,0,0.08) 5%,
-        rgba(0,0,0,0.25) 9%,
-        rgba(0,0,0,0.58) 14%,
-        rgba(0,0,0,0.85) 19%,
-        rgba(0,0,0,1) 24%,
-        rgba(0,0,0,1) 76%,
-        rgba(0,0,0,0.85) 81%,
-        rgba(0,0,0,0.58) 86%,
-        rgba(0,0,0,0.25) 91%,
-        rgba(0,0,0,0.08) 95%,
+        rgba(0,0,0,0.12) 6%,
+        rgba(0,0,0,1) 18%,
+        rgba(0,0,0,1) 82%,
+        rgba(0,0,0,0.12) 94%,
         rgba(0,0,0,0) 100%
       )
     `,
@@ -97,34 +87,30 @@ const CrossfadeStack: React.FC<{
 
     maskImage: `
       linear-gradient(
-        ${ROOF_FADE_ANGLE}deg,
+        18deg,
         rgba(0,0,0,0) 0%,
-        rgba(0,0,0,0) 7%,
-        rgba(0,0,0,0.08) 10%,
-        rgba(0,0,0,0.22) 13%,
-        rgba(0,0,0,0.48) 17%,
-        rgba(0,0,0,0.78) 21%,
-        rgba(0,0,0,1) 26%,
-        rgba(0,0,0,1) 70%,
-        rgba(0,0,0,0.82) 76%,
-        rgba(0,0,0,0.58) 81%,
-        rgba(0,0,0,0.32) 86%,
-        rgba(0,0,0,0.12) 92%,
+        rgba(0,0,0,0.15) 7%,
+        rgba(0,0,0,1) 20%,
+        rgba(0,0,0,1) 80%,
+        rgba(0,0,0,0.15) 93%,
+        rgba(0,0,0,0) 100%
+      ),
+      linear-gradient(
+        to bottom,
+        rgba(0,0,0,0) 0%,
+        rgba(0,0,0,0.10) 5%,
+        rgba(0,0,0,1) 19%,
+        rgba(0,0,0,1) 78%,
+        rgba(0,0,0,0.10) 94%,
         rgba(0,0,0,0) 100%
       ),
       linear-gradient(
         to right,
         rgba(0,0,0,0) 0%,
-        rgba(0,0,0,0.08) 5%,
-        rgba(0,0,0,0.25) 9%,
-        rgba(0,0,0,0.58) 14%,
-        rgba(0,0,0,0.85) 19%,
-        rgba(0,0,0,1) 24%,
-        rgba(0,0,0,1) 76%,
-        rgba(0,0,0,0.85) 81%,
-        rgba(0,0,0,0.58) 86%,
-        rgba(0,0,0,0.25) 91%,
-        rgba(0,0,0,0.08) 95%,
+        rgba(0,0,0,0.12) 6%,
+        rgba(0,0,0,1) 18%,
+        rgba(0,0,0,1) 82%,
+        rgba(0,0,0,0.12) 94%,
         rgba(0,0,0,0) 100%
       )
     `,
@@ -348,7 +334,9 @@ export const Home: React.FC<HomeProps> = ({
   `;
 
   /*
-   * Convert percentage positions to SVG coordinates.
+   * ============================================================
+   * CONVERT PERCENTAGE POSITIONS TO SVG COORDINATES
+   * ============================================================
    */
 
   const toSvgX = (percent: number) => {
@@ -404,7 +392,8 @@ export const Home: React.FC<HomeProps> = ({
   const continuationEndX = contentWidth - 2;
 
   const beamLength = Math.sqrt(
-    pillarX * pillarX + pillarTopY * pillarTopY
+    pillarX * pillarX +
+    pillarTopY * pillarTopY
   );
 
   const beamUx = pillarX / beamLength;
@@ -414,7 +403,8 @@ export const Home: React.FC<HomeProps> = ({
     (continuationEndX - pillarX) / beamUx;
 
   const continuationEndY =
-    pillarTopY + tContinuation * beamUy;
+    pillarTopY +
+    tContinuation * beamUy;
 
   /*
    * ============================================================
@@ -429,13 +419,52 @@ export const Home: React.FC<HomeProps> = ({
    * ============================================================
    * IMAGE ZONES
    * ============================================================
+   *
+   * نکته مهم:
+   *
+   * لبه بالایی تصویر دقیقاً بر اساس شیب واقعی سقف
+   * محاسبه می‌شود.
+   *
+   * بنابراین دیگر topRightY به صورت دستی تعیین نمی‌شود.
+   *
+   * این باعث می‌شود:
+   *
+   * TOP IMAGE EDGE
+   *        ╲
+   *         ╲
+   *          ╲
+   *
+   * دقیقاً با:
+   *
+   * ROOF
+   *        ╲
+   *         ╲
+   *          ╲
+   *
+   * موازی باشد.
    */
 
   const svgYToPercent = (svgY: number) =>
     ((svgY + MARGIN_Y) / viewBoxHeight) * 100;
 
+  /*
+   * شیب دقیق سقف در مختصات SVG
+   */
+
+  const roofSlope =
+    (roofEndY - roofStartY) /
+    (roofEndX - roofStartX);
+
+  /*
+   * ============================================================
+   * IMAGE ZONE CALCULATION
+   * ============================================================
+   */
+
   const zoneFor = (key: string) => {
-    const idx = items.findIndex((i) => i.key === key);
+    const idx = items.findIndex(
+      (i) => i.key === key
+    );
 
     const left = colPercent[idx];
 
@@ -446,25 +475,100 @@ export const Home: React.FC<HomeProps> = ({
 
     const width = right - left;
 
-    const topLeftY = thinLineTopY[idx];
+    /*
+     * ----------------------------------------------------------
+     * LEFT X
+     * ----------------------------------------------------------
+     */
+
+    const leftX = thinLineX[idx];
+
+    /*
+     * ----------------------------------------------------------
+     * RIGHT X
+     * ----------------------------------------------------------
+     */
+
+    const rightX =
+      idx + 1 < thinLineX.length
+        ? thinLineX[idx + 1]
+        : thinLineX[idx];
+
+    /*
+     * ----------------------------------------------------------
+     * TOP LEFT
+     * ----------------------------------------------------------
+     *
+     * ارتفاع اصلی ستون نازک حفظ شده.
+     */
+
+    const topLeftY =
+      thinLineTopY[idx];
+
+    /*
+     * ----------------------------------------------------------
+     * EXACT PARALLEL TOP EDGE
+     * ----------------------------------------------------------
+     *
+     * به جای اینکه topRightY را دستی وارد کنیم،
+     * بر اساس شیب واقعی سقف محاسبه می‌کنیم.
+     */
 
     const topRightY =
-      idx + 1 < thinLineTopY.length
-        ? thinLineTopY[idx + 1]
-        : thinLineTopY[idx];
+      topLeftY +
+      (rightX - leftX) * roofSlope;
 
-    const bottomY = thinLineBottomY;
+    /*
+     * ----------------------------------------------------------
+     * BOTTOM
+     * ----------------------------------------------------------
+     *
+     * این مقدار دست نخورده باقی مانده.
+     */
 
-    const topLeft = svgYToPercent(topLeftY);
-    const topRight = svgYToPercent(topRightY);
-    const bottom = svgYToPercent(bottomY);
+    const bottomY =
+      thinLineBottomY;
+
+    /*
+     * ----------------------------------------------------------
+     * CONVERT TO CSS PERCENTAGE
+     * ----------------------------------------------------------
+     */
+
+    const topLeft =
+      svgYToPercent(topLeftY);
+
+    const topRight =
+      svgYToPercent(topRightY);
+
+    const bottom =
+      svgYToPercent(bottomY);
+
+    /*
+     * ----------------------------------------------------------
+     * CONTAINER POSITION
+     * ----------------------------------------------------------
+     */
 
     const top = topLeft;
 
-    const height = bottom - top;
+    const height =
+      bottom - top;
+
+    /*
+     * ----------------------------------------------------------
+     * EXACT SLOPED TOP
+     * ----------------------------------------------------------
+     */
 
     const rightTopPercent =
       ((topRight - top) / height) * 100;
+
+    /*
+     * ----------------------------------------------------------
+     * TRAPEZOID
+     * ----------------------------------------------------------
+     */
 
     return {
       left,
@@ -481,10 +585,17 @@ export const Home: React.FC<HomeProps> = ({
     };
   };
 
-  const projectsZone = zoneFor('projects');
-  const aboutZone = zoneFor('about');
-  const servicesZone = zoneFor('services');
-  const contactZone = zoneFor('contact');
+  const projectsZone =
+    zoneFor('projects');
+
+  const aboutZone =
+    zoneFor('about');
+
+  const servicesZone =
+    zoneFor('services');
+
+  const contactZone =
+    zoneFor('contact');
 
   /*
    * ============================================================
@@ -492,10 +603,12 @@ export const Home: React.FC<HomeProps> = ({
    * ============================================================
    */
 
-  const chajGroupLeft = colPercent[0];
+  const chajGroupLeft =
+    colPercent[0];
 
   const chajGroupWidth =
-    colPercent[colPercent.length - 1] - colPercent[0];
+    colPercent[colPercent.length - 1] -
+    colPercent[0];
 
   /*
    * ============================================================
@@ -698,6 +811,81 @@ export const Home: React.FC<HomeProps> = ({
           >
 
             {/* =================================================
+                LINE FADE DEFINITIONS
+                ================================================= */}
+
+            <defs>
+
+              {thinLineX.map((_, i) => (
+                <linearGradient
+                  key={`line-gradient-${i}`}
+                  id={`thin-line-fade-${i}`}
+                  x1="0"
+                  y1={thinLineTopY[i]}
+                  x2="0"
+                  y2={thinLineBottomY}
+                  gradientUnits="userSpaceOnUse"
+                >
+
+                  {/* بالای خط بسیار نرم */}
+                  <stop
+                    offset="0%"
+                    stopColor="#1C1C1C"
+                    stopOpacity="0"
+                  />
+
+                  <stop
+                    offset="12%"
+                    stopColor="#1C1C1C"
+                    stopOpacity="0.18"
+                  />
+
+                  {/* ورود به قسمت واضح */}
+                  <stop
+                    offset="28%"
+                    stopColor="#1C1C1C"
+                    stopOpacity="0.75"
+                  />
+
+                  {/* مرکز کاملاً واضح */}
+                  <stop
+                    offset="42%"
+                    stopColor="#1C1C1C"
+                    stopOpacity="1"
+                  />
+
+                  <stop
+                    offset="58%"
+                    stopColor="#1C1C1C"
+                    stopOpacity="1"
+                  />
+
+                  {/* خروج نرم */}
+                  <stop
+                    offset="72%"
+                    stopColor="#1C1C1C"
+                    stopOpacity="0.75"
+                  />
+
+                  <stop
+                    offset="88%"
+                    stopColor="#1C1C1C"
+                    stopOpacity="0.18"
+                  />
+
+                  {/* انتهای کاملاً محو */}
+                  <stop
+                    offset="100%"
+                    stopColor="#1C1C1C"
+                    stopOpacity="0"
+                  />
+
+                </linearGradient>
+              ))}
+
+            </defs>
+
+            {/* =================================================
                 MAIN DIAGONAL ROOF
                 ================================================= */}
 
@@ -750,7 +938,7 @@ export const Home: React.FC<HomeProps> = ({
                 y1={thinLineTopY[i]}
                 x2={x}
                 y2={thinLineBottomY}
-                stroke="#1C1C1C"
+                stroke={`url(#thin-line-fade-${i})`}
                 strokeWidth="0.7"
               />
             ))}
@@ -787,18 +975,23 @@ export const Home: React.FC<HomeProps> = ({
             }}
             aria-hidden="true"
           >
-            {'CHAJ GROUP'.split('').map((char, index) => (
-              <span
-                key={`${char}-${index}`}
-                style={{
-                  fontFamily: '"CHAJGothic", sans-serif',
-                  direction: 'ltr',
-                  unicodeBidi: 'isolate'
-                }}
-              >
-                {char === ' ' ? '\u00A0' : char}
-              </span>
-            ))}
+            {'CHAJ GROUP'.split('').map(
+              (char, index) => (
+                <span
+                  key={`${char}-${index}`}
+                  style={{
+                    fontFamily:
+                      '"CHAJGothic", sans-serif',
+                    direction: 'ltr',
+                    unicodeBidi: 'isolate'
+                  }}
+                >
+                  {char === ' '
+                    ? '\u00A0'
+                    : char}
+                </span>
+              )
+            )}
           </div>
 
           {/* ==================================================
@@ -807,12 +1000,15 @@ export const Home: React.FC<HomeProps> = ({
 
           {items.map((item, idx) => {
 
-            const left = colPercent[idx];
+            const left =
+              colPercent[idx];
 
             const width =
               idx + 1 < colPercent.length
-                ? colPercent[idx + 1] - colPercent[idx]
-                : colPercent[idx] - colPercent[idx - 1];
+                ? colPercent[idx + 1] -
+                  colPercent[idx]
+                : colPercent[idx] -
+                  colPercent[idx - 1];
 
             return (
               <button
@@ -839,7 +1035,9 @@ export const Home: React.FC<HomeProps> = ({
                   left: `${left}%`,
                   width: `${width}%`,
                   top: `${wordZoneTop}%`,
-                  height: `${wordZoneBottom - wordZoneTop}%`
+                  height:
+                    `${wordZoneBottom -
+                    wordZoneTop}%`
                 }}
               >
 
@@ -881,11 +1079,15 @@ export const Home: React.FC<HomeProps> = ({
                     {item.labelEn
                       .toUpperCase()
                       .split('')
-                      .map((ch, chIdx) => (
-                        <span key={chIdx}>
-                          {ch}
-                        </span>
-                      ))}
+                      .map(
+                        (ch, chIdx) => (
+                          <span
+                            key={chIdx}
+                          >
+                            {ch}
+                          </span>
+                        )
+                      )}
                   </span>
 
                 )}
