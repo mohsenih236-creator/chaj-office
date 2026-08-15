@@ -41,19 +41,78 @@ const CrossfadeStack: React.FC<{
    */
 
   const maskStyle: React.CSSProperties = {
-    WebkitMaskImage:
-      'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 24%, rgba(0,0,0,1) 76%, rgba(0,0,0,0) 100%), linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 18%, rgba(0,0,0,1) 82%, rgba(0,0,0,0) 100%)',
+  /*
+   * ============================================================
+   * FOUR-SIDE SOFT FADE
+   * ============================================================
+   *
+   * TOP FADE:
+   * The upper fading edge is angled to follow the roof slope.
+   *
+   * BOTTOM FADE:
+   * Strong fade as the image leaves the zone from below.
+   *
+   * LEFT / RIGHT:
+   * Soft fading prevents any sharp horizontal image edges.
+   */
 
-    WebkitMaskComposite: 'source-in',
+  WebkitMaskImage: `
+    linear-gradient(
+      108deg,
+      rgba(0,0,0,0) 0%,
+      rgba(0,0,0,0.12) 8%,
+      rgba(0,0,0,0.55) 16%,
+      rgba(0,0,0,1) 25%,
+      rgba(0,0,0,1) 72%,
+      rgba(0,0,0,0.55) 84%,
+      rgba(0,0,0,0.12) 92%,
+      rgba(0,0,0,0) 100%
+    ),
+    linear-gradient(
+      to right,
+      rgba(0,0,0,0) 0%,
+      rgba(0,0,0,0.15) 8%,
+      rgba(0,0,0,0.65) 17%,
+      rgba(0,0,0,1) 25%,
+      rgba(0,0,0,1) 75%,
+      rgba(0,0,0,0.65) 83%,
+      rgba(0,0,0,0.15) 92%,
+      rgba(0,0,0,0) 100%
+    )
+  `,
 
-    maskImage:
-      'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 24%, rgba(0,0,0,1) 76%, rgba(0,0,0,0) 100%), linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 18%, rgba(0,0,0,1) 82%, rgba(0,0,0,0) 100%)',
+  WebkitMaskComposite: 'source-in',
 
-    maskComposite: 'intersect',
+  maskImage: `
+    linear-gradient(
+      108deg,
+      rgba(0,0,0,0) 0%,
+      rgba(0,0,0,0.12) 8%,
+      rgba(0,0,0,0.55) 16%,
+      rgba(0,0,0,1) 25%,
+      rgba(0,0,0,1) 72%,
+      rgba(0,0,0,0.55) 84%,
+      rgba(0,0,0,0.12) 92%,
+      rgba(0,0,0,0) 100%
+    ),
+    linear-gradient(
+      to right,
+      rgba(0,0,0,0) 0%,
+      rgba(0,0,0,0.15) 8%,
+      rgba(0,0,0,0.65) 17%,
+      rgba(0,0,0,1) 25%,
+      rgba(0,0,0,1) 75%,
+      rgba(0,0,0,0.65) 83%,
+      rgba(0,0,0,0.15) 92%,
+      rgba(0,0,0,0) 100%
+    )
+  `,
 
-    transform: 'translateZ(0)',
-    backfaceVisibility: 'hidden'
-  };
+  maskComposite: 'intersect',
+
+  transform: 'translateZ(0)',
+  backfaceVisibility: 'hidden'
+};
 
   /*
    * ============================================================
