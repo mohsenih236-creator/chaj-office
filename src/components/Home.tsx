@@ -1,3 +1,4 @@
+```tsx
 import React, { useEffect, useState } from 'react';
 import { Language, Project, StudioInfo } from '../types';
 
@@ -23,10 +24,12 @@ const CrossfadeStack: React.FC<{
   images: string[];
   intervalMs?: number;
   topSlopePercent?: number;
+  paused?: boolean;
 }> = ({
   images,
   intervalMs = 3200,
-  topSlopePercent = 0
+  topSlopePercent = 0,
+  paused = false
 }) => {
   const instanceIdRef = React.useRef<number | null>(null);
 
@@ -118,7 +121,8 @@ const CrossfadeStack: React.FC<{
           height: `${tripled.length * 100}%`,
           willChange: 'transform',
           transform: 'translate3d(0, 0, 0)',
-          animation: `${animName} ${loopSeconds}s linear infinite`
+          animation: `${animName} ${loopSeconds}s linear infinite`,
+          animationPlayState: paused ? 'paused' : 'running'
         }}
       >
 
@@ -274,6 +278,18 @@ export const Home: React.FC<HomeProps> = ({
   const isFa = language === 'FA';
 
   const [introFinished, setIntroFinished] = useState(false);
+
+  /*
+   * ============================================================
+   * HOVERED COLUMN
+   * ============================================================
+   *
+   * Only the column currently under the mouse is paused.
+   * Other columns continue their animation normally.
+   * ============================================================
+   */
+
+  const [hoveredColumn, setHoveredColumn] = useState<string | null>(null);
 
   /*
    * ============================================================
@@ -758,6 +774,7 @@ export const Home: React.FC<HomeProps> = ({
               topSlopePercent={
                 projectsZone.topSlopePercent
               }
+              paused={hoveredColumn === 'projects'}
             />
 
           </div>
@@ -789,6 +806,7 @@ export const Home: React.FC<HomeProps> = ({
               topSlopePercent={
                 aboutZone.topSlopePercent
               }
+              paused={hoveredColumn === 'about'}
             />
 
           </div>
@@ -820,6 +838,7 @@ export const Home: React.FC<HomeProps> = ({
               topSlopePercent={
                 servicesZone.topSlopePercent
               }
+              paused={hoveredColumn === 'services'}
             />
 
           </div>
@@ -851,6 +870,7 @@ export const Home: React.FC<HomeProps> = ({
               topSlopePercent={
                 contactZone.topSlopePercent
               }
+              paused={hoveredColumn === 'contact'}
             />
 
           </div>
@@ -1102,6 +1122,12 @@ export const Home: React.FC<HomeProps> = ({
               <button
                 key={item.labelEn}
                 onClick={item.action}
+                onMouseEnter={() =>
+                  setHoveredColumn(item.key)
+                }
+                onMouseLeave={() =>
+                  setHoveredColumn(null)
+                }
                 aria-label={
                   isFa
                     ? item.labelFa
@@ -1180,6 +1206,7 @@ export const Home: React.FC<HomeProps> = ({
                           </span>
 
                         )
+
                       )}
 
                   </span>
@@ -1199,3 +1226,4 @@ export const Home: React.FC<HomeProps> = ({
     </div>
   );
 };
+```
