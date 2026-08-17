@@ -79,21 +79,16 @@ const CrossfadeStack: React.FC<{
    * ============================================================
    * TOP FADE GEOMETRY
    * ============================================================
-   *
-   * The upper fade follows the exact roof slope.
-   * Both upper and lower boundaries of the fade remain
-   * parallel to the roof.
-   * ============================================================
    */
 
-  const topFadeClipPath = `
-    polygon(
-      0% 0%,
-      100% ${topSlopePercent}%,
-      100% ${topSlopePercent + topFadePercent}%,
-      0% ${topFadePercent}%
-    )
-  `;
+  const topFadeClipPath =
+    'polygon(0% 0%, 100% ' +
+    topSlopePercent +
+    '%, 100% ' +
+    (topSlopePercent + topFadePercent) +
+    '%, 0% ' +
+    topFadePercent +
+    '%)';
 
   return (
     <div
@@ -121,8 +116,13 @@ const CrossfadeStack: React.FC<{
           height: `${tripled.length * 100}%`,
           willChange: 'transform',
           transform: 'translate3d(0, 0, 0)',
-          animation: `${animName} ${loopSeconds}s linear infinite`,
-          animationPlayState: paused ? 'paused' : 'running'
+          animation:
+            animName +
+            ' ' +
+            loopSeconds +
+            's linear infinite',
+          animationPlayState:
+            paused ? 'paused' : 'running'
         }}
       >
 
@@ -136,6 +136,7 @@ const CrossfadeStack: React.FC<{
               overflow: 'hidden'
             }}
           >
+
             <img
               src={src}
               alt=""
@@ -151,6 +152,7 @@ const CrossfadeStack: React.FC<{
                 backfaceVisibility: 'hidden'
               }}
             />
+
           </div>
         ))}
 
@@ -283,10 +285,6 @@ export const Home: React.FC<HomeProps> = ({
    * ============================================================
    * HOVERED COLUMN
    * ============================================================
-   *
-   * Only the column currently under the mouse is paused.
-   * Other columns continue their animation normally.
-   * ============================================================
    */
 
   const [hoveredColumn, setHoveredColumn] = useState<string | null>(null);
@@ -385,12 +383,14 @@ export const Home: React.FC<HomeProps> = ({
   const viewBoxWidth = contentWidth + MARGIN_X;
   const viewBoxHeight = 100 + MARGIN_Y;
 
-  const viewBox = `
-    ${-MARGIN_X}
-    ${-MARGIN_Y}
-    ${viewBoxWidth}
-    ${viewBoxHeight}
-  `;
+  const viewBox =
+    -MARGIN_X +
+    ' ' +
+    -MARGIN_Y +
+    ' ' +
+    viewBoxWidth +
+    ' ' +
+    viewBoxHeight;
 
   /*
    * ============================================================
@@ -498,10 +498,6 @@ export const Home: React.FC<HomeProps> = ({
    * ============================================================
    * IMAGE ZONES
    * ============================================================
-   *
-   * Every image zone follows the exact roof slope.
-   * The top edge is calculated mathematically.
-   * ============================================================
    */
 
   const zoneFor = (key: string) => {
@@ -519,11 +515,6 @@ export const Home: React.FC<HomeProps> = ({
 
     const width = right - left;
 
-    /*
-     * Exact top position of the left and right
-     * boundary lines.
-     */
-
     const topLeftY =
       thinLineTopY[idx];
 
@@ -532,16 +523,8 @@ export const Home: React.FC<HomeProps> = ({
         ? thinLineTopY[idx + 1]
         : thinLineTopY[idx];
 
-    /*
-     * Common bottom.
-     */
-
     const bottomY =
       thinLineBottomY;
-
-    /*
-     * Convert SVG coordinates to percentage.
-     */
 
     const topLeft =
       svgYToPercent(topLeftY);
@@ -556,10 +539,6 @@ export const Home: React.FC<HomeProps> = ({
 
     const height =
       bottom - top;
-
-    /*
-     * Exact slope of the upper edge.
-     */
 
     const rightTopPercent =
       ((topRight - top) /
@@ -576,12 +555,15 @@ export const Home: React.FC<HomeProps> = ({
       height,
       topSlopePercent,
 
-      clipPath: `polygon(
-        0% 0%,
-        100% ${rightTopPercent}%,
-        100% 100%,
-        0% 100%
-      )`
+      clipPath:
+        'polygon(' +
+        '0% 0%, ' +
+        '100% ' +
+        rightTopPercent +
+        '%, ' +
+        '100% 100%, ' +
+        '0% 100%' +
+        ')'
     };
   };
 
@@ -601,17 +583,6 @@ export const Home: React.FC<HomeProps> = ({
    * ============================================================
    * WORD ZONE
    * ============================================================
-   *
-   * IMPORTANT:
-   *
-   * All four labels start from EXACTLY the same horizontal
-   * Y coordinate.
-   *
-   * We do NOT use an arbitrary value such as 41%.
-   *
-   * Instead we calculate the actual upper boundary of the
-   * image area and place the labels safely inside it.
-   * ============================================================
    */
 
   const highestZoneTopY =
@@ -620,29 +591,11 @@ export const Home: React.FC<HomeProps> = ({
   const highestZoneTopPercent =
     svgYToPercent(highestZoneTopY);
 
-  /*
-   * Safety distance from the upper image boundary.
-   *
-   * This guarantees that even the rightmost word,
-   * CONTACT, does not cross the sloped upper boundary.
-   */
-
   const wordTopSafety = 4;
-
-  /*
-   * ONE COMMON HORIZONTAL STARTING LINE
-   */
 
   const wordZoneTop =
     highestZoneTopPercent +
     wordTopSafety;
-
-  /*
-   * Common lower boundary.
-   *
-   * The labels finish before the lower edge of the
-   * image zone and therefore cannot protrude outside it.
-   */
 
   const wordZoneBottom = 82;
 
@@ -774,7 +727,9 @@ export const Home: React.FC<HomeProps> = ({
               topSlopePercent={
                 projectsZone.topSlopePercent
               }
-              paused={hoveredColumn === 'projects'}
+              paused={
+                hoveredColumn === 'projects'
+              }
             />
 
           </div>
@@ -806,7 +761,9 @@ export const Home: React.FC<HomeProps> = ({
               topSlopePercent={
                 aboutZone.topSlopePercent
               }
-              paused={hoveredColumn === 'about'}
+              paused={
+                hoveredColumn === 'about'
+              }
             />
 
           </div>
@@ -838,7 +795,9 @@ export const Home: React.FC<HomeProps> = ({
               topSlopePercent={
                 servicesZone.topSlopePercent
               }
-              paused={hoveredColumn === 'services'}
+              paused={
+                hoveredColumn === 'services'
+              }
             />
 
           </div>
@@ -870,7 +829,9 @@ export const Home: React.FC<HomeProps> = ({
               topSlopePercent={
                 contactZone.topSlopePercent
               }
-              paused={hoveredColumn === 'contact'}
+              paused={
+                hoveredColumn === 'contact'
+              }
             />
 
           </div>
@@ -1206,7 +1167,6 @@ export const Home: React.FC<HomeProps> = ({
                           </span>
 
                         )
-
                       )}
 
                   </span>
