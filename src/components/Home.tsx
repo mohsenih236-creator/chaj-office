@@ -24,11 +24,13 @@ const CrossfadeStack: React.FC<{
   intervalMs?: number;
   topSlopePercent?: number;
   isPaused?: boolean;
+  imageScale?: number;
 }> = ({
   images,
   intervalMs = 3200,
   topSlopePercent = 0,
-  isPaused = false
+  isPaused = false,
+  imageScale = 1
 }) => {
   const instanceIdRef = React.useRef<number | null>(null);
 
@@ -146,7 +148,7 @@ const CrossfadeStack: React.FC<{
                 object-cover
               "
               style={{
-                transform: 'translateZ(0)',
+                transform: `translateZ(0) scale(${imageScale})`,
                 backfaceVisibility: 'hidden'
               }}
             />
@@ -776,6 +778,7 @@ export const Home: React.FC<HomeProps> = ({
               isPaused={
                 hoveredColumn === 'about'
               }
+              imageScale={0.72}
             />
 
           </div>
