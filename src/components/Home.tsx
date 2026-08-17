@@ -51,7 +51,7 @@ const CrossfadeStack: React.FC<{
   const loopDurationMs = intervalMs * images.length;
   const loopSeconds = (loopDurationMs / 1000).toFixed(2);
 
-  const animName = `reel-scroll-${instanceId}`;
+  const animName = "reel-scroll-" + instanceId;
 
   /*
    * ============================================================
