@@ -1,4 +1,3 @@
-```tsx
 import React, { useEffect, useState } from 'react';
 import { Language, Project, StudioInfo } from '../types';
 
@@ -24,12 +23,12 @@ const CrossfadeStack: React.FC<{
   images: string[];
   intervalMs?: number;
   topSlopePercent?: number;
-  paused?: boolean;
+  isPaused?: boolean;
 }> = ({
   images,
   intervalMs = 3200,
   topSlopePercent = 0,
-  paused = false
+  isPaused = false
 }) => {
   const instanceIdRef = React.useRef<number | null>(null);
 
@@ -51,7 +50,7 @@ const CrossfadeStack: React.FC<{
   const loopDurationMs = intervalMs * images.length;
   const loopSeconds = (loopDurationMs / 1000).toFixed(2);
 
-  const animName = "reel-scroll-" + instanceId;
+  const animName = `reel-scroll-${instanceId}`;
 
   /*
    * ============================================================
@@ -79,16 +78,21 @@ const CrossfadeStack: React.FC<{
    * ============================================================
    * TOP FADE GEOMETRY
    * ============================================================
+   *
+   * The upper fade follows the exact roof slope.
+   * Both upper and lower boundaries of the fade remain
+   * parallel to the roof.
+   * ============================================================
    */
 
-  const topFadeClipPath =
-    'polygon(0% 0%, 100% ' +
-    topSlopePercent +
-    '%, 100% ' +
-    (topSlopePercent + topFadePercent) +
-    '%, 0% ' +
-    topFadePercent +
-    '%)';
+  const topFadeClipPath = `
+    polygon(
+      0% 0%,
+      100% ${topSlopePercent}%,
+      100% ${topSlopePercent + topFadePercent}%,
+      0% ${topFadePercent}%
+    )
+  `;
 
   return (
     <div
@@ -116,13 +120,8 @@ const CrossfadeStack: React.FC<{
           height: `${tripled.length * 100}%`,
           willChange: 'transform',
           transform: 'translate3d(0, 0, 0)',
-          animation:
-            animName +
-            ' ' +
-            loopSeconds +
-            's linear infinite',
-          animationPlayState:
-            paused ? 'paused' : 'running'
+          animation: `${animName} ${loopSeconds}s linear infinite`,
+          animationPlayState: isPaused ? 'paused' : 'running'
         }}
       >
 
@@ -136,7 +135,6 @@ const CrossfadeStack: React.FC<{
               overflow: 'hidden'
             }}
           >
-
             <img
               src={src}
               alt=""
@@ -152,7 +150,6 @@ const CrossfadeStack: React.FC<{
                 backfaceVisibility: 'hidden'
               }}
             />
-
           </div>
         ))}
 
@@ -283,7 +280,10 @@ export const Home: React.FC<HomeProps> = ({
 
   /*
    * ============================================================
-   * HOVERED COLUMN
+   * HOVER STATE
+   * ============================================================
+   *
+   * Only the column currently under the mouse is paused.
    * ============================================================
    */
 
@@ -383,14 +383,12 @@ export const Home: React.FC<HomeProps> = ({
   const viewBoxWidth = contentWidth + MARGIN_X;
   const viewBoxHeight = 100 + MARGIN_Y;
 
-  const viewBox =
-    -MARGIN_X +
-    ' ' +
-    -MARGIN_Y +
-    ' ' +
-    viewBoxWidth +
-    ' ' +
-    viewBoxHeight;
+  const viewBox = `
+    ${-MARGIN_X}
+    ${-MARGIN_Y}
+    ${viewBoxWidth}
+    ${viewBoxHeight}
+  `;
 
   /*
    * ============================================================
@@ -515,6 +513,11 @@ export const Home: React.FC<HomeProps> = ({
 
     const width = right - left;
 
+    /*
+     * Exact top position of the left and right
+     * boundary lines.
+     */
+
     const topLeftY =
       thinLineTopY[idx];
 
@@ -523,8 +526,16 @@ export const Home: React.FC<HomeProps> = ({
         ? thinLineTopY[idx + 1]
         : thinLineTopY[idx];
 
+    /*
+     * Common bottom.
+     */
+
     const bottomY =
       thinLineBottomY;
+
+    /*
+     * Convert SVG coordinates to percentage.
+     */
 
     const topLeft =
       svgYToPercent(topLeftY);
@@ -539,6 +550,10 @@ export const Home: React.FC<HomeProps> = ({
 
     const height =
       bottom - top;
+
+    /*
+     * Exact slope of the upper edge.
+     */
 
     const rightTopPercent =
       ((topRight - top) /
@@ -555,15 +570,12 @@ export const Home: React.FC<HomeProps> = ({
       height,
       topSlopePercent,
 
-      clipPath:
-        'polygon(' +
-        '0% 0%, ' +
-        '100% ' +
-        rightTopPercent +
-        '%, ' +
-        '100% 100%, ' +
-        '0% 100%' +
-        ')'
+      clipPath: `polygon(
+        0% 0%,
+        100% ${rightTopPercent}%,
+        100% 100%,
+        0% 100%
+      )`
     };
   };
 
@@ -727,7 +739,7 @@ export const Home: React.FC<HomeProps> = ({
               topSlopePercent={
                 projectsZone.topSlopePercent
               }
-              paused={
+              isPaused={
                 hoveredColumn === 'projects'
               }
             />
@@ -761,7 +773,7 @@ export const Home: React.FC<HomeProps> = ({
               topSlopePercent={
                 aboutZone.topSlopePercent
               }
-              paused={
+              isPaused={
                 hoveredColumn === 'about'
               }
             />
@@ -795,7 +807,7 @@ export const Home: React.FC<HomeProps> = ({
               topSlopePercent={
                 servicesZone.topSlopePercent
               }
-              paused={
+              isPaused={
                 hoveredColumn === 'services'
               }
             />
@@ -829,7 +841,7 @@ export const Home: React.FC<HomeProps> = ({
               topSlopePercent={
                 contactZone.topSlopePercent
               }
-              paused={
+              isPaused={
                 hoveredColumn === 'contact'
               }
             />
@@ -873,8 +885,6 @@ export const Home: React.FC<HomeProps> = ({
                   y2={thinLineBottomY}
                 >
 
-                  {/* TOP FADE */}
-
                   <stop
                     offset="0%"
                     stopColor="#1C1C1C"
@@ -899,8 +909,6 @@ export const Home: React.FC<HomeProps> = ({
                     stopOpacity="0.85"
                   />
 
-                  {/* CENTRAL SHARP AREA */}
-
                   <stop
                     offset="48%"
                     stopColor="#1C1C1C"
@@ -912,8 +920,6 @@ export const Home: React.FC<HomeProps> = ({
                     stopColor="#1C1C1C"
                     stopOpacity="1"
                   />
-
-                  {/* BOTTOM FADE */}
 
                   <stop
                     offset="78%"
@@ -1083,12 +1089,12 @@ export const Home: React.FC<HomeProps> = ({
               <button
                 key={item.labelEn}
                 onClick={item.action}
-                onMouseEnter={() =>
-                  setHoveredColumn(item.key)
-                }
-                onMouseLeave={() =>
-                  setHoveredColumn(null)
-                }
+                onMouseEnter={() => {
+                  setHoveredColumn(item.key);
+                }}
+                onMouseLeave={() => {
+                  setHoveredColumn(null);
+                }}
                 aria-label={
                   isFa
                     ? item.labelFa
@@ -1186,4 +1192,3 @@ export const Home: React.FC<HomeProps> = ({
     </div>
   );
 };
-```
