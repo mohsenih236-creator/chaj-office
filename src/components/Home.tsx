@@ -25,12 +25,14 @@ const CrossfadeStack: React.FC<{
   topSlopePercent?: number;
   isPaused?: boolean;
   imageScale?: number;
+  imageEdgeFade?: boolean;
 }> = ({
   images,
   intervalMs = 3200,
   topSlopePercent = 0,
   isPaused = false,
-  imageScale = 1
+  imageScale = 1,
+  imageEdgeFade = false
 }) => {
   const instanceIdRef = React.useRef<number | null>(null);
 
@@ -149,7 +151,18 @@ const CrossfadeStack: React.FC<{
               "
               style={{
                 transform: `translateZ(0) scale(${imageScale})`,
-                backfaceVisibility: 'hidden'
+                backfaceVisibility: 'hidden',
+
+                ...(imageEdgeFade
+                  ? {
+                      WebkitMaskImage:
+                        'linear-gradient(to right, transparent 0%, black 14%, black 86%, transparent 100%), linear-gradient(to bottom, transparent 0%, black 12%, black 88%, transparent 100%)',
+                      WebkitMaskComposite: 'source-in',
+                      maskImage:
+                        'linear-gradient(to right, transparent 0%, black 14%, black 86%, transparent 100%), linear-gradient(to bottom, transparent 0%, black 12%, black 88%, transparent 100%)',
+                      maskComposite: 'intersect'
+                    }
+                  : {})
               }}
             />
           </div>
@@ -779,6 +792,7 @@ export const Home: React.FC<HomeProps> = ({
                 hoveredColumn === 'about'
               }
               imageScale={0.72}
+              imageEdgeFade={true}
             />
 
           </div>
