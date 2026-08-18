@@ -396,33 +396,33 @@ svg {
    فونت‌های BKamran و BKamranHeading بدون تغییر باقی می‌مانند.
 */
 
-html[lang="fa"] .text-\[8px\] {
-  font-size: 11px;
-  line-height: 1.7;
-}
-
-html[lang="fa"] .text-\[9px\] {
-  font-size: 12px;
-  line-height: 1.7;
-}
-
 html[lang="fa"] .text-\[10px\] {
-  font-size: 13px;
-  line-height: 1.7;
-}
-
-html[lang="fa"] .text-\[11px\] {
   font-size: 14px;
   line-height: 1.7;
 }
 
-html[lang="fa"] .text-\[13px\] {
-  font-size: 15px;
+html[lang="fa"] .text-\[11px\] {
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+html[lang="fa"] .text-\[12px\] {
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+html[lang="fa"] .text-\[14px\] {
+  font-size: 20px;
   line-height: 1.7;
 }
 
 html[lang="fa"] .text-\[15px\] {
-  font-size: 17px;
+  font-size: 22px;
+  line-height: 1.7;
+}
+
+html[lang="fa"] .text-\[18px\] {
+  font-size: 14px;
   line-height: 1.7;
 }
 
