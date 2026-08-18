@@ -1,3 +1,4 @@
+```css
 @import "tailwindcss";
 
 /* =========================================================
@@ -5,15 +6,14 @@
    ========================================================= */
 
 /*
-  IMPORTANT:
-  Make sure these files actually exist in your public folder.
-
-  Example:
-
   public/
-  ├── fonts/
-  │   ├── BNazanin.ttf
-  │   ├── BNaznnBd.ttf
+  └── fonts/
+      ├── BNazanin.ttf
+      ├── BNaznnBd.ttf
+      ├── NeueMontreal-Regular.otf
+      ├── NeueMontreal-Medium.otf
+      ├── NeueMontreal-Bold.otf
+      └── bgothl.ttf
 */
 
 @font-face {
@@ -39,6 +39,7 @@
   font-style: normal;
   font-display: swap;
 }
+
 
 /* =========================================================
    NEUE MONTREAL
@@ -67,10 +68,16 @@
   font-style: normal;
   font-display: swap;
 }
+
+
+/* =========================================================
+   CHAJ GOTHIC
+   ========================================================= */
+
 @font-face {
-  font-family: 'CHAJGothic';
-  src: url('/fonts/bgothl.ttf') format('truetype');
-  font-weight: normal;
+  font-family: "CHAJGothic";
+  src: url("/fonts/bgothl.ttf") format("truetype");
+  font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
@@ -81,7 +88,6 @@
    ========================================================= */
 
 @layer base {
-
   html,
   body {
     margin: 0;
@@ -93,10 +99,7 @@
     background-color: #F4F1EE;
     color: #1C1C1C;
 
-    /*
-      Default = English
-      We override Persian below using html[lang="fa"].
-    */
+    /* Default font: English */
     font-family: "Neue Montreal", sans-serif;
 
     font-style: normal;
@@ -133,7 +136,7 @@
 
 
   /* =======================================================
-     FALLBACK FOR RTL
+     RTL FALLBACK
      ======================================================= */
 
   html[dir="rtl"] body,
@@ -156,10 +159,13 @@
   h4,
   h5,
   h6 {
+    margin: 0;
     font-style: normal;
     font-synthesis: none;
   }
 
+
+  /* English headings */
 
   html[lang="en"] h1,
   html[lang="en"] h2,
@@ -170,6 +176,8 @@
     font-family: "Neue Montreal", sans-serif;
   }
 
+
+  /* Persian headings */
 
   html[lang="fa"] h1,
   html[lang="fa"] h2,
@@ -207,8 +215,16 @@
 
 
   /* =======================================================
-     TAILWIND FONT CLASSES OVERRIDE
+     TAILWIND FONT CLASSES
      ======================================================= */
+
+  /*
+    Important:
+    Do NOT globally force font-family here.
+
+    Tailwind's .font-serif / .font-sans classes
+    must remain available to individual components.
+  */
 
   .font-serif,
   .font-sans,
@@ -237,6 +253,26 @@
   html[dir="rtl"] .font-serif-heading {
     font-family: "BNazanin", sans-serif;
   }
+}
+
+
+/* =========================================================
+   GLOBAL TYPOGRAPHY
+   ========================================================= */
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+/*
+  Persian text generally needs more vertical breathing room.
+  This only affects RTL documents and does not alter English.
+*/
+
+html[dir="rtl"] body {
+  line-height: 1.8;
 }
 
 
@@ -307,13 +343,8 @@
 
 
 /* =========================================================
-   GLOBAL ITALIC PROTECTION
+   GLOBAL FONT SYNTHESIS PROTECTION
    ========================================================= */
-
-/*
-  حتی اگر جایی در JSX از className="italic"
-  استفاده شده باشد، متن italic نمی‌شود.
-*/
 
 * {
   font-synthesis: none;
@@ -321,27 +352,48 @@
 
 
 /* =========================================================
-   LANGUAGE-SPECIFIC FONT OVERRIDE
+   LANGUAGE-SPECIFIC BASE FONT
    ========================================================= */
 
 /*
-  این قسمت مهم است چون بعضی کامپوننت‌ها ممکن است
-  font-family خودشان را داشته باشند.
+  IMPORTANT:
+  We intentionally do NOT use:
+
+    html[lang="fa"] *
+    html[lang="en"] *
+
+  because those selectors override component-level
+  font-family declarations and make Tailwind typography
+  classes ineffective.
 */
 
-html[lang="fa"] * {
+html[lang="fa"] {
   font-family: "BNazanin", sans-serif;
 }
 
-html[lang="en"] * {
+html[lang="en"] {
   font-family: "Neue Montreal", sans-serif;
 }
 
 
 /* =========================================================
-   KEEP ICON FONTS / SVG SAFE
+   RTL DIRECTION
+   ========================================================= */
+
+html[dir="rtl"] {
+  direction: rtl;
+}
+
+html[dir="ltr"] {
+  direction: ltr;
+}
+
+
+/* =========================================================
+   KEEP ICONS / SVG SAFE
    ========================================================= */
 
 svg {
   font-family: inherit;
 }
+```
