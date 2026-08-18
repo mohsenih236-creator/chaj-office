@@ -12,33 +12,47 @@
 
   public/
   ├── fonts/
-  │   ├── BNazanin.ttf
-  │   ├── BNaznnBd.ttf
+  │   ├── BKamranO.ttf
+  │   ├── BKamran.ttf
+  │   ├── BKamrnBd.ttf
+  │   ├── NeueMontreal-Regular.otf
+  │   ├── NeueMontreal-Medium.otf
+  │   ├── NeueMontreal-Bold.otf
+  │   └── bgothl.ttf
 */
 
+
+/* =========================================================
+   PERSIAN FONTS
+   ========================================================= */
+
+/* Persian regular */
 @font-face {
-  font-family: "BNazanin";
-  src: url("/fonts/BNazanin.ttf") format("truetype");
+  font-family: "BKamran";
+  src: url("/fonts/BKamran.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
+/* Persian bold */
 @font-face {
-  font-family: "BNazanin";
-  src: url("/fonts/BNazanin.ttf") format("truetype");
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "BNazanin";
-  src: url("/fonts/BNaznnBd.ttf") format("truetype");
+  font-family: "BKamran";
+  src: url("/fonts/BKAmrnBd.ttf") format("truetype");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
+
+/* Persian headings */
+@font-face {
+  font-family: "BKamranHeading";
+  src: url("/fonts/BKamranO.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 
 /* =========================================================
    NEUE MONTREAL
@@ -67,6 +81,8 @@
   font-style: normal;
   font-display: swap;
 }
+
+
 @font-face {
   font-family: 'CHAJGothic';
   src: url('/fonts/bgothl.ttf') format('truetype');
@@ -127,7 +143,7 @@
   html[lang="fa"] input,
   html[lang="fa"] textarea,
   html[lang="fa"] select {
-    font-family: "BNazanin", sans-serif;
+    font-family: "BKamran", sans-serif;
     font-style: normal;
   }
 
@@ -141,7 +157,7 @@
   html[dir="rtl"] input,
   html[dir="rtl"] textarea,
   html[dir="rtl"] select {
-    font-family: "BNazanin", sans-serif;
+    font-family: "BKamran", sans-serif;
     font-style: normal;
   }
 
@@ -177,7 +193,7 @@
   html[lang="fa"] h4,
   html[lang="fa"] h5,
   html[lang="fa"] h6 {
-    font-family: "BNazanin", sans-serif;
+    font-family: "BKamranHeading", sans-serif;
   }
 
 
@@ -226,16 +242,24 @@
 
 
   html[lang="fa"] .font-serif,
-  html[lang="fa"] .font-sans,
+  html[lang="fa"] .font-sans {
+    font-family: "BKamran", sans-serif;
+  }
+
+
   html[lang="fa"] .font-serif-heading {
-    font-family: "BNazanin", sans-serif;
+    font-family: "BKamranHeading", sans-serif;
   }
 
 
   html[dir="rtl"] .font-serif,
-  html[dir="rtl"] .font-sans,
+  html[dir="rtl"] .font-sans {
+    font-family: "BKamran", sans-serif;
+  }
+
+
   html[dir="rtl"] .font-serif-heading {
-    font-family: "BNazanin", sans-serif;
+    font-family: "BKamranHeading", sans-serif;
   }
 }
 
@@ -325,14 +349,31 @@
    ========================================================= */
 
 /*
-  این قسمت مهم است چون بعضی کامپوننت‌ها ممکن است
-  font-family خودشان را داشته باشند.
+  فارسی:
+  - متن معمولی → BKamran
+  - تیترها → BKamranHeading
+  - Bold → BKamran با وزن 700
+
+  انگلیسی:
+  - همه چیز → Neue Montreal
 */
 
+/* Persian */
 html[lang="fa"] * {
-  font-family: "BNazanin", sans-serif;
+  font-family: "BKamran", sans-serif;
 }
 
+html[lang="fa"] h1,
+html[lang="fa"] h2,
+html[lang="fa"] h3,
+html[lang="fa"] h4,
+html[lang="fa"] h5,
+html[lang="fa"] h6 {
+  font-family: "BKamranHeading", sans-serif;
+}
+
+
+/* English */
 html[lang="en"] * {
   font-family: "Neue Montreal", sans-serif;
 }
