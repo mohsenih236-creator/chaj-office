@@ -5,17 +5,6 @@
    FONT FACES
    ========================================================= */
 
-/*
-  public/
-  └── fonts/
-      ├── BNazanin.ttf
-      ├── BNaznnBd.ttf
-      ├── NeueMontreal-Regular.otf
-      ├── NeueMontreal-Medium.otf
-      ├── NeueMontreal-Bold.otf
-      └── bgothl.ttf
-*/
-
 @font-face {
   font-family: "BNazanin";
   src: url("/fonts/BNazanin.ttf") format("truetype");
@@ -98,10 +87,7 @@
   body {
     background-color: #F4F1EE;
     color: #1C1C1C;
-
-    /* Default font: English */
     font-family: "Neue Montreal", sans-serif;
-
     font-style: normal;
     font-synthesis: none;
   }
@@ -204,7 +190,7 @@
 
 
   /* =======================================================
-     REMOVE ITALIC EVERYWHERE
+     REMOVE ITALIC
      ======================================================= */
 
   i,
@@ -219,11 +205,10 @@
      ======================================================= */
 
   /*
-    Important:
-    Do NOT globally force font-family here.
-
-    Tailwind's .font-serif / .font-sans classes
-    must remain available to individual components.
+    مهم:
+    اینجا عمداً font-family را روی همه عناصر اجبار نمی‌کنیم.
+    تا کلاس‌های Tailwind و کامپوننت‌ها بتوانند فونت مناسب
+    خودشان را کنترل کنند.
   */
 
   .font-serif,
@@ -266,13 +251,45 @@ body {
 }
 
 
-/*
-  Persian text generally needs more vertical breathing room.
-  This only affects RTL documents and does not alter English.
-*/
+/* Persian needs more vertical breathing room */
 
 html[dir="rtl"] body {
   line-height: 1.8;
+}
+
+
+/* =========================================================
+   LANGUAGE BASE FONT
+   ========================================================= */
+
+html[lang="fa"] {
+  font-family: "BNazanin", sans-serif;
+}
+
+html[lang="en"] {
+  font-family: "Neue Montreal", sans-serif;
+}
+
+
+/* =========================================================
+   RTL / LTR
+   ========================================================= */
+
+html[dir="rtl"] {
+  direction: rtl;
+}
+
+html[dir="ltr"] {
+  direction: ltr;
+}
+
+
+/* =========================================================
+   FONT SYNTHESIS PROTECTION
+   ========================================================= */
+
+* {
+  font-synthesis: none;
 }
 
 
@@ -343,54 +360,7 @@ html[dir="rtl"] body {
 
 
 /* =========================================================
-   GLOBAL FONT SYNTHESIS PROTECTION
-   ========================================================= */
-
-* {
-  font-synthesis: none;
-}
-
-
-/* =========================================================
-   LANGUAGE-SPECIFIC BASE FONT
-   ========================================================= */
-
-/*
-  IMPORTANT:
-  We intentionally do NOT use:
-
-    html[lang="fa"] *
-    html[lang="en"] *
-
-  because those selectors override component-level
-  font-family declarations and make Tailwind typography
-  classes ineffective.
-*/
-
-html[lang="fa"] {
-  font-family: "BNazanin", sans-serif;
-}
-
-html[lang="en"] {
-  font-family: "Neue Montreal", sans-serif;
-}
-
-
-/* =========================================================
-   RTL DIRECTION
-   ========================================================= */
-
-html[dir="rtl"] {
-  direction: rtl;
-}
-
-html[dir="ltr"] {
-  direction: ltr;
-}
-
-
-/* =========================================================
-   KEEP ICONS / SVG SAFE
+   SVG / ICON SAFETY
    ========================================================= */
 
 svg {
