@@ -4,6 +4,18 @@
    FONT FACES
    ========================================================= */
 
+/*
+  IMPORTANT:
+  Make sure these files actually exist in your public folder.
+
+  Example:
+
+  public/
+  ├── fonts/
+  │   ├── BNazanin.ttf
+  │   ├── BNaznnBd.ttf
+*/
+
 @font-face {
   font-family: "BNazanin";
   src: url("/fonts/BNazanin.ttf") format("truetype");
@@ -27,7 +39,6 @@
   font-style: normal;
   font-display: swap;
 }
-
 
 /* =========================================================
    NEUE MONTREAL
@@ -56,16 +67,10 @@
   font-style: normal;
   font-display: swap;
 }
-
-
-/* =========================================================
-   CHAJ GOTHIC
-   ========================================================= */
-
 @font-face {
-  font-family: "CHAJGothic";
-  src: url("/fonts/bgothl.ttf") format("truetype");
-  font-weight: 400;
+  font-family: 'CHAJGothic';
+  src: url('/fonts/bgothl.ttf') format('truetype');
+  font-weight: normal;
   font-style: normal;
   font-display: swap;
 }
@@ -76,6 +81,7 @@
    ========================================================= */
 
 @layer base {
+
   html,
   body {
     margin: 0;
@@ -86,7 +92,13 @@
   body {
     background-color: #F4F1EE;
     color: #1C1C1C;
+
+    /*
+      Default = English
+      We override Persian below using html[lang="fa"].
+    */
     font-family: "Neue Montreal", sans-serif;
+
     font-style: normal;
     font-synthesis: none;
   }
@@ -121,7 +133,7 @@
 
 
   /* =======================================================
-     RTL FALLBACK
+     FALLBACK FOR RTL
      ======================================================= */
 
   html[dir="rtl"] body,
@@ -144,13 +156,10 @@
   h4,
   h5,
   h6 {
-    margin: 0;
     font-style: normal;
     font-synthesis: none;
   }
 
-
-  /* English headings */
 
   html[lang="en"] h1,
   html[lang="en"] h2,
@@ -161,8 +170,6 @@
     font-family: "Neue Montreal", sans-serif;
   }
 
-
-  /* Persian headings */
 
   html[lang="fa"] h1,
   html[lang="fa"] h2,
@@ -189,7 +196,7 @@
 
 
   /* =======================================================
-     REMOVE ITALIC
+     REMOVE ITALIC EVERYWHERE
      ======================================================= */
 
   i,
@@ -200,15 +207,8 @@
 
 
   /* =======================================================
-     TAILWIND FONT CLASSES
+     TAILWIND FONT CLASSES OVERRIDE
      ======================================================= */
-
-  /*
-    مهم:
-    اینجا عمداً font-family را روی همه عناصر اجبار نمی‌کنیم.
-    تا کلاس‌های Tailwind و کامپوننت‌ها بتوانند فونت مناسب
-    خودشان را کنترل کنند.
-  */
 
   .font-serif,
   .font-sans,
@@ -237,58 +237,6 @@
   html[dir="rtl"] .font-serif-heading {
     font-family: "BNazanin", sans-serif;
   }
-}
-
-
-/* =========================================================
-   GLOBAL TYPOGRAPHY
-   ========================================================= */
-
-body {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-
-/* Persian needs more vertical breathing room */
-
-html[dir="rtl"] body {
-  line-height: 1.8;
-}
-
-
-/* =========================================================
-   LANGUAGE BASE FONT
-   ========================================================= */
-
-html[lang="fa"] {
-  font-family: "BNazanin", sans-serif;
-}
-
-html[lang="en"] {
-  font-family: "Neue Montreal", sans-serif;
-}
-
-
-/* =========================================================
-   RTL / LTR
-   ========================================================= */
-
-html[dir="rtl"] {
-  direction: rtl;
-}
-
-html[dir="ltr"] {
-  direction: ltr;
-}
-
-
-/* =========================================================
-   FONT SYNTHESIS PROTECTION
-   ========================================================= */
-
-* {
-  font-synthesis: none;
 }
 
 
@@ -359,7 +307,39 @@ html[dir="ltr"] {
 
 
 /* =========================================================
-   SVG / ICON SAFETY
+   GLOBAL ITALIC PROTECTION
+   ========================================================= */
+
+/*
+  حتی اگر جایی در JSX از className="italic"
+  استفاده شده باشد، متن italic نمی‌شود.
+*/
+
+* {
+  font-synthesis: none;
+}
+
+
+/* =========================================================
+   LANGUAGE-SPECIFIC FONT OVERRIDE
+   ========================================================= */
+
+/*
+  این قسمت مهم است چون بعضی کامپوننت‌ها ممکن است
+  font-family خودشان را داشته باشند.
+*/
+
+html[lang="fa"] * {
+  font-family: "BNazanin", sans-serif;
+}
+
+html[lang="en"] * {
+  font-family: "Neue Montreal", sans-serif;
+}
+
+
+/* =========================================================
+   KEEP ICON FONTS / SVG SAFE
    ========================================================= */
 
 svg {
