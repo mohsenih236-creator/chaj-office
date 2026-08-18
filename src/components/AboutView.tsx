@@ -1,3 +1,4 @@
+```tsx
 import React from 'react';
 import { StudioInfo, Language } from '../types';
 import { Award, MapPin } from 'lucide-react';
@@ -27,7 +28,6 @@ export const AboutView: React.FC<AboutViewProps> = ({
          ========================================================= */}
 
       <div className="mb-16 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-start">
-        {/* Introduction */}
         <div className="max-w-2xl">
           <span className="block mb-4 text-lg sm:text-xl font-medium tracking-[0.08em] text-[#6F6F6F] leading-relaxed">
             {isFa
@@ -44,7 +44,6 @@ export const AboutView: React.FC<AboutViewProps> = ({
           </p>
         </div>
 
-        {/* Location Maps */}
         <div className="flex flex-col gap-6">
           {studioInfo.offices.map((office) => {
             const hasCoords =
@@ -100,6 +99,7 @@ export const AboutView: React.FC<AboutViewProps> = ({
         </div>
       </div>
 
+
       {/* =========================================================
           MEANING OF THE NAME
          ========================================================= */}
@@ -115,6 +115,7 @@ export const AboutView: React.FC<AboutViewProps> = ({
             : '"Chaj" in Mazani refers to the edge of a pitched roof where it meets the wall—a subtle yet defining detail that shapes the boundary between architecture, sky, and nature.'}
         </p>
       </div>
+
 
       {/* =========================================================
           STUDIO PRINCIPALS
@@ -155,6 +156,7 @@ export const AboutView: React.FC<AboutViewProps> = ({
         </div>
       </div>
 
+
       {/* =========================================================
           AWARDS & RECOGNITION
          ========================================================= */}
@@ -192,6 +194,7 @@ export const AboutView: React.FC<AboutViewProps> = ({
         </div>
       </div>
 
+
       {/* =========================================================
           CONTACT CTA
          ========================================================= */}
@@ -221,3 +224,4 @@ export const AboutView: React.FC<AboutViewProps> = ({
     </div>
   );
 };
+```
