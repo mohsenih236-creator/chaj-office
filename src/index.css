@@ -422,150 +422,150 @@ html[lang="fa"] .text-\[15px\] {
 }
 
 html[lang="fa"] .text-\[18px\] {
-  font-size: 14px;
+  font-size: 24px;
   line-height: 1.7;
 }
 
 html[lang="fa"] .text-xs {
-  font-size: 0.875rem;
-  line-height: 1.7;
-}
-
-html[lang="fa"] .text-sm {
   font-size: 1rem;
   line-height: 1.7;
 }
 
+html[lang="fa"] .text-sm {
+  font-size: 1.5rem;
+  line-height: 1.7;
+}
+
 html[lang="fa"] .text-base {
-  font-size: 1.125rem;
+  font-size: 2rem;
   line-height: 1.75;
 }
 
 html[lang="fa"] .text-lg {
-  font-size: 1.375rem;
+  font-size: 2.375rem;
   line-height: 1.75;
 }
 
 html[lang="fa"] .text-xl {
-  font-size: 1.5rem;
+  font-size: 2.5rem;
   line-height: 1.65;
 }
 
 html[lang="fa"] .text-2xl {
-  font-size: 1.75rem;
+  font-size: 2.75rem;
   line-height: 1.55;
 }
 
 html[lang="fa"] .text-3xl {
-  font-size: 2rem;
+  font-size: 3rem;
   line-height: 1.45;
 }
 
 html[lang="fa"] .text-4xl {
-  font-size: 2.25rem;
+  font-size: 3.25rem;
   line-height: 1.35;
 }
 
 @media (min-width: 640px) {
   html[lang="fa"] .sm\:text-xs {
-    font-size: 0.875rem;
-    line-height: 1.7;
-  }
-
-  html[lang="fa"] .sm\:text-sm {
     font-size: 1rem;
     line-height: 1.7;
   }
 
+  html[lang="fa"] .sm\:text-sm {
+    font-size: 2rem;
+    line-height: 1.7;
+  }
+
   html[lang="fa"] .sm\:text-lg {
-    font-size: 1.375rem;
+    font-size: 2.375rem;
     line-height: 1.75;
   }
 
   html[lang="fa"] .sm\:text-xl {
-    font-size: 1.5rem;
+    font-size: 2.5rem;
     line-height: 1.65;
   }
 
   html[lang="fa"] .sm\:text-2xl {
-    font-size: 1.75rem;
+    font-size: 2.75rem;
     line-height: 1.55;
   }
 
   html[lang="fa"] .sm\:text-3xl {
-    font-size: 2rem;
+    font-size: 3rem;
     line-height: 1.45;
   }
 
   html[lang="fa"] .sm\:text-4xl {
-    font-size: 2.25rem;
+    font-size: 3.25rem;
     line-height: 1.35;
   }
 
   html[lang="fa"] .sm\:text-5xl {
-    font-size: 2.625rem;
+    font-size: 3.625rem;
     line-height: 1.25;
   }
 
   html[lang="fa"] .sm\:text-6xl {
-    font-size: 3.125rem;
+    font-size: 4.125rem;
     line-height: 1.2;
   }
 
-  html[lang="fa"] .sm\:text-\[17px\] {
-    font-size: 20px;
+  html[lang="fa"] .sm\:text-\[20px\] {
+    font-size: 26px;
     line-height: 1.6;
   }
 }
 
 @media (min-width: 768px) {
   html[lang="fa"] .md\:text-sm {
-    font-size: 1rem;
+    font-size: 2rem;
     line-height: 1.7;
   }
 
   html[lang="fa"] .md\:text-lg {
-    font-size: 1.375rem;
+    font-size: 2.375rem;
     line-height: 1.75;
   }
 
   html[lang="fa"] .md\:text-xl {
-    font-size: 1.5rem;
+    font-size: 2.5rem;
     line-height: 1.65;
   }
 
   html[lang="fa"] .md\:text-2xl {
-    font-size: 1.75rem;
+    font-size: 2.75rem;
     line-height: 1.55;
   }
 
   html[lang="fa"] .md\:text-3xl {
-    font-size: 2rem;
+    font-size: 3rem;
     line-height: 1.45;
   }
 
   html[lang="fa"] .md\:text-4xl {
-    font-size: 2.25rem;
+    font-size: 3.25rem;
     line-height: 1.35;
   }
 
   html[lang="fa"] .md\:text-5xl {
-    font-size: 2.625rem;
+    font-size: 3.625rem;
     line-height: 1.25;
   }
 
-  html[lang="fa"] .md\:text-\[9px\] {
-    font-size: 12px;
+  html[lang="fa"] .md\:text-\[12px\] {
+    font-size: 16px;
     line-height: 1.7;
   }
 
-  html[lang="fa"] .md\:text-\[20px\] {
-    font-size: 22px;
+  html[lang="fa"] .md\:text-\[24px\] {
+    font-size: 28px;
     line-height: 1.6;
   }
 
-  html[lang="fa"] .md\:text-\[27px\] {
-    font-size: 30px;
+  html[lang="fa"] .md\:text-\[35px\] {
+    font-size: 40px;
     line-height: 1.45;
   }
 }
