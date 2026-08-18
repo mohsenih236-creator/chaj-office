@@ -1,4 +1,3 @@
-```tsx
 import React from 'react';
 import { StudioInfo, Language } from '../types';
 import { Award, MapPin } from 'lucide-react';
@@ -224,4 +223,3 @@ export const AboutView: React.FC<AboutViewProps> = ({
     </div>
   );
 };
-```
