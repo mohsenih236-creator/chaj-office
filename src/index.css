@@ -406,23 +406,23 @@ html[lang="fa"] .text-\[11px\] {
   line-height: 1.7;
 }
 
+html[lang="fa"] .text-\[10px\] {
+  font-size: 16px;
+  line-height: 1.7;
+}
+
 html[lang="fa"] .text-\[12px\] {
   font-size: 18px;
   line-height: 1.7;
 }
 
-html[lang="fa"] .text-\[14px\] {
+html[lang="fa"] .text-\[12px\] {
   font-size: 20px;
   line-height: 1.7;
 }
 
-html[lang="fa"] .text-\[15px\] {
+html[lang="fa"] .text-\[16px\] {
   font-size: 22px;
-  line-height: 1.7;
-}
-
-html[lang="fa"] .text-\[18px\] {
-  font-size: 24px;
   line-height: 1.7;
 }
 
@@ -512,8 +512,8 @@ html[lang="fa"] .text-4xl {
     line-height: 1.2;
   }
 
-  html[lang="fa"] .sm\:text-\[20px\] {
-    font-size: 26px;
+  html[lang="fa"] .sm\:text-\[16px\] {
+    font-size: 22px;
     line-height: 1.6;
   }
 }
