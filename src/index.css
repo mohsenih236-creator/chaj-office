@@ -564,8 +564,8 @@ html[lang="fa"] .text-4xl {
     line-height: 1.6;
   }
 
-  html[lang="fa"] .md\:text-\[35px\] {
-    font-size: 40px;
+  html[lang="fa"] .md\:text-\[24px\] {
+    font-size: 30px;
     line-height: 1.45;
   }
 }
