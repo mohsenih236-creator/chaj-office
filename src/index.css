@@ -446,27 +446,27 @@ svg {
 */
 
 html[lang="fa"] .text-\[8px\] {
-  font-size: 11px;
-  line-height: 1.7;
-}
-
-html[lang="fa"] .text-\[9px\] {
   font-size: 12px;
   line-height: 1.7;
 }
 
-html[lang="fa"] .text-\[10px\] {
+html[lang="fa"] .text-\[9px\] {
   font-size: 13px;
   line-height: 1.7;
 }
 
-html[lang="fa"] .text-\[11px\] {
+html[lang="fa"] .text-\[10px\] {
   font-size: 14px;
   line-height: 1.7;
 }
 
-html[lang="fa"] .text-\[13px\] {
+html[lang="fa"] .text-\[11px\] {
   font-size: 15px;
+  line-height: 1.7;
+}
+
+html[lang="fa"] .text-\[13px\] {
+  font-size: 16px;
   line-height: 1.7;
 }
 
@@ -476,12 +476,12 @@ html[lang="fa"] .text-\[15px\] {
 }
 
 html[lang="fa"] .text-xs {
-  font-size: 0.875rem;
+  font-size: 0.95rem;
   line-height: 1.7;
 }
 
 html[lang="fa"] .text-sm {
-  font-size: 1rem;
+  font-size: 1.05rem;
   line-height: 1.7;
 }
 
@@ -517,12 +517,12 @@ html[lang="fa"] .text-4xl {
 
 @media (min-width: 640px) {
   html[lang="fa"] .sm\:text-xs {
-    font-size: 0.875rem;
+    font-size: 0.95rem;
     line-height: 1.7;
   }
 
   html[lang="fa"] .sm\:text-sm {
-    font-size: 1rem;
+    font-size: 1.05rem;
     line-height: 1.7;
   }
 
@@ -569,7 +569,7 @@ html[lang="fa"] .text-4xl {
 
 @media (min-width: 768px) {
   html[lang="fa"] .md\:text-sm {
-    font-size: 1rem;
+    font-size: 1.05rem;
     line-height: 1.7;
   }
 
@@ -604,7 +604,7 @@ html[lang="fa"] .text-4xl {
   }
 
   html[lang="fa"] .md\:text-\[9px\] {
-    font-size: 12px;
+    font-size: 13px;
     line-height: 1.7;
   }
 
